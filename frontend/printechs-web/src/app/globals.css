@@ -1,0 +1,143 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Surfaces — keep dark top / light body */
+  --ink-rgb: 10 12 14;
+  --steel-rgb: 22 28 24;
+  --slate-rgb: 90 100 114;
+  --paper-rgb: 247 248 250;
+  --mist-rgb: 238 241 245;
+  --white-rgb: 255 255 255;
+
+  /* Brand accents from Printechs logo: green primary, orange secondary */
+  --signal-rgb: 46 155 58;
+  --signal-bright-rgb: 74 180 78;
+  --signal-deep-rgb: 30 120 40;
+  --accent-rgb: 241 90 34;
+  --accent-bright-rgb: 255 122 61;
+
+  --background-rgb: 247 248 250;
+  --foreground-rgb: 10 12 14;
+
+  --ink: rgb(var(--ink-rgb));
+  --steel: rgb(var(--steel-rgb));
+  --slate: rgb(var(--slate-rgb));
+  --paper: rgb(var(--paper-rgb));
+  --mist: rgb(var(--mist-rgb));
+  --white: rgb(var(--white-rgb));
+  --signal: rgb(var(--signal-rgb));
+  --signal-bright: rgb(var(--signal-bright-rgb));
+  --signal-deep: rgb(var(--signal-deep-rgb));
+  --accent: rgb(var(--accent-rgb));
+  --accent-bright: rgb(var(--accent-bright-rgb));
+  --line: rgba(10, 12, 14, 0.1);
+  --line-strong: rgba(10, 12, 14, 0.18);
+  /* Product page icon accent — corporate blue aligned with B2B mockups */
+  --product-icon-rgb: 0 86 179;
+  --background: rgb(var(--background-rgb));
+  --foreground: rgb(var(--foreground-rgb));
+  --section-y: clamp(4rem, 7vw, 7rem);
+  --gutter: clamp(1.25rem, 3vw, 2rem);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-body), "Source Sans 3", sans-serif;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: rgba(46, 155, 58, 0.22);
+  color: var(--ink);
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .animate-fade-up {
+    animation: fade-up 750ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .animation-delay-150 {
+    animation-delay: 150ms;
+  }
+
+  .animation-delay-300 {
+    animation-delay: 300ms;
+  }
+
+  .media-zoom {
+    transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .group:hover .media-zoom,
+  .group:focus-within .media-zoom {
+    transform: scale(1.04);
+  }
+
+  .media-zoom-subtle {
+    transition: transform 400ms ease;
+  }
+
+  .group:hover .media-zoom-subtle,
+  .group:focus-within .media-zoom-subtle {
+    transform: scale(1.02);
+  }
+
+  .section-pad {
+    padding-block: var(--section-y);
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slow-pan {
+  from {
+    transform: scale(1.05) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.12) translate3d(-1.5%, -1%, 0);
+  }
+}
+
+.hero-media-pan {
+  animation: slow-pan 24s ease-in-out alternate infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-media-pan {
+    animation: none;
+  }
+}

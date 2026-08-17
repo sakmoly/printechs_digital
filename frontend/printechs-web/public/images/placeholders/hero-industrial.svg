@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-label="Industrial technology">
+<defs>
+  <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#0b1220"/>
+    <stop offset="45%" stop-color="#162033"/>
+    <stop offset="100%" stop-color="#0f766e"/>
+  </linearGradient>
+  <linearGradient id="beam" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0%" stop-color="#14b8a6" stop-opacity="0"/>
+    <stop offset="50%" stop-color="#2dd4bf" stop-opacity="0.55"/>
+    <stop offset="100%" stop-color="#14b8a6" stop-opacity="0"/>
+  </linearGradient>
+</defs>
+<rect width="1920" height="1080" fill="url(#g)"/>
+<g opacity="0.18" stroke="#eef1f5" stroke-width="1">
+  <path d="M0 216 H1920 M0 432 H1920 M0 648 H1920 M0 864 H1920"/>
+  <path d="M240 0 V1080 M480 0 V1080 M720 0 V1080 M960 0 V1080 M1200 0 V1080 M1440 0 V1080 M1680 0 V1080"/>
+</g>
+<rect x="220" y="260" width="520" height="560" fill="none" stroke="#2dd4bf" stroke-width="2" opacity="0.45"/>
+<rect x="820" y="340" width="780" height="360" fill="#0b1220" opacity="0.45"/>
+<rect x="820" y="500" width="780" height="2" fill="url(#beam)"/>
+</svg>

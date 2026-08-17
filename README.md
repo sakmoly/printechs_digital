@@ -2,6 +2,22 @@
 
 Printechs Digital Experience Platform and B2B Website Content Management
 
+This repository contains:
+
+- `printechs_digital/` — Frappe app (CMS / ERPNext integration foundation)
+- `frontend/printechs-web/` — Next.js corporate website (`/newwebsite`)
+- `printechs_digital/Document/` — project specifications and phase documents
+
+### Frontend (Next.js website)
+
+```bash
+cd frontend/printechs-web
+npm install
+npm run dev
+```
+
+Production build and deploy notes are in `frontend/printechs-web/docs/`.
+
 ### Installation
 
 You can install this app using the [bench](https://github.com/frappe/bench) CLI:
