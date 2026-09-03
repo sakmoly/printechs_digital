@@ -81,7 +81,7 @@
   {"default": "Image", "fieldname": "hero_media_kind", "fieldtype": "Select", "label": "Hero Media", "options": "Image\nHosted Video"},
   {"depends_on": "eval:doc.hero_media_kind==\"Image\"", "description": "Upload a file on this site. External image links will not display.", "fieldname": "hero_image", "fieldtype": "Attach Image", "label": "Hero Image"},
   {"depends_on": "eval:doc.hero_media_kind==\"Image\"", "fieldname": "hero_image_alt", "fieldtype": "Data", "label": "Hero Image Alt Text"},
-  {"depends_on": "eval:doc.hero_media_kind==\"Hosted Video\"", "fieldname": "hero_video", "fieldtype": "Attach", "label": "Hero Video"},
+  {"depends_on": "eval:doc.hero_media_kind==\"Hosted Video\"", "description": "Upload a file on this site. External links will not display on the website.", "fieldname": "hero_video", "fieldtype": "Attach", "label": "Hero Video"},
   {"depends_on": "eval:doc.hero_media_kind==\"Hosted Video\"", "fieldname": "hero_video_poster", "fieldtype": "Attach Image", "label": "Hero Video Poster"},
   {"default": "Explore Solutions", "fieldname": "hero_primary_label", "fieldtype": "Data", "label": "Primary Button"},
   {"default": "/solutions", "fieldname": "hero_primary_href", "fieldtype": "Data", "label": "Primary Button Link"},

@@ -9,7 +9,7 @@
   {"fieldname": "title", "fieldtype": "Data", "in_list_view": 1, "label": "Title", "reqd": 1},
   {"fieldname": "summary", "fieldtype": "Small Text", "label": "Summary", "reqd": 1},
   {"fieldname": "href", "fieldtype": "Data", "in_list_view": 1, "label": "Link URL", "reqd": 1},
-  {"fieldname": "image", "fieldtype": "Attach Image", "label": "Image", "reqd": 1},
+  {"description": "Upload a file on this site. External links will not display on the website.", "fieldname": "image", "fieldtype": "Attach Image", "label": "Image", "reqd": 1},
   {"fieldname": "image_alt", "fieldtype": "Data", "label": "Image Alt Text"},
   {"description": "One item per line", "fieldname": "items", "fieldtype": "Small Text", "label": "Bullet Items"},
   {"fieldname": "sort_order", "fieldtype": "Int", "label": "Sort Order"}

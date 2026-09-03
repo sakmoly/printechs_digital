@@ -8,7 +8,7 @@
  "fields": [
   {"fieldname": "heading", "fieldtype": "Data", "in_list_view": 1, "label": "Heading", "reqd": 1},
   {"fieldname": "body", "fieldtype": "Text", "label": "Body", "reqd": 1},
-  {"fieldname": "image", "fieldtype": "Attach Image", "label": "Image"},
+  {"description": "Upload a file on this site. External links will not display on the website.", "fieldname": "image", "fieldtype": "Attach Image", "label": "Image"},
   {"fieldname": "image_alt", "fieldtype": "Data", "label": "Image Alt Text"},
   {"fieldname": "link_label", "fieldtype": "Data", "label": "Link Label"},
   {"fieldname": "link_href", "fieldtype": "Data", "label": "Link URL"},

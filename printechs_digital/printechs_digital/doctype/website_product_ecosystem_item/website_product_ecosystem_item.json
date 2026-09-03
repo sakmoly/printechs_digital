@@ -10,7 +10,7 @@
   {"fieldname": "display_name_override", "fieldtype": "Data", "in_list_view": 1, "label": "Display Name Override"},
   {"fieldname": "summary_override", "fieldtype": "Text", "label": "Summary Override"},
   {"fieldname": "href", "fieldtype": "Data", "label": "Link URL"},
-  {"fieldname": "image", "fieldtype": "Attach Image", "label": "Image"},
+  {"description": "Upload a file on this site. External links will not display on the website.", "fieldname": "image", "fieldtype": "Attach Image", "label": "Image"},
   {"fieldname": "sort_order", "fieldtype": "Int", "label": "Sort Order"}
  ],
  "istable": 1,

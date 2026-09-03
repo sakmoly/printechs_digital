@@ -6,7 +6,7 @@
  "engine": "InnoDB",
  "field_order": ["image", "image_alt", "caption", "sort_order"],
  "fields": [
-  {"fieldname": "image", "fieldtype": "Attach Image", "in_list_view": 1, "label": "Image", "reqd": 1},
+  {"description": "Upload a file on this site. External links will not display on the website.", "fieldname": "image", "fieldtype": "Attach Image", "in_list_view": 1, "label": "Image", "reqd": 1},
   {"fieldname": "image_alt", "fieldtype": "Data", "in_list_view": 1, "label": "Image Alt Text"},
   {"fieldname": "caption", "fieldtype": "Data", "label": "Caption"},
   {"fieldname": "sort_order", "fieldtype": "Int", "label": "Sort Order"}

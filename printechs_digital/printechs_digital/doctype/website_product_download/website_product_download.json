@@ -7,7 +7,7 @@
  "field_order": ["label", "file", "download_type", "sort_order"],
  "fields": [
   {"fieldname": "label", "fieldtype": "Data", "in_list_view": 1, "label": "Label", "reqd": 1},
-  {"fieldname": "file", "fieldtype": "Attach", "in_list_view": 1, "label": "File", "reqd": 1},
+  {"description": "Upload a file on this site. External links will not display on the website.", "fieldname": "file", "fieldtype": "Attach", "in_list_view": 1, "label": "File", "reqd": 1},
   {"fieldname": "download_type", "fieldtype": "Select", "label": "Download Type", "options": "Datasheet\nBrochure\nManual\nOther"},
   {"fieldname": "sort_order", "fieldtype": "Int", "label": "Sort Order"}
  ],

@@ -53,7 +53,7 @@
   {"fieldname": "summary", "fieldtype": "Small Text", "label": "Summary"},
   {"fieldname": "story", "fieldtype": "Text Editor", "label": "Success Story"},
   {"fieldname": "media_section", "fieldtype": "Section Break", "label": "Photos and Videos"},
-  {"fieldname": "hero_image", "fieldtype": "Attach Image", "label": "Hero Image"},
+  {"description": "Upload a file on this site (/files/...). External image links will not display on the website.", "fieldname": "hero_image", "fieldtype": "Attach Image", "label": "Hero Image"},
   {"fieldname": "hero_image_alt", "fieldtype": "Data", "label": "Hero Image Alt Text"},
   {"fieldname": "videos", "fieldtype": "Table", "label": "Videos", "options": "Website Success Story Video"},
   {"fieldname": "gallery", "fieldtype": "Table", "label": "Gallery", "options": "Website Success Story Image"},

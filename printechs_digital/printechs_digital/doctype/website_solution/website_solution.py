@@ -4,7 +4,8 @@ from printechs_digital.printechs_digital.doctype.website_product.website_product
 import frappe
 from frappe import _
 from frappe.model.document import Document
-from frappe.utils import cstr
+
+from printechs_digital.utils.website_assets import localize_doc_fields, validate_doc_fields
 
 
 class WebsiteSolution(Document):
@@ -18,6 +19,7 @@ class WebsiteSolution(Document):
 			self.image_alt = self.solution_name
 		if not self.href:
 			self.href = f"/solutions/{self.slug}"
+		localize_doc_fields(self, [("image", f"solution-{self.slug or 'image'}")])
 
 	def validate(self):
 		if not self.slug:
@@ -29,5 +31,4 @@ class WebsiteSolution(Document):
 		if frappe.db.exists("Website Solution", filters):
 			frappe.throw(_("Website Solution with slug {0} already exists").format(self.slug))
 
-		if cstr(self.image).startswith(("http://", "https://")) and "/files/" not in cstr(self.image):
-			frappe.throw(_("Upload the solution image as a file on this site."))
+		validate_doc_fields(self, [("image", "Image")])

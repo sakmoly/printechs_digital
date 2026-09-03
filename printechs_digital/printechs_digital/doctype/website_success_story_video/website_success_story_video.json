@@ -8,8 +8,8 @@
  "fields": [
   {"fieldname": "title", "fieldtype": "Data", "in_list_view": 1, "label": "Title", "reqd": 1},
   {"description": "YouTube or Vimeo URL. Prefer this over uploading a large video file.", "fieldname": "video_url", "fieldtype": "Data", "in_list_view": 1, "label": "Video URL"},
-  {"fieldname": "video_file", "fieldtype": "Attach", "label": "Video File"},
-  {"fieldname": "poster", "fieldtype": "Attach Image", "label": "Poster Image"},
+  {"description": "Upload a file on this site. External links will not display on the website.", "fieldname": "video_file", "fieldtype": "Attach", "label": "Video File"},
+  {"description": "Upload a file on this site. External links will not display on the website.", "fieldname": "poster", "fieldtype": "Attach Image", "label": "Poster Image"},
   {"fieldname": "sort_order", "fieldtype": "Int", "label": "Sort Order"}
  ],
  "index_web_pages_for_search": 0,

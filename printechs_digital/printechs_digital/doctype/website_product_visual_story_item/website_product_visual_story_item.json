@@ -20,6 +20,7 @@
    "reqd": 1
   },
   {
+   "description": "Upload a file on this site. External links will not display on the website.",
    "fieldname": "image",
    "fieldtype": "Attach Image",
    "in_list_view": 1,

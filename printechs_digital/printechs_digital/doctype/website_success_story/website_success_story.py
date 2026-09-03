@@ -7,6 +7,13 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.utils import cstr
 
+from printechs_digital.utils.website_assets import (
+	localize_child_table,
+	localize_doc_fields,
+	validate_child_table,
+	validate_doc_fields,
+)
+
 INDUSTRY_SLUGS = {
 	"Dairy": "dairy",
 	"Food & Beverage": "food-beverage",
@@ -70,6 +77,27 @@ class WebsiteSuccessStory(Document):
 			self.hero_image_alt = self.title
 		self.industry_slug = industry_slug(self.industry)
 
+		story_slug = self.slug or "story"
+		localize_doc_fields(self, [("hero_image", f"success-story-{story_slug}")])
+		localize_child_table(
+			self,
+			"gallery",
+			"image",
+			lambda row, idx: f"success-story-{story_slug}-gallery-{idx}",
+		)
+		localize_child_table(
+			self,
+			"videos",
+			"poster",
+			lambda row, idx: f"success-story-{story_slug}-video-poster-{idx}",
+		)
+		localize_child_table(
+			self,
+			"videos",
+			"video_file",
+			lambda row, idx: f"success-story-{story_slug}-video-{idx}",
+		)
+
 	def validate(self):
 		if not self.slug:
 			frappe.throw(_("Slug is required"))
@@ -82,3 +110,8 @@ class WebsiteSuccessStory(Document):
 			filters["name"] = ("!=", self.name)
 		if frappe.db.exists("Website Success Story", filters):
 			frappe.throw(_("Website Success Story with slug {0} already exists").format(self.slug))
+
+		validate_doc_fields(self, [("hero_image", "Hero Image")])
+		validate_child_table(self, "gallery", "image", "Gallery Image")
+		validate_child_table(self, "videos", "poster", "Video Poster")
+		validate_child_table(self, "videos", "video_file", "Video File")

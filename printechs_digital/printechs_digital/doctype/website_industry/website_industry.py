@@ -4,7 +4,8 @@ from printechs_digital.printechs_digital.doctype.website_product.website_product
 import frappe
 from frappe import _
 from frappe.model.document import Document
-from frappe.utils import cstr
+
+from printechs_digital.utils.website_assets import localize_doc_fields, validate_doc_fields
 
 
 class WebsiteIndustry(Document):
@@ -16,6 +17,7 @@ class WebsiteIndustry(Document):
 			self.slug = slugify(self.industry_name)
 		if not self.image_alt:
 			self.image_alt = self.industry_name
+		localize_doc_fields(self, [("image", f"industry-{self.slug or 'image'}")])
 
 	def validate(self):
 		if not self.slug:
@@ -27,5 +29,4 @@ class WebsiteIndustry(Document):
 		if frappe.db.exists("Website Industry", filters):
 			frappe.throw(_("Website Industry with slug {0} already exists").format(self.slug))
 
-		if cstr(self.image).startswith(("http://", "https://")) and "/files/" not in cstr(self.image):
-			frappe.throw(_("Upload the industry image as a file on this site."))
+		validate_doc_fields(self, [("image", "Image")])

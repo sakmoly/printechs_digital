@@ -7,6 +7,13 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.utils import cstr, strip_html
 
+from printechs_digital.utils.website_assets import (
+	localize_child_table,
+	localize_doc_fields,
+	validate_child_table,
+	validate_doc_fields,
+)
+
 
 def slugify(value: str) -> str:
 	value = cstr(value).lower().strip()
@@ -31,6 +38,52 @@ class WebsiteProduct(Document):
 		if not self.hero_image and self.item:
 			self.hero_image = frappe.db.get_value("Item", self.item, "image")
 
+		slug = self.slug or slugify(self.display_name or self.website_product_name or "product")
+		localize_doc_fields(
+			self,
+			[
+				("hero_image", f"product-{slug}-hero"),
+				("card_image", f"product-{slug}-card"),
+				("primary_download_file", f"product-{slug}-download"),
+			],
+		)
+		localize_child_table(
+			self,
+			"applications",
+			"image",
+			lambda row, idx: f"product-{slug}-application-{idx}",
+		)
+		localize_child_table(
+			self,
+			"content_sections",
+			"image",
+			lambda row, idx: f"product-{slug}-section-{idx}",
+		)
+		localize_child_table(
+			self,
+			"ecosystem_items",
+			"image",
+			lambda row, idx: f"product-{slug}-ecosystem-{idx}",
+		)
+		localize_child_table(
+			self,
+			"related_products",
+			"image",
+			lambda row, idx: f"product-{slug}-related-{idx}",
+		)
+		localize_child_table(
+			self,
+			"visual_story_items",
+			"image",
+			lambda row, idx: f"product-{slug}-visual-{idx}",
+		)
+		localize_child_table(
+			self,
+			"downloads",
+			"file",
+			lambda row, idx: f"product-{slug}-file-{idx}",
+		)
+
 	def validate(self):
 		if not self.slug:
 			frappe.throw(_("Slug is required"))
@@ -51,6 +104,21 @@ class WebsiteProduct(Document):
 			self.canonical_path = f"/software/{self.slug}"
 		else:
 			self.canonical_path = f"/products/{self.slug}"
+
+		validate_doc_fields(
+			self,
+			[
+				("hero_image", "Hero Image"),
+				("card_image", "Card Image"),
+				("primary_download_file", "Primary Download File"),
+			],
+		)
+		validate_child_table(self, "applications", "image", "Application Image")
+		validate_child_table(self, "content_sections", "image", "Content Section Image")
+		validate_child_table(self, "ecosystem_items", "image", "Ecosystem Image")
+		validate_child_table(self, "related_products", "image", "Related Product Image")
+		validate_child_table(self, "visual_story_items", "image", "Visual Story Image")
+		validate_child_table(self, "downloads", "file", "Download File")
 
 
 def infer_division(item_group: str | None, brand: str | None = None) -> str:
