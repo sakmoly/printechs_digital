@@ -1,0 +1,20 @@
+{
+ "actions": [],
+ "creation": "2026-03-22 00:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": ["related_website_product", "display_name_override", "summary_override", "href", "image", "sort_order"],
+ "fields": [
+  {"fieldname": "related_website_product", "fieldtype": "Link", "in_list_view": 1, "label": "Related Website Product", "options": "Website Product"},
+  {"fieldname": "display_name_override", "fieldtype": "Data", "in_list_view": 1, "label": "Display Name"},
+  {"fieldname": "summary_override", "fieldtype": "Small Text", "label": "Summary"},
+  {"fieldname": "href", "fieldtype": "Data", "label": "Link URL"},
+  {"fieldname": "image", "fieldtype": "Attach Image", "label": "Image"},
+  {"fieldname": "sort_order", "fieldtype": "Int", "label": "Sort Order"}
+ ],
+ "istable": 1,
+ "module": "Printechs Digital",
+ "name": "Website Product Related",
+ "permissions": []
+}

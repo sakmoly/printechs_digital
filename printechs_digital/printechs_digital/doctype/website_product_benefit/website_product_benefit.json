@@ -1,0 +1,53 @@
+{
+ "actions": [],
+ "creation": "2026-03-22 00:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "icon",
+  "title",
+  "description",
+  "sort_order"
+ ],
+ "fields": [
+  {
+   "fieldname": "icon",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Icon",
+   "options": "speed\nlines\nshield\nintegration\nbattery\nscan\nandroid\ncheckout\ninventory\nstore\nloyalty\ninstall\nconsumables\nmaintenance\ntraining\ndisplay\nconnectivity\ndurability\nzatca\ncloud\nreport\ndevice\nrugged\nprint"
+  },
+  {
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Title",
+   "reqd": 1
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Text",
+   "in_list_view": 1,
+   "label": "Description",
+   "reqd": 1
+  },
+  {
+   "fieldname": "sort_order",
+   "fieldtype": "Int",
+   "label": "Sort Order"
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-03-22 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Printechs Digital",
+ "name": "Website Product Benefit",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

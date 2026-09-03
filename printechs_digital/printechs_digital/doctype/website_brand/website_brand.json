@@ -1,0 +1,51 @@
+{
+ "actions": [],
+ "allow_import": 1,
+ "autoname": "hash",
+ "creation": "2026-03-22 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "brand",
+  "display_name",
+  "slug",
+  "published",
+  "sort_order",
+  "column_break_main",
+  "logo",
+  "summary",
+  "seo_section",
+  "meta_title",
+  "meta_description"
+ ],
+ "fields": [
+  {"fieldname": "brand", "fieldtype": "Link", "in_list_view": 1, "in_standard_filter": 1, "label": "Brand", "options": "Brand", "reqd": 1, "unique": 1},
+  {"description": "Name shown on the website. Defaults to the selected Brand.", "fieldname": "display_name", "fieldtype": "Data", "in_list_view": 1, "label": "Display Name"},
+  {"description": "URL slug, e.g. hitachi", "fieldname": "slug", "fieldtype": "Data", "in_list_view": 1, "label": "Slug", "reqd": 1, "unique": 1},
+  {"default": "0", "fieldname": "published", "fieldtype": "Check", "in_list_view": 1, "label": "Published"},
+  {"fieldname": "sort_order", "fieldtype": "Int", "label": "Sort Order"},
+  {"fieldname": "column_break_main", "fieldtype": "Column Break"},
+  {"fieldname": "logo", "fieldtype": "Attach Image", "label": "Website Logo", "reqd": 1},
+  {"fieldname": "summary", "fieldtype": "Small Text", "label": "Summary"},
+  {"fieldname": "seo_section", "fieldtype": "Section Break", "label": "SEO"},
+  {"fieldname": "meta_title", "fieldtype": "Data", "label": "Meta Title"},
+  {"fieldname": "meta_description", "fieldtype": "Text", "label": "Meta Description"}
+ ],
+ "links": [],
+ "modified": "2026-03-22 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Printechs Digital",
+ "name": "Website Brand",
+ "naming_rule": "By script",
+ "owner": "Administrator",
+ "permissions": [
+  {"create": 1, "delete": 1, "email": 1, "export": 1, "print": 1, "read": 1, "report": 1, "role": "System Manager", "share": 1, "write": 1},
+  {"create": 1, "delete": 0, "email": 1, "export": 1, "print": 1, "read": 1, "report": 1, "role": "Purchase Manager", "share": 1, "write": 1},
+  {"create": 1, "delete": 0, "email": 1, "export": 1, "print": 1, "read": 1, "report": 1, "role": "Purchase User", "share": 1, "write": 1}
+ ],
+ "search_fields": "display_name, slug, brand",
+ "sort_field": "sort_order",
+ "sort_order": "ASC",
+ "title_field": "display_name",
+ "track_changes": 1
+}

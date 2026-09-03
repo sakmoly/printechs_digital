@@ -1,0 +1,17 @@
+{
+ "actions": [],
+ "creation": "2026-03-22 00:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": ["question", "answer", "sort_order"],
+ "fields": [
+  {"fieldname": "question", "fieldtype": "Data", "in_list_view": 1, "label": "Question", "reqd": 1},
+  {"fieldname": "answer", "fieldtype": "Text", "in_list_view": 1, "label": "Answer", "reqd": 1},
+  {"fieldname": "sort_order", "fieldtype": "Int", "label": "Sort Order"}
+ ],
+ "istable": 1,
+ "module": "Printechs Digital",
+ "name": "Website Product FAQ Item",
+ "permissions": []
+}

@@ -1,0 +1,17 @@
+{
+ "actions": [],
+ "creation": "2026-03-22 00:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": ["group_title", "sort_order", "spec_items"],
+ "fields": [
+  {"fieldname": "group_title", "fieldtype": "Data", "in_list_view": 1, "label": "Group Title", "reqd": 1},
+  {"fieldname": "sort_order", "fieldtype": "Int", "label": "Sort Order"},
+  {"fieldname": "spec_items", "fieldtype": "Table", "label": "Specification Items", "options": "Website Product Spec Item", "reqd": 1}
+ ],
+ "istable": 1,
+ "module": "Printechs Digital",
+ "name": "Website Product Spec Group",
+ "permissions": []
+}

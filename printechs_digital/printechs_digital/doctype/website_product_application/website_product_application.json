@@ -1,0 +1,20 @@
+{
+ "actions": [],
+ "creation": "2026-03-22 00:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": ["title", "description", "image", "image_alt", "industry_link", "sort_order"],
+ "fields": [
+  {"fieldname": "title", "fieldtype": "Data", "in_list_view": 1, "label": "Title", "reqd": 1},
+  {"fieldname": "description", "fieldtype": "Text", "in_list_view": 1, "label": "Description", "reqd": 1},
+  {"fieldname": "image", "fieldtype": "Attach Image", "label": "Image", "reqd": 1},
+  {"fieldname": "image_alt", "fieldtype": "Data", "label": "Image Alt Text", "reqd": 1},
+  {"fieldname": "industry_link", "fieldtype": "Data", "label": "Industry Slug", "description": "Optional — e.g. dairy (Phase B2: Link to Website Industry)"},
+  {"fieldname": "sort_order", "fieldtype": "Int", "label": "Sort Order"}
+ ],
+ "istable": 1,
+ "module": "Printechs Digital",
+ "name": "Website Product Application",
+ "permissions": []
+}
