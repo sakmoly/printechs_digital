@@ -26,9 +26,10 @@ type ProductHeroProps = {
   page: ProductPageContent;
   brand?: Brand;
   crumbs: Crumb[];
+  successStoriesHref?: string;
 };
 
-export function ProductHero({ page, brand, crumbs }: ProductHeroProps) {
+export function ProductHero({ page, brand, crumbs, successStoriesHref }: ProductHeroProps) {
   const imageSpec = heroImageSpec(page.productType);
   const quoteUrl = buildProductQuoteUrl(page);
   const demoUrl = buildProductDemoUrl(page);
@@ -39,7 +40,7 @@ export function ProductHero({ page, brand, crumbs }: ProductHeroProps) {
 
   return (
     <section className="border-b border-line bg-white">
-      <Container className="py-12 sm:py-14 lg:py-16">
+      <Container className="pt-12 pb-8 sm:pt-14 sm:pb-9 lg:pt-16 lg:pb-10">
         <Breadcrumb items={crumbs} />
 
         <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-12">
@@ -50,11 +51,11 @@ export function ProductHero({ page, brand, crumbs }: ProductHeroProps) {
                   src={brand.logo.src}
                   alt={brand.logo.alt}
                   spec={IMAGE_SPECS.brandLogo}
-                  width={140}
-                  height={48}
+                  width={180}
+                  height={56}
                   showSizeLabel={false}
-                  className="flex h-10 w-32 items-center justify-center"
-                  imageClassName="max-h-9 w-auto max-w-full object-contain"
+                  className="flex h-14 w-40 items-center justify-center"
+                  imageClassName="max-h-12 w-auto max-w-full object-contain"
                 />
               </div>
             ) : null}
@@ -98,10 +99,14 @@ export function ProductHero({ page, brand, crumbs }: ProductHeroProps) {
                   ↓ Download Datasheet
                 </Button>
               ) : null}
-              {page.showDemoCta !== false &&
-              (page.productType === "software" || page.showDemoCta) ? (
+              {page.productType === "software" || page.showDemoCta ? (
                 <Button href={demoUrl} variant="ghost">
                   Book a Demo
+                </Button>
+              ) : null}
+              {successStoriesHref ? (
+                <Button href={successStoriesHref} variant="ghost">
+                  Success Stories
                 </Button>
               ) : null}
             </div>
@@ -131,7 +136,13 @@ export function ProductHero({ page, brand, crumbs }: ProductHeroProps) {
           </div>
 
           <div className="relative flex items-center justify-center">
-            <div className="relative w-full max-w-lg rounded-md border border-line bg-white p-6 shadow-soft sm:p-8">
+            <div
+              className={
+                page.productType === "software"
+                  ? "relative w-full overflow-hidden rounded-md border border-line bg-mist shadow-soft"
+                  : "relative w-full max-w-lg rounded-md border border-line bg-white p-6 shadow-soft sm:p-8"
+              }
+            >
               <ImageFrame
                 src={page.heroImage.src}
                 alt={page.heroImage.alt}
@@ -143,7 +154,11 @@ export function ProductHero({ page, brand, crumbs }: ProductHeroProps) {
                     ? "aspect-[16/10]"
                     : "aspect-square"
                 }
-                imageClassName="object-contain p-4"
+                imageClassName={
+                  page.productType === "software"
+                    ? "object-cover object-center"
+                    : "object-contain p-4"
+                }
                 sizes="(max-width: 1024px) 100vw, 42vw"
                 showSizeLabel={false}
               />

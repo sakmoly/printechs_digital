@@ -1,4 +1,4 @@
-import type { FeaturedSolution } from "@/types/content";
+import type { FeaturedSolution, HomepageSectionHeading } from "@/types/content";
 import { Section } from "@/components/ui/Section";
 import { Heading } from "@/components/ui/Heading";
 import { Card } from "@/components/ui/Card";
@@ -6,13 +6,24 @@ import { FeatureGrid } from "@/components/ui/FeatureGrid";
 import { ImageFrame } from "@/components/media/ImageFrame";
 import { IMAGE_SPECS } from "@/lib/image-specs";
 
-export function FeaturedSolutions({ items }: { items: FeaturedSolution[] }) {
+export function FeaturedSolutions({
+  items,
+  heading,
+}: {
+  items: FeaturedSolution[];
+  heading?: HomepageSectionHeading | null;
+}) {
+  if (!items.length) return null;
+
   return (
     <Section tone="muted">
       <Heading
-        eyebrow="Featured solutions"
-        title="Technology built for real operations"
-        description="From production floors to retail stores and enterprise systems, our solutions help businesses improve accuracy, visibility and operational control."
+        eyebrow={heading?.eyebrow ?? "Featured solutions"}
+        title={heading?.title ?? "Technology built for real operations"}
+        description={
+          heading?.description ??
+          "From production floors to retail stores and enterprise systems, our solutions help businesses improve accuracy, visibility and operational control."
+        }
       />
       <FeatureGrid columns={4}>
         {items.map((item) => (

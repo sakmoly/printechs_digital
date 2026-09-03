@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { BusinessDivision } from "@/types/content";
+import type { BusinessDivision, HomepageSectionHeading } from "@/types/content";
 import { Section } from "@/components/ui/Section";
 import { Heading } from "@/components/ui/Heading";
 import { ImageFrame } from "@/components/media/ImageFrame";
@@ -7,15 +7,22 @@ import { IMAGE_SPECS } from "@/lib/image-specs";
 
 export function DivisionsSection({
   divisions,
+  heading,
 }: {
   divisions: BusinessDivision[];
+  heading?: HomepageSectionHeading | null;
 }) {
+  if (!divisions.length) return null;
+
   return (
     <Section tone="white">
       <Heading
-        eyebrow="Capabilities"
-        title="Three divisions. One technology partner."
-        description="Industrial systems, retail technology and enterprise software — each with a clear focus and deep delivery expertise."
+        eyebrow={heading?.eyebrow ?? "Capabilities"}
+        title={heading?.title ?? "Three divisions. One technology partner."}
+        description={
+          heading?.description ??
+          "Industrial systems, retail technology and enterprise software — each with a clear focus and deep delivery expertise."
+        }
       />
       <div className="grid gap-5 lg:grid-cols-3">
         {divisions.map((division) => (

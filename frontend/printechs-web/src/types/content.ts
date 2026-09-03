@@ -22,8 +22,8 @@ export type MediaAsset = {
 };
 
 export type VideoAsset = {
-  type: "youtube" | "hosted";
-  /** YouTube ID or hosted video URL */
+  type: "youtube" | "vimeo" | "hosted";
+  /** YouTube ID, Vimeo ID, or hosted video URL */
   source: string;
   title: string;
   poster?: string;
@@ -152,6 +152,19 @@ export type ProductReference = {
   image?: MediaAsset;
 };
 
+export type ProductContentSection = {
+  heading: string;
+  body: string;
+  image?: MediaAsset;
+  videoUrl?: string;
+  link?: { label: string; href: string };
+};
+
+export type ProductFaqItem = {
+  question: string;
+  answer: string;
+};
+
 /**
  * Universal product page content — mirrors future ERPNext marketing API shape.
  * Sections auto-hide when optional fields are empty.
@@ -203,6 +216,8 @@ export type ProductPageContent = {
   supportServiceItems?: SupportServiceItem[];
   downloads?: ProductDownload[];
   packageContents?: string[];
+  contentSections?: ProductContentSection[];
+  faqs?: ProductFaqItem[];
   relatedProducts?: ProductReference[];
   finalCta?: {
     heading: string;
@@ -256,6 +271,7 @@ export type Solution = {
   slug: string;
   name: string;
   summary: string;
+  href?: string;
   image: MediaAsset;
   relatedProductSlugs?: string[];
   relatedSoftwareSlugs?: string[];
@@ -291,6 +307,12 @@ export type SolutionPageContent = {
     items: VisualStoryItem[];
   };
   storyHeading?: string;
+  /** Technology category picker above product lists (Model B hub pages) */
+  technologySection?: {
+    eyebrow: string;
+    title: string;
+    description?: string;
+  };
   productCategories: SolutionProductCategory[];
   applicationCards?: ApplicationCard[];
   industrySlugs?: string[];
@@ -326,6 +348,7 @@ export type Video = {
   slug: string;
   title: string;
   summary: string;
+  eyebrow?: string;
   video: VideoAsset;
   seo: SeoFields;
 };
@@ -341,6 +364,34 @@ export type CaseStudy = {
   seo: SeoFields;
 };
 
+export type SuccessStory = {
+  id: string;
+  slug: string;
+  title: string;
+  summary: string;
+  customer: string;
+  location?: string;
+  brand: string;
+  brandSlug?: string;
+  industry: string;
+  industrySlug?: string;
+  productSlug?: string;
+  productName?: string;
+  image: MediaAsset;
+  href: string;
+  story?: string;
+  videos?: VideoAsset[];
+  gallery?: MediaAsset[];
+  related?: SuccessStory[];
+  seo: SeoFields;
+};
+
+export type SuccessStoryList = {
+  stories: SuccessStory[];
+  brands: { slug: string; name: string }[];
+  industries: { slug: string; name: string }[];
+};
+
 export type Resource = {
   id: string;
   slug: string;
@@ -354,6 +405,8 @@ export type Resource = {
 export type HeroContent = {
   headline: string;
   supportingText: string;
+  eyebrow?: string;
+  chips?: string[];
   media: {
     kind: "image" | "hosted-video" | "external-video";
     src: string;
@@ -364,6 +417,62 @@ export type HeroContent = {
   secondaryCta: Cta;
 };
 
+export type HomepageWhyPoint = {
+  title: string;
+  body: string;
+};
+
+export type HomepageWhy = {
+  eyebrow: string;
+  title: string;
+  description: string;
+  points: HomepageWhyPoint[];
+};
+
+export type HomepageCta = {
+  title: string;
+  description: string;
+  primaryLabel: string;
+  primaryHref: string;
+  secondaryLabel: string;
+  secondaryHref: string;
+};
+
+export type HomepageStories = {
+  eyebrow: string;
+  title: string;
+  description: string;
+  limit: number;
+};
+
+export type HomepageSectionHeading = {
+  eyebrow: string;
+  title: string;
+  description: string;
+  limit?: number;
+};
+
+export type HomepageExtraBlock = {
+  id: string;
+  heading: string;
+  body: string;
+  image?: MediaAsset | null;
+  linkLabel?: string;
+  linkHref?: string;
+};
+
+export type HomepageContent = {
+  hero: HeroContent;
+  why?: HomepageWhy | null;
+  video?: Video | null;
+  stories?: HomepageStories | null;
+  cta?: HomepageCta | null;
+  divisions?: HomepageDivisions | null;
+  featuredSolutions?: HomepageSectionHeading | null;
+  industries?: HomepageSectionHeading | null;
+  extraBlocks?: HomepageExtraBlock[];
+};
+
 export type BusinessDivision = {
   id: string;
   title: string;
@@ -371,4 +480,8 @@ export type BusinessDivision = {
   href: string;
   items: string[];
   image: MediaAsset;
+};
+
+export type HomepageDivisions = HomepageSectionHeading & {
+  items: BusinessDivision[];
 };

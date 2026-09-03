@@ -2,9 +2,15 @@ import Link from "next/link";
 
 export type Crumb = { label: string; href?: string };
 
-export function Breadcrumb({ items }: { items: Crumb[] }) {
+export function Breadcrumb({
+  items,
+  className = "mb-6",
+}: {
+  items: Crumb[];
+  className?: string;
+}) {
   return (
-    <nav aria-label="Breadcrumb" className="mb-6">
+    <nav aria-label="Breadcrumb" className={className}>
       <ol className="flex flex-wrap items-center gap-2 text-sm text-slate">
         {items.map((item, index) => {
           const isLast = index === items.length - 1;

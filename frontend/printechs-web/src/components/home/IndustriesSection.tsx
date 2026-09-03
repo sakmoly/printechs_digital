@@ -1,19 +1,30 @@
 import Link from "next/link";
-import type { Industry } from "@/types/content";
+import type { HomepageSectionHeading, Industry } from "@/types/content";
 import { Section } from "@/components/ui/Section";
 import { Heading } from "@/components/ui/Heading";
 import { Button } from "@/components/ui/Button";
 import { ImageFrame } from "@/components/media/ImageFrame";
 import { IMAGE_SPECS } from "@/lib/image-specs";
 
-export function IndustriesSection({ items }: { items: Industry[] }) {
+export function IndustriesSection({
+  items,
+  heading,
+}: {
+  items: Industry[];
+  heading?: HomepageSectionHeading | null;
+}) {
+  if (!items.length) return null;
+
   return (
     <Section tone="white">
       <div className="mb-10 flex flex-col gap-6 md:mb-12 md:flex-row md:items-end md:justify-between">
         <Heading
-          eyebrow="Industries"
-          title="Industries we serve"
-          description="From dairy and packaging to retail and logistics — technology mapped to the realities of each sector."
+          eyebrow={heading?.eyebrow ?? "Industries"}
+          title={heading?.title ?? "Industries we serve"}
+          description={
+            heading?.description ??
+            "From dairy and packaging to retail and logistics — technology mapped to the realities of each sector."
+          }
           className="mb-0"
         />
         <Button href="/industries" variant="ghost" className="shrink-0">

@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 type FeatureGridProps = {
   children: ReactNode;
   columns?: 2 | 3 | 4;
+  gap?: "sm" | "md" | "lg";
 };
 
 const columnClass = {
@@ -11,8 +12,16 @@ const columnClass = {
   4: "sm:grid-cols-2 lg:grid-cols-4",
 };
 
-export function FeatureGrid({ children, columns = 3 }: FeatureGridProps) {
+const gapClass = {
+  sm: "gap-4",
+  md: "gap-6",
+  lg: "gap-8",
+};
+
+export function FeatureGrid({ children, columns = 3, gap = "lg" }: FeatureGridProps) {
   return (
-    <div className={`grid items-stretch gap-8 ${columnClass[columns]}`}>{children}</div>
+    <div className={`grid items-stretch ${gapClass[gap]} ${columnClass[columns]}`}>
+      {children}
+    </div>
   );
 }

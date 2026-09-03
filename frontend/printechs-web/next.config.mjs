@@ -7,6 +7,20 @@ const nextConfig = {
   env: {
     NEXT_PUBLIC_BASE_PATH: basePath,
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "printechs.com",
+        pathname: "/files/**",
+      },
+      {
+        protocol: "https",
+        hostname: "demo.printechs.com",
+        pathname: "/files/**",
+      },
+    ],
+  },
 };
 
 export default nextConfig;

@@ -6,7 +6,7 @@ import { IMAGE_SPECS } from "@/lib/image-specs";
 import { withBasePath } from "@/lib/paths";
 
 type PosterVideoProps = {
-  type: "youtube" | "hosted";
+  type: "youtube" | "vimeo" | "hosted";
   source: string;
   title: string;
   poster?: string;
@@ -26,12 +26,16 @@ export function PosterVideo({
     : "/images/placeholders/video-poster.svg";
 
   if (playing) {
-    if (type === "youtube") {
+    if (type === "youtube" || type === "vimeo") {
+      const embedSrc =
+        type === "vimeo"
+          ? `https://player.vimeo.com/video/${source}?autoplay=1`
+          : `https://www.youtube-nocookie.com/embed/${source}?autoplay=1&rel=0`;
       return (
         <div className={`aspect-video overflow-hidden bg-ink ${className}`}>
           <iframe
             className="h-full w-full"
-            src={`https://www.youtube-nocookie.com/embed/${source}?autoplay=1&rel=0`}
+            src={embedSrc}
             title={title}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
@@ -70,7 +74,7 @@ export function PosterVideo({
         fill
         className="h-full w-full"
         imageClassName="object-cover transition duration-700 ease-premium group-hover:scale-105"
-        sizes="(max-width: 1280px) 100vw, 72rem"
+        sizes="(max-width: 1440px) 100vw, 88rem"
         overlay={
           <>
             <div className="absolute inset-0 bg-ink/35 transition group-hover:bg-ink/25" />

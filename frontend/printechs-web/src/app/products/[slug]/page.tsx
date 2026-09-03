@@ -1,27 +1,33 @@
 import { notFound } from "next/navigation";
-import { products, getProductBySlug } from "@/data/products";
-import { resolveProductPage } from "@/lib/product-service";
+import { getProductBySlug } from "@/data/products";
+import { fetchProductPage } from "@/lib/product-service";
+import { fetchPublishedProductSlugs } from "@/lib/catalog-service";
 import { ProductPageView } from "@/components/products/ProductPageView";
 import { PageIntro } from "@/components/ui/PageIntro";
 import { Section } from "@/components/ui/Section";
 import { Button } from "@/components/ui/Button";
 import { buildMetadata } from "@/lib/seo";
+import { buildProductQuotePath } from "@/lib/product-quote-context";
+
+export const revalidate = 60;
 
 type Props = { params: { slug: string } };
 
-export function generateStaticParams() {
-  return products.map((product) => ({ slug: product.slug }));
+export async function generateStaticParams() {
+  const slugs = await fetchPublishedProductSlugs();
+  return slugs.map((slug) => ({ slug }));
 }
 
-export function generateMetadata({ params }: Props) {
-  const resolved = resolveProductPage(params.slug);
+export async function generateMetadata({ params }: Props) {
+  const resolved = await fetchProductPage(params.slug);
   const product = getProductBySlug(params.slug);
 
   if (resolved) {
     return buildMetadata({
       ...resolved.page.seo,
-      title: `${resolved.page.displayName} | Printechs`,
-      description: resolved.page.shortDescription,
+      title: resolved.page.seo?.title || `${resolved.page.displayName} | Printechs`,
+      description:
+        resolved.page.seo?.description || resolved.page.shortDescription,
     });
   }
 
@@ -39,8 +45,8 @@ export function generateMetadata({ params }: Props) {
   });
 }
 
-export default function ProductDetailPage({ params }: Props) {
-  const resolved = resolveProductPage(params.slug);
+export default async function ProductDetailPage({ params }: Props) {
+  const resolved = await fetchProductPage(params.slug);
   if (resolved) {
     return <ProductPageView {...resolved} />;
   }
@@ -69,7 +75,7 @@ export default function ProductDetailPage({ params }: Props) {
             Printechs for specifications, availability, and integration support.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Button href="/request-quote" variant="primary">
+            <Button href={buildProductQuotePath(product.slug)} variant="primary">
               Request Quote
             </Button>
             <Button href="/contact" variant="ghost">

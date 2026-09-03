@@ -8,6 +8,9 @@ export const siteConfig = {
   /** Demo / prototype environments must never be indexed. */
   allowIndexing: false,
   contactEmail: "info@printechs.com",
+  contactPhone: "+966 11 000 0000",
+  contactLocation: "Riyadh, Kingdom of Saudi Arabia",
+  officeHours: "Sunday – Thursday, 9:00 AM – 6:00 PM (AST)",
   primaryCta: {
     label: "Request Quote",
     href: "/request-quote",

@@ -159,6 +159,10 @@ const FEATURED_PRODUCT_SLUGS = [
   "autoid-solutions",
 ] as const;
 
+export function getCatalogProducts(): Product[] {
+  return products.filter((product) => !product.hubProductSlugs?.length);
+}
+
 export function getFeaturedProducts(limit = 4): Product[] {
   return FEATURED_PRODUCT_SLUGS.slice(0, limit)
     .map((slug) => products.find((item) => item.slug === slug))

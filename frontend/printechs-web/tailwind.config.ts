@@ -36,7 +36,7 @@ const config: Config = {
         body: ["var(--font-body)", "Source Sans 3", "sans-serif"],
       },
       maxWidth: {
-        content: "72rem",
+        content: "90rem",
       },
       boxShadow: {
         soft: "0 18px 50px rgba(11, 18, 32, 0.08)",

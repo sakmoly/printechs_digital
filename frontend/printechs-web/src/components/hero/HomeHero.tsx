@@ -5,9 +5,10 @@ import { ImageFrame } from "@/components/media/ImageFrame";
 import { IMAGE_SPECS } from "@/lib/image-specs";
 import { withBasePath } from "@/lib/paths";
 
-const credibility = ["Industrial", "Retail", "Software", "Saudi Arabia"];
+const defaultChips = ["Industrial", "Retail", "Software", "Saudi Arabia"];
 
 export function HomeHero({ content }: { content: HeroContent }) {
+  const chips = content.chips?.length ? content.chips : defaultChips;
   return (
     <section className="relative isolate overflow-hidden bg-ink text-paper">
       <div className="absolute inset-0">
@@ -51,7 +52,7 @@ export function HomeHero({ content }: { content: HeroContent }) {
       <Container className="relative flex min-h-[82vh] flex-col justify-end pb-10 pt-24 sm:min-h-[86vh] sm:pb-12 lg:pb-14 lg:pt-28">
         <div className="max-w-xl animate-fade-up lg:max-w-2xl">
           <p className="mb-5 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-signal-bright">
-            Printechs
+            {content.eyebrow || "Printechs"}
           </p>
           <h1 className="font-display text-balance text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl xl:text-[4.25rem]">
             {content.headline}
@@ -69,11 +70,13 @@ export function HomeHero({ content }: { content: HeroContent }) {
           </div>
         </div>
 
-        <ul className="mt-10 flex flex-wrap gap-x-8 gap-y-3 border-t border-paper/15 pt-5 text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-paper/65 animate-fade-up animation-delay-150 sm:mt-12">
-          {credibility.map((item) => (
-            <li key={item}>{item}</li>
-          ))}
-        </ul>
+        {chips.length ? (
+          <ul className="mt-10 flex flex-wrap gap-x-8 gap-y-3 border-t border-paper/15 pt-5 text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-paper/65 animate-fade-up animation-delay-150 sm:mt-12">
+            {chips.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        ) : null}
       </Container>
     </section>
   );

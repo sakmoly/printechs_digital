@@ -13,6 +13,10 @@ export function buildProductQuoteUrl(page: ProductPageContent): string {
     params.set("code", page.itemCode);
   }
 
+  if (page.slug) {
+    return `/products/${page.slug}/quote`;
+  }
+
   return `/request-quote?${params.toString()}`;
 }
 

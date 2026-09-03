@@ -39,6 +39,7 @@
   --background: rgb(var(--background-rgb));
   --foreground: rgb(var(--foreground-rgb));
   --section-y: clamp(4rem, 7vw, 7rem);
+  --section-y-compact: clamp(1.75rem, 3vw, 2.75rem);
   --gutter: clamp(1.25rem, 3vw, 2rem);
 }
 
@@ -109,6 +110,10 @@ body {
 
   .section-pad {
     padding-block: var(--section-y);
+  }
+
+  .section-pad-compact {
+    padding-block: var(--section-y-compact);
   }
 }
 

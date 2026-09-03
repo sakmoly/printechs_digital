@@ -3,11 +3,17 @@ import { Section } from "@/components/ui/Section";
 import { Heading } from "@/components/ui/Heading";
 import { PosterVideo } from "@/components/media/PosterVideo";
 
-export function VideoSection({ video }: { video: Video }) {
+export function VideoSection({
+  video,
+  eyebrow = "Digital experience",
+}: {
+  video: Video;
+  eyebrow?: string;
+}) {
   return (
     <Section tone="ink">
       <Heading
-        eyebrow="Digital experience"
+        eyebrow={eyebrow}
         title={video.title}
         description={video.summary}
         tone="light"
