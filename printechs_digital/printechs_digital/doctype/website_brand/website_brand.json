@@ -25,7 +25,7 @@
   {"default": "0", "fieldname": "published", "fieldtype": "Check", "in_list_view": 1, "label": "Published"},
   {"fieldname": "sort_order", "fieldtype": "Int", "label": "Sort Order"},
   {"fieldname": "column_break_main", "fieldtype": "Column Break"},
-  {"fieldname": "logo", "fieldtype": "Attach Image", "label": "Website Logo", "reqd": 1},
+  {"fieldname": "logo", "fieldtype": "Attach Image", "label": "Website Logo", "reqd": 1, "description": "Upload a PNG or SVG from your computer. External URLs (other websites) will not display on the new website."},
   {"fieldname": "summary", "fieldtype": "Small Text", "label": "Summary"},
   {"fieldname": "seo_section", "fieldtype": "Section Break", "label": "SEO"},
   {"fieldname": "meta_title", "fieldtype": "Data", "label": "Meta Title"},

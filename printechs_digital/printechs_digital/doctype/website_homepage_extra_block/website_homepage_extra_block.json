@@ -1,0 +1,21 @@
+{
+ "actions": [],
+ "creation": "2026-09-03 00:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": ["heading", "body", "image", "image_alt", "link_label", "link_href", "sort_order"],
+ "fields": [
+  {"fieldname": "heading", "fieldtype": "Data", "in_list_view": 1, "label": "Heading", "reqd": 1},
+  {"fieldname": "body", "fieldtype": "Text", "label": "Body", "reqd": 1},
+  {"fieldname": "image", "fieldtype": "Attach Image", "label": "Image"},
+  {"fieldname": "image_alt", "fieldtype": "Data", "label": "Image Alt Text"},
+  {"fieldname": "link_label", "fieldtype": "Data", "label": "Link Label"},
+  {"fieldname": "link_href", "fieldtype": "Data", "label": "Link URL"},
+  {"fieldname": "sort_order", "fieldtype": "Int", "label": "Sort Order"}
+ ],
+ "istable": 1,
+ "module": "Printechs Digital",
+ "name": "Website Homepage Extra Block",
+ "permissions": []
+}

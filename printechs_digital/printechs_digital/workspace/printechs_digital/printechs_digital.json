@@ -1,0 +1,223 @@
+{
+ "charts": [],
+ "content": "[{\"id\":\"pd_hdr\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Printechs Digital</b></span>\",\"col\":12}},{\"id\":\"pd_sc_home\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Homepage Settings\",\"col\":3}},{\"id\":\"pd_sc_product\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Website Product\",\"col\":3}},{\"id\":\"pd_sc_brand\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Website Brand\",\"col\":3}},{\"id\":\"pd_sc_industry\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Website Industry\",\"col\":3}},{\"id\":\"pd_sc_solution\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Website Solution\",\"col\":3}},{\"id\":\"pd_sc_story\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Website Success Story\",\"col\":3}},{\"id\":\"pd_sc_new\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"New Website Product\",\"col\":3}},{\"id\":\"pd_sc_site\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Open Website\",\"col\":3}},{\"id\":\"pd_sp1\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"pd_hdr_masters\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Masters</b></span>\",\"col\":12}},{\"id\":\"pd_c_home\",\"type\":\"card\",\"data\":{\"card_name\":\"Home\",\"col\":4}},{\"id\":\"pd_c_catalog\",\"type\":\"card\",\"data\":{\"card_name\":\"Catalog\",\"col\":4}},{\"id\":\"pd_c_stories\",\"type\":\"card\",\"data\":{\"card_name\":\"Stories\",\"col\":4}},{\"id\":\"pd_c_related\",\"type\":\"card\",\"data\":{\"card_name\":\"Related ERP\",\"col\":4}}]",
+ "creation": "2026-09-03 16:00:00.000000",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "website",
+ "idx": 0,
+ "indicator_color": "blue",
+ "is_hidden": 0,
+ "label": "Printechs Digital",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Home",
+   "link_count": 1,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Homepage Settings",
+   "link_count": 0,
+   "link_to": "Website Homepage Settings",
+   "link_type": "DocType",
+   "onboard": 1,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Catalog",
+   "link_count": 4,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Website Product",
+   "link_count": 0,
+   "link_to": "Website Product",
+   "link_type": "DocType",
+   "onboard": 1,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Website Brand",
+   "link_count": 0,
+   "link_to": "Website Brand",
+   "link_type": "DocType",
+   "onboard": 1,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Website Industry",
+   "link_count": 0,
+   "link_to": "Website Industry",
+   "link_type": "DocType",
+   "onboard": 1,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Website Solution",
+   "link_count": 0,
+   "link_to": "Website Solution",
+   "link_type": "DocType",
+   "onboard": 1,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Stories",
+   "link_count": 1,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Website Success Story",
+   "link_count": 0,
+   "link_to": "Website Success Story",
+   "link_type": "DocType",
+   "onboard": 1,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Related ERP",
+   "link_count": 4,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Item",
+   "link_count": 0,
+   "link_to": "Item",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Brand",
+   "link_count": 0,
+   "link_to": "Brand",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Lead",
+   "link_count": 0,
+   "link_to": "Lead",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Opportunity",
+   "link_count": 0,
+   "link_to": "Opportunity",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  }
+ ],
+ "modified": "2026-09-03 17:30:00.000000",
+ "modified_by": "Administrator",
+ "module": "Printechs Digital",
+ "name": "Printechs Digital",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "restrict_to_domain": "",
+ "roles": [],
+ "sequence_id": 1.2,
+ "shortcuts": [
+  {
+   "color": "Blue",
+   "label": "Homepage Settings",
+   "link_to": "Website Homepage Settings",
+   "type": "DocType"
+  },
+  {
+   "color": "Green",
+   "format": "{} Published",
+   "label": "Website Product",
+   "link_to": "Website Product",
+   "stats_filter": "{\"published\":1}",
+   "type": "DocType"
+  },
+  {
+   "color": "Green",
+   "format": "{} Published",
+   "label": "Website Brand",
+   "link_to": "Website Brand",
+   "stats_filter": "{\"published\":1}",
+   "type": "DocType"
+  },
+  {
+   "color": "Blue",
+   "format": "{} Published",
+   "label": "Website Industry",
+   "link_to": "Website Industry",
+   "stats_filter": "{\"published\":1}",
+   "type": "DocType"
+  },
+  {
+   "color": "Blue",
+   "format": "{} Published",
+   "label": "Website Solution",
+   "link_to": "Website Solution",
+   "stats_filter": "{\"published\":1}",
+   "type": "DocType"
+  },
+  {
+   "color": "Orange",
+   "format": "{} Published",
+   "label": "Website Success Story",
+   "link_to": "Website Success Story",
+   "stats_filter": "{\"published\":1}",
+   "type": "DocType"
+  },
+  {
+   "color": "Blue",
+   "doc_view": "New",
+   "label": "New Website Product",
+   "link_to": "Website Product",
+   "type": "DocType"
+  },
+  {
+   "color": "Gray",
+   "label": "Open Website",
+   "type": "URL",
+   "url": "/newwebsite"
+  }
+ ],
+ "title": "Printechs Digital"
+}

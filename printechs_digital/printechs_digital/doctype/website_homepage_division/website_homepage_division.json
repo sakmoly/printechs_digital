@@ -1,0 +1,21 @@
+{
+ "actions": [],
+ "creation": "2026-09-03 00:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": ["title", "summary", "href", "image", "image_alt", "items", "sort_order"],
+ "fields": [
+  {"fieldname": "title", "fieldtype": "Data", "in_list_view": 1, "label": "Title", "reqd": 1},
+  {"fieldname": "summary", "fieldtype": "Small Text", "label": "Summary", "reqd": 1},
+  {"fieldname": "href", "fieldtype": "Data", "in_list_view": 1, "label": "Link URL", "reqd": 1},
+  {"fieldname": "image", "fieldtype": "Attach Image", "label": "Image", "reqd": 1},
+  {"fieldname": "image_alt", "fieldtype": "Data", "label": "Image Alt Text"},
+  {"description": "One item per line", "fieldname": "items", "fieldtype": "Small Text", "label": "Bullet Items"},
+  {"fieldname": "sort_order", "fieldtype": "Int", "label": "Sort Order"}
+ ],
+ "istable": 1,
+ "module": "Printechs Digital",
+ "name": "Website Homepage Division",
+ "permissions": []
+}

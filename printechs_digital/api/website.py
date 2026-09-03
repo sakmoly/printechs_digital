@@ -3,7 +3,10 @@
 import frappe
 
 from printechs_digital.api.mappers.brand_mapper import map_website_brand
+from printechs_digital.api.mappers.homepage_mapper import map_homepage
+from printechs_digital.api.mappers.industry_mapper import map_industry
 from printechs_digital.api.mappers.product_mapper import map_catalog_product, map_resolved_product
+from printechs_digital.api.mappers.solution_mapper import map_featured_solution, map_solution
 from printechs_digital.api.mappers.story_mapper import map_success_story, map_success_story_card
 
 
@@ -115,6 +118,17 @@ def get_brand(slug: str):
 
 
 @frappe.whitelist(allow_guest=True)
+def get_homepage():
+	if not frappe.db.exists("DocType", "Website Homepage Settings"):
+		return None
+	try:
+		doc = frappe.get_single("Website Homepage Settings")
+	except Exception:
+		return None
+	return map_homepage(doc)
+
+
+@frappe.whitelist(allow_guest=True)
 def get_brand_slugs():
 	return frappe.get_all(
 		"Website Brand",
@@ -206,10 +220,107 @@ def get_success_story(slug: str):
 
 
 @frappe.whitelist(allow_guest=True)
+def get_featured_success_stories(limit: int = 2):
+	rows = frappe.get_all(
+		"Website Success Story",
+		filters={"published": 1},
+		fields=["name"],
+		order_by="featured desc, sort_order asc, modified desc",
+		limit_page_length=limit,
+	)
+	return [map_success_story_card(frappe.get_doc("Website Success Story", row.name)) for row in rows]
+
+
+@frappe.whitelist(allow_guest=True)
 def get_success_story_slugs():
 	return frappe.get_all(
 		"Website Success Story",
 		filters={"published": 1},
 		pluck="slug",
 		order_by="sort_order asc, modified desc",
+	)
+
+
+@frappe.whitelist(allow_guest=True)
+def list_industries(home: int = 0, limit: int = 50):
+	if not frappe.db.exists("DocType", "Website Industry"):
+		return []
+	filters = {"published": 1}
+	if int(home or 0):
+		filters["show_on_home"] = 1
+	rows = frappe.get_all(
+		"Website Industry",
+		filters=filters,
+		fields=["name"],
+		order_by="sort_order asc, industry_name asc",
+		limit_page_length=limit,
+	)
+	return [map_industry(frappe.get_doc("Website Industry", row.name)) for row in rows]
+
+
+@frappe.whitelist(allow_guest=True)
+def get_industry(slug: str):
+	name = frappe.db.get_value("Website Industry", {"slug": slug, "published": 1}, "name")
+	if not name:
+		frappe.throw("Industry not found", frappe.DoesNotExistError)
+	return map_industry(frappe.get_doc("Website Industry", name))
+
+
+@frappe.whitelist(allow_guest=True)
+def get_industry_slugs():
+	if not frappe.db.exists("DocType", "Website Industry"):
+		return []
+	return frappe.get_all(
+		"Website Industry",
+		filters={"published": 1},
+		pluck="slug",
+		order_by="sort_order asc, industry_name asc",
+	)
+
+
+@frappe.whitelist(allow_guest=True)
+def list_solutions(limit: int = 50):
+	if not frappe.db.exists("DocType", "Website Solution"):
+		return []
+	rows = frappe.get_all(
+		"Website Solution",
+		filters={"published": 1, "show_on_list": 1},
+		fields=["name"],
+		order_by="sort_order asc, solution_name asc",
+		limit_page_length=limit,
+	)
+	return [map_solution(frappe.get_doc("Website Solution", row.name)) for row in rows]
+
+
+@frappe.whitelist(allow_guest=True)
+def get_featured_solutions(limit: int = 4):
+	if not frappe.db.exists("DocType", "Website Solution"):
+		return []
+	rows = frappe.get_all(
+		"Website Solution",
+		filters={"published": 1, "featured": 1},
+		fields=["name"],
+		order_by="sort_order asc, modified desc",
+		limit_page_length=limit,
+	)
+	return [map_featured_solution(frappe.get_doc("Website Solution", row.name)) for row in rows]
+
+
+@frappe.whitelist(allow_guest=True)
+def get_solution(slug: str):
+	name = frappe.db.get_value("Website Solution", {"slug": slug, "published": 1}, "name")
+	if not name:
+		frappe.throw("Solution not found", frappe.DoesNotExistError)
+	return map_solution(frappe.get_doc("Website Solution", name))
+
+
+@frappe.whitelist(allow_guest=True)
+def get_solution_slugs():
+	if not frappe.db.exists("DocType", "Website Solution"):
+		return []
+	return frappe.get_all(
+		"Website Solution",
+		filters={"published": 1},
+		pluck="slug",
+		order_by="sort_order asc, solution_name asc",
 	)
