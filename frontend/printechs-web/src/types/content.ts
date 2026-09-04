@@ -160,6 +160,21 @@ export type ProductContentSection = {
   link?: { label: string; href: string };
 };
 
+export type ProductTourSection = {
+  id: string;
+  eyebrow: string;
+  title: string;
+  description: string;
+  features: string[];
+  image?: MediaAsset;
+};
+
+export type ProductTour = {
+  heading: string;
+  subheading?: string;
+  sections: ProductTourSection[];
+};
+
 export type ProductFaqItem = {
   question: string;
   answer: string;
@@ -217,6 +232,8 @@ export type ProductPageContent = {
   downloads?: ProductDownload[];
   packageContents?: string[];
   contentSections?: ProductContentSection[];
+  productTour?: ProductTour;
+  pageSectionOrder?: string[];
   faqs?: ProductFaqItem[];
   relatedProducts?: ProductReference[];
   finalCta?: {

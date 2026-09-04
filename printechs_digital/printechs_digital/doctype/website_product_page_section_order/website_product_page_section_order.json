@@ -1,0 +1,32 @@
+{
+ "actions": [],
+ "creation": "2026-09-04 00:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "section",
+  "sort_order"
+ ],
+ "fields": [
+  {
+   "description": "Benefits = icon row under hero. Product Tour = screenshot tour or visual story carousel. Technical Highlights = icon specifications table.",
+   "fieldname": "section",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Section",
+   "options": "benefits\noverview\nproduct_tour\nicon_specifications\ncapability_modules\nsoftware_capabilities\napplications\ncontent_sections\necosystem\nsupport\ndownloads\nrelated_products\nfaqs",
+   "reqd": 1
+  },
+  {
+   "fieldname": "sort_order",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Sort Order"
+  }
+ ],
+ "istable": 1,
+ "module": "Printechs Digital",
+ "name": "Website Product Page Section Order",
+ "permissions": []
+}

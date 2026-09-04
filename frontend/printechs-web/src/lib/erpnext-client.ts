@@ -119,6 +119,15 @@ export function normalizeProductPage(page: ProductPageContent): ProductPageConte
       ...section,
       image: section.image ? normalizeMediaAsset(section.image) : undefined,
     })),
+    productTour: page.productTour
+      ? {
+          ...page.productTour,
+          sections: page.productTour.sections.map((section) => ({
+            ...section,
+            image: section.image ? normalizeMediaAsset(section.image) : undefined,
+          })),
+        }
+      : undefined,
     downloads: page.downloads?.map((item) => ({
       ...item,
       href: resolvePublicAssetUrl(item.href) ?? item.href,

@@ -5,6 +5,8 @@ import re
 import frappe
 from frappe.utils import cstr, get_url, strip_html
 
+from printechs_digital.constants.product_page_sections import DEFAULT_PAGE_SECTION_ORDER
+
 PRODUCT_TYPE_MAP = {
 	"Industrial": "industrial",
 	"Retail Hardware": "retail_hardware",
@@ -63,6 +65,15 @@ def split_lines(value: str | None) -> list[str]:
 	if not value:
 		return []
 	return [line.strip() for line in cstr(value).splitlines() if line.strip()]
+
+
+def map_page_section_order(doc) -> list[str]:
+	rows = sorted_rows(doc.get("page_section_order"))
+	if rows:
+		order = [cstr(row.section).strip() for row in rows if cstr(row.section).strip()]
+		if order:
+			return order
+	return list(DEFAULT_PAGE_SECTION_ORDER)
 
 
 def sorted_rows(rows: list | None, field: str = "sort_order") -> list:
@@ -333,6 +344,39 @@ def map_website_product(doc) -> dict:
 			section["link"] = {"label": row.link_label, "href": row.link_href}
 		content_sections.append(section)
 
+	product_tour = None
+	if getattr(doc, "enable_product_tour", 0):
+		tour_sections = []
+		for idx, row in enumerate(sorted_rows(doc.get("tour_sections"))):
+			heading = cstr(row.heading).strip()
+			body = cstr(row.body).strip()
+			if not heading or not body:
+				continue
+			eyebrow = cstr(row.eyebrow).strip() or heading
+			tour_sections.append(
+				{
+					"id": slugify(eyebrow) or f"tour-{idx + 1}",
+					"eyebrow": eyebrow,
+					"title": heading,
+					"description": body,
+					"features": split_lines(getattr(row, "features", None)),
+					"image": media_asset(
+						row.image,
+						row.image_alt or heading,
+						1600,
+						1000,
+					),
+				}
+			)
+		if tour_sections:
+			product_tour = {
+				"heading": cstr(doc.product_tour_heading).strip()
+				or doc.visual_story_heading
+				or "See it in action",
+				"subheading": cstr(doc.product_tour_subheading).strip() or None,
+				"sections": tour_sections,
+			}
+
 	faqs = [
 		{"question": row.question, "answer": html_to_paragraphs(row.answer)}
 		for row in sorted_rows(doc.get("faq_items"))
@@ -385,6 +429,8 @@ def map_website_product(doc) -> dict:
 		"downloads": downloads or None,
 		"packageContents": package_contents or None,
 		"contentSections": content_sections or None,
+		"productTour": product_tour,
+		"pageSectionOrder": map_page_section_order(doc),
 		"faqs": faqs or None,
 		"relatedProducts": related_products or None,
 		"finalCta": {

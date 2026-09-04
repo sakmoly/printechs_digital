@@ -1,0 +1,66 @@
+{
+ "actions": [],
+ "creation": "2026-09-04 00:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "eyebrow",
+  "heading",
+  "body",
+  "features",
+  "image",
+  "image_alt",
+  "sort_order"
+ ],
+ "fields": [
+  {
+   "description": "Short label shown above the title, e.g. Checkout or Inventory",
+   "fieldname": "eyebrow",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Eyebrow"
+  },
+  {
+   "fieldname": "heading",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Heading",
+   "reqd": 1
+  },
+  {
+   "description": "Short paragraph describing this screen or feature",
+   "fieldname": "body",
+   "fieldtype": "Text",
+   "in_list_view": 1,
+   "label": "Description",
+   "reqd": 1
+  },
+  {
+   "description": "One bullet point per line",
+   "fieldname": "features",
+   "fieldtype": "Small Text",
+   "label": "Feature Points"
+  },
+  {
+   "description": "Upload a screenshot on this site (/files/...). External links will not display.",
+   "fieldname": "image",
+   "fieldtype": "Attach Image",
+   "label": "Screenshot"
+  },
+  {
+   "fieldname": "image_alt",
+   "fieldtype": "Data",
+   "label": "Screenshot Alt Text"
+  },
+  {
+   "fieldname": "sort_order",
+   "fieldtype": "Int",
+   "label": "Sort Order"
+  }
+ ],
+ "istable": 1,
+ "module": "Printechs Digital",
+ "name": "Website Product Tour Section",
+ "permissions": []
+}

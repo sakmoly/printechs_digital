@@ -6,6 +6,8 @@ from shutil import copy2
 
 import frappe
 
+from printechs_digital.constants.product_page_sections import default_page_section_order_rows
+
 SOFTWARE_DIR = Path("/home/erpnext/frappe-bench/frontend/printechs-web/public/images/software")
 INDUSTRY_DIR = Path("/home/erpnext/frappe-bench/frontend/printechs-web/public/images/industries")
 SITE_FILES = Path("/home/erpnext/frappe-bench/sites/site1.local/public/files")
@@ -172,6 +174,146 @@ def fill_modern_pos():
 				"image_alt": "ZATCA e-invoicing compliance",
 				"caption": "Automated ZATCA Phase 2 e-invoicing from the register.",
 				"sort_order": 3,
+			},
+		],
+	)
+
+	doc.enable_product_tour = 1
+	doc.product_tour_heading = "See Modern POS in action"
+	doc.product_tour_subheading = (
+		"Explore the checkout, payments, promotions, inventory and "
+		"management tools your retail team uses every day."
+	)
+	doc.set(
+		"tour_sections",
+		[
+			{
+				"eyebrow": "Checkout",
+				"heading": "Fast, cashier-friendly checkout",
+				"body": (
+					"Give cashiers a clean, responsive sales screen designed for "
+					"high-volume retail operations."
+				),
+				"features": (
+					"Barcode and item search\n"
+					"Weighed and variant items\n"
+					"Automatic pricing and promotions\n"
+					"Fast tender processing"
+				),
+				"image_alt": "Modern POS retail checkout screen for Saudi Arabia",
+				"sort_order": 1,
+			},
+			{
+				"eyebrow": "Payment",
+				"heading": "Flexible payment processing",
+				"body": (
+					"Complete transactions using multiple payment methods from a "
+					"single checkout workflow."
+				),
+				"features": (
+					"Cash and card payments\n"
+					"Multiple tender types\n"
+					"Split / multi-tender payments\n"
+					"Controlled payment completion"
+				),
+				"image_alt": "Modern POS multi-payment checkout screen",
+				"sort_order": 2,
+			},
+			{
+				"eyebrow": "Customer",
+				"heading": "Customer and loyalty at checkout",
+				"body": (
+					"Identify customers directly from the register and provide "
+					"personalised pricing and loyalty benefits."
+				),
+				"features": (
+					"Customer lookup\n"
+					"Member identification\n"
+					"Loyalty points\n"
+					"Purchase history"
+				),
+				"image_alt": "Modern POS customer lookup and loyalty screen at checkout",
+				"sort_order": 3,
+			},
+			{
+				"eyebrow": "Promotions",
+				"heading": "Powerful retail promotions",
+				"body": (
+					"Apply centrally managed offers automatically during checkout "
+					"without slowing down the cashier."
+				),
+				"features": (
+					"Percentage and amount discounts\n"
+					"Mix-and-match promotions\n"
+					"Member pricing\n"
+					"Manager-controlled overrides"
+				),
+				"image_alt": "Modern POS retail promotions and discount screen",
+				"sort_order": 4,
+			},
+			{
+				"eyebrow": "Inventory",
+				"heading": "Real-time inventory visibility",
+				"body": (
+					"Allow store teams to check available stock without leaving the "
+					"sales workflow."
+				),
+				"features": (
+					"Current store stock\n"
+					"Other branch availability\n"
+					"Warehouse visibility\n"
+					"Variant-level inventory"
+				),
+				"image_alt": "Modern POS real-time retail inventory lookup",
+				"sort_order": 5,
+			},
+			{
+				"eyebrow": "Returns",
+				"heading": "Controlled returns and exchanges",
+				"body": (
+					"Process customer returns through a controlled workflow linked "
+					"to the original transaction."
+				),
+				"features": (
+					"Original invoice lookup\n"
+					"Return validation\n"
+					"Refund processing\n"
+					"Supervisor controls"
+				),
+				"image_alt": "Modern POS returns and exchange screen",
+				"sort_order": 6,
+			},
+			{
+				"eyebrow": "Manager",
+				"heading": "Store management and control",
+				"body": (
+					"Give supervisors visibility and control over sensitive "
+					"register operations."
+				),
+				"features": (
+					"Manager overrides\n"
+					"Discount approval\n"
+					"Void controls\n"
+					"Cashier and store monitoring"
+				),
+				"image_alt": "Modern POS store manager controls and supervisor screen",
+				"sort_order": 7,
+			},
+			{
+				"eyebrow": "ERPNext",
+				"heading": "Connected to ERPNext",
+				"body": (
+					"Connect retail transactions with finance, inventory, "
+					"purchasing and warehouse operations."
+				),
+				"features": (
+					"Sales synchronization\n"
+					"Item and price synchronization\n"
+					"Inventory synchronization\n"
+					"Centralised back-office operations"
+				),
+				"image_alt": "Modern POS ERPNext retail integration",
+				"sort_order": 8,
 			},
 		],
 	)
@@ -549,6 +691,8 @@ def fill_modern_pos():
 			},
 		],
 	)
+
+	doc.set("page_section_order", default_page_section_order_rows())
 
 	doc.flags.ignore_permissions = True
 	doc.save()

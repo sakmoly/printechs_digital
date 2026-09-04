@@ -7,6 +7,8 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.utils import cstr, strip_html
 
+from printechs_digital.constants.product_page_sections import PAGE_SECTION_LABELS
+
 from printechs_digital.utils.website_assets import (
 	localize_child_table,
 	localize_doc_fields,
@@ -73,6 +75,12 @@ class WebsiteProduct(Document):
 		)
 		localize_child_table(
 			self,
+			"tour_sections",
+			"image",
+			lambda row, idx: f"product-{slug}-tour-{idx}",
+		)
+		localize_child_table(
+			self,
 			"visual_story_items",
 			"image",
 			lambda row, idx: f"product-{slug}-visual-{idx}",
@@ -117,8 +125,27 @@ class WebsiteProduct(Document):
 		validate_child_table(self, "content_sections", "image", "Content Section Image")
 		validate_child_table(self, "ecosystem_items", "image", "Ecosystem Image")
 		validate_child_table(self, "related_products", "image", "Related Product Image")
+		validate_child_table(self, "tour_sections", "image", "Tour Screenshot")
 		validate_child_table(self, "visual_story_items", "image", "Visual Story Image")
 		validate_child_table(self, "downloads", "file", "Download File")
+		self.validate_page_section_order()
+
+	def validate_page_section_order(self):
+		rows = self.get("page_section_order") or []
+		if not rows:
+			return
+
+		seen = set()
+		for row in rows:
+			section = cstr(row.section).strip()
+			if not section:
+				frappe.throw(_("Each page section order row needs a section"))
+			if section not in PAGE_SECTION_LABELS:
+				frappe.throw(_("Unknown page section: {0}").format(section))
+			if section in seen:
+				label = PAGE_SECTION_LABELS.get(section, section)
+				frappe.throw(_("Page section {0} is listed more than once").format(label))
+			seen.add(section)
 
 
 def infer_division(item_group: str | None, brand: str | None = None) -> str:
