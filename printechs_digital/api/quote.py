@@ -44,6 +44,7 @@ def _product_configuration(slug: str, configure_field: str, options_field: str) 
 		"category": doc.category,
 		"sourceUrl": doc.canonical_path or f"/products/{doc.slug}",
 		"configureOnQuote": configure,
+		"generateLead": bool(getattr(doc, "generate_lead", 0)),
 		"quoteOptions": options,
 	}
 

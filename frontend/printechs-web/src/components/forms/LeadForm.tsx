@@ -50,6 +50,7 @@ export function useLeadForm({ type, initialContext }: UseLeadFormOptions) {
         preferredContactMethod:
           String(formData.get("preferredContactMethod") ?? "") || undefined,
         configuration,
+        generateLead: initialContext?.generateLead,
       },
     };
 

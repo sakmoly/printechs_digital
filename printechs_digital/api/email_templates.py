@@ -111,20 +111,21 @@ def _email_shell(eyebrow: str, title: str, intro: str, body_html: str) -> str:
 </html>"""
 
 
-def demo_sales_notification_html(lead, context: dict, message: str) -> str:
+def demo_sales_notification_html(contact, context: dict, message: str) -> str:
 	product = _esc(context.get("product")) or "Software demo"
 	configuration = context.get("configuration") or ""
 	if configuration.startswith("Configuration\n"):
 		configuration = configuration[len("Configuration\n") :]
 
 	contact_rows = [
-		("Name", lead.lead_name),
-		("Company", lead.company_name or "—"),
-		("Email", lead.email_id),
-		("Phone", lead.mobile_no or "—"),
-		("Lead", lead.name),
+		("Name", contact.lead_name),
+		("Company", contact.company_name or "—"),
+		("Email", contact.email_id),
+		("Phone", contact.mobile_no or "—"),
 		("Product", product),
 	]
+	if getattr(contact, "name", None):
+		contact_rows.insert(4, ("Lead", contact.name))
 	if context.get("sourceUrl"):
 		contact_rows.append(("Source page", context.get("sourceUrl")))
 
@@ -154,8 +155,9 @@ def demo_sales_notification_html(lead, context: dict, message: str) -> str:
 			]
 		)
 
-	lead_url = get_url(f"/app/lead/{lead.name}")
-	body_parts.append(_button("Open lead in ERPNext", lead_url))
+	lead_url = get_url(f"/app/lead/{contact.name}") if getattr(contact, "name", None) else ""
+	if lead_url:
+		body_parts.append(_button("Open lead in ERPNext", lead_url))
 
 	return _email_shell(
 		eyebrow="Website demo request",
@@ -165,10 +167,10 @@ def demo_sales_notification_html(lead, context: dict, message: str) -> str:
 	)
 
 
-def demo_customer_confirmation_html(lead, product: str) -> str:
+def demo_customer_confirmation_html(contact, product: str) -> str:
 	body = (
 		f'<p style="margin:0 0 14px;font-size:15px;line-height:1.65;color:#334155;">'
-		f"Dear {_esc(lead.lead_name)},"
+		f"Dear {_esc(contact.lead_name)},"
 		f"</p>"
 		f'<p style="margin:0 0 14px;font-size:15px;line-height:1.65;color:#334155;">'
 		f"Thank you for requesting a demonstration of <strong>{_esc(product)}</strong>. "
@@ -182,6 +184,65 @@ def demo_customer_confirmation_html(lead, product: str) -> str:
 		eyebrow="Demo request received",
 		title="We received your demo request",
 		intro="Your request is with the Printechs software team.",
+		body_html=body,
+	)
+
+
+def contact_sales_notification_html(contact, context: dict, message: str, inquiry_type: str) -> str:
+	contact_rows = [
+		("Name", contact.lead_name),
+		("Company", contact.company_name or "—"),
+		("Email", contact.email_id),
+		("Phone", contact.mobile_no or "—"),
+		("Enquiry type", inquiry_type),
+	]
+	if getattr(contact, "name", None):
+		contact_rows.append(("Lead", contact.name))
+	if context.get("sourceUrl"):
+		contact_rows.append(("Source page", context.get("sourceUrl")))
+
+	body_parts = [_section_heading("Contact"), _detail_table(contact_rows)]
+
+	if message:
+		body_parts.extend(
+			[
+				_section_heading("Message"),
+				f'<div style="padding:14px 16px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;">'
+				f'{_paragraph(message)}'
+				f"</div>",
+			]
+		)
+
+	lead_url = get_url(f"/app/lead/{contact.name}") if getattr(contact, "name", None) else ""
+	if lead_url:
+		body_parts.append(_button("Open lead in ERPNext", lead_url))
+
+	return _email_shell(
+		eyebrow="Website enquiry",
+		title=f"New contact form message — {contact.lead_name}",
+		intro="A visitor submitted the general contact form on the website.",
+		body_html="".join(body_parts),
+	)
+
+
+def contact_customer_confirmation_html(contact, inquiry_type: str) -> str:
+	body = (
+		f'<p style="margin:0 0 14px;font-size:15px;line-height:1.65;color:#334155;">'
+		f"Dear {_esc(contact.lead_name)},"
+		f"</p>"
+		f'<p style="margin:0 0 14px;font-size:15px;line-height:1.65;color:#334155;">'
+		f"Thank you for contacting Printechs. We have received your "
+		f"<strong>{_esc(inquiry_type.lower())}</strong> and our team will respond during business hours "
+		f"(Sunday–Thursday, 9:00 AM – 6:00 PM AST)."
+		f"</p>"
+		f'<p style="margin:0;font-size:14px;line-height:1.65;color:#64748b;">'
+		f"For urgent enquiries, call us or message on WhatsApp."
+		f"</p>"
+	)
+	return _email_shell(
+		eyebrow="Message received",
+		title="We received your message",
+		intro="Your enquiry is with the Printechs team.",
 		body_html=body,
 	)
 

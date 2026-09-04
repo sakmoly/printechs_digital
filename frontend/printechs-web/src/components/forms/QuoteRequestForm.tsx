@@ -92,6 +92,7 @@ export function QuoteRequestForm({ configuration, context }: QuoteRequestFormPro
               category,
               sourceUrl: configuration?.sourceUrl || context?.sourceUrl,
               configuration: configText,
+              generateLead: configuration?.generateLead,
             },
           }),
         })

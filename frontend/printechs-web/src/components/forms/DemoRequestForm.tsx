@@ -18,9 +18,14 @@ type DemoRequestFormProps = {
 };
 
 export function DemoRequestForm({ context, configuration }: DemoRequestFormProps) {
+  const leadContext: LeadContext = {
+    ...(context ?? {}),
+    generateLead: configuration?.generateLead ?? context?.generateLead,
+  };
+
   const { submit, errors, submitting, result, formError, setFormError } = useLeadForm({
     type: "demo",
-    initialContext: context,
+    initialContext: leadContext,
   });
 
   const productName = configuration?.product || context?.product;

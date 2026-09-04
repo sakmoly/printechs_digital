@@ -12,6 +12,7 @@ export type LeadContext = {
   inquiryType?: string;
   preferredContactMethod?: string;
   configuration?: string;
+  generateLead?: boolean;
 };
 
 export type LeadSubmission = {

@@ -91,6 +91,7 @@ def fill_erpnext():
 	doc.hero_trust_chips = "Unified operations\nLocal expertise\nZATCA e-invoicing ready"
 	doc.show_demo_cta = 1
 	doc.configure_on_demo = 1
+	doc.generate_lead = 0
 	doc.set(
 		"demo_options",
 		[
@@ -410,6 +411,34 @@ def fill_erpnext():
 	doc.set("downloads", [])
 	doc.set("package_contents", [])
 	doc.set("full_specifications", [])
+
+	doc.set(
+		"content_sections",
+		[
+			{
+				"heading": "Finance, sales and inventory in one dashboard",
+				"body": (
+					"ERPNext gives managers a live view of the business — sales, purchases, "
+					"receivables, payables, and cash position on one screen, without exporting "
+					"spreadsheets or waiting for month-end reports.\n\n"
+					"Trend charts and stock breakdowns help teams spot issues early: rising "
+					"payables, slow-moving inventory, or a sales dip in a specific month. "
+					"Drill down from the dashboard into invoices, stock entries, and ledger "
+					"reports when you need detail.\n\n"
+					"Printechs configures this workspace for Saudi operations, including SAR "
+					"reporting, ZATCA e-invoicing links, and the modules your team uses every day."
+				),
+				"image": hero,
+				"image_alt": (
+					"ERPNext dashboard showing sales KPIs, purchase totals, receivables, "
+					"payables, cash in hand, sales trend chart and stock overview"
+				),
+				"link_label": "Request a live demo",
+				"link_href": "/software/erpnext/demo",
+				"sort_order": 1,
+			},
+		],
+	)
 
 	doc.set(
 		"related_products",

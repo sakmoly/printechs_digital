@@ -15,5 +15,6 @@ export type QuoteConfiguration = {
   category?: string;
   sourceUrl?: string;
   configureOnQuote: boolean;
+  generateLead: boolean;
   quoteOptions: QuoteOption[];
 };

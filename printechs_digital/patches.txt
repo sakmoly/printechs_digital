@@ -6,6 +6,7 @@
 # Patches added in this section will be executed after doctypes are migrated
 printechs_digital.patches.v1_0.add_quote_configuration
 printechs_digital.patches.v1_0.add_demo_configuration
+printechs_digital.patches.v1_0.add_generate_lead
 printechs_digital.patches.v1_0.add_homepage_settings
 printechs_digital.patches.v1_0.add_homepage_stories
 printechs_digital.patches.v1_0.add_homepage_phase3

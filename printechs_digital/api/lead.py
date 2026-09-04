@@ -6,6 +6,8 @@ import frappe
 from frappe.utils import cstr, get_defaults, strip_html
 
 from printechs_digital.api.email_templates import (
+	contact_customer_confirmation_html,
+	contact_sales_notification_html,
 	demo_customer_confirmation_html,
 	demo_sales_notification_html,
 )
@@ -14,6 +16,19 @@ from printechs_digital.api.email_templates import (
 WEBSITE_QUOTE_SOURCE = "Website Quote"
 WEBSITE_DEMO_SOURCE = "Website Demo"
 WEBSITE_SOURCE = "Website"
+
+PRODUCT_ENQUIRY_EMAIL = "sakeer@printechs.com"
+PRODUCT_ENQUIRY_EMAIL_ONLY_CC = ("marketing@printechs.com",)
+GENERAL_ENQUIRY_EMAILS = ("info@printechs.com", "marketing@printechs.com")
+CONTACT_NOTIFICATION_EMAILS = ("sakeer@printechs.com", "marketing@printechs.com")
+
+INQUIRY_TYPE_LABELS = {
+	"general": "General enquiry",
+	"sales": "Sales & products",
+	"support": "Support & service",
+	"software": "Software & integration",
+	"partnership": "Partnership",
+}
 
 
 def _text(value) -> str:
@@ -45,8 +60,11 @@ def _context_block(context: dict) -> str:
 		("configuration", "Configuration"),
 		("preferredTime", "Preferred demo time"),
 		("preferredContactMethod", "Preferred contact"),
+		("inquiryType", "Enquiry type"),
 	):
 		value = _text(context.get(key))
+		if key == "inquiryType" and value:
+			value = INQUIRY_TYPE_LABELS.get(value.lower(), value)
 		if value:
 			lines.append(f"{label}: {value}")
 	return "\n".join(lines)
@@ -168,14 +186,51 @@ def _opportunity_item(context: dict, notes: str) -> dict | None:
 	}
 
 
-def _create_opportunity(lead, context: dict, notes: str, source: str | None):
+def _resolve_generate_lead(context: dict) -> bool:
+	if "generateLead" in context:
+		return bool(context.get("generateLead"))
+	slug = _text(context.get("productSlug"))
+	if not slug:
+		return False
+	return bool(
+		frappe.db.get_value("Website Product", {"slug": slug, "published": 1}, "generate_lead")
+	)
+
+
+def _contact_details(name: str, email: str, phone: str, company: str, lead_name: str | None = None):
+	return frappe._dict(
+		{
+			"lead_name": name,
+			"email_id": email,
+			"mobile_no": phone,
+			"company_name": company,
+			"name": lead_name,
+		}
+	)
+
+
+def _create_opportunity(lead, context: dict, notes: str, source: str | None, kind: str = "quote"):
 	company = _default_company()
 	if not company:
 		frappe.throw("Company is not set. Cannot create Opportunity.")
 
 	product = _text(context.get("product")) or lead.lead_name
-	title = f"Website Quote — {product}"[:140]
+	label = "Demo" if kind == "demo" else "Quote"
+	title = f"Website {label} — {product}"[:140]
 	item = _opportunity_item(context, notes)
+	sales_stage = None
+	if kind == "demo":
+		sales_stage = (
+			"Qualification"
+			if frappe.db.exists("Sales Stage", "Qualification")
+			else None
+		)
+	else:
+		sales_stage = (
+			"Proposal/Price Quote"
+			if frappe.db.exists("Sales Stage", "Proposal/Price Quote")
+			else None
+		)
 
 	opportunity = frappe.get_doc(
 		{
@@ -185,11 +240,7 @@ def _create_opportunity(lead, context: dict, notes: str, source: str | None):
 			"party_name": lead.name,
 			"opportunity_type": "Sales" if frappe.db.exists("Opportunity Type", "Sales") else None,
 			"status": "Open",
-			"sales_stage": (
-				"Proposal/Price Quote"
-				if frappe.db.exists("Sales Stage", "Proposal/Price Quote")
-				else None
-			),
+			"sales_stage": sales_stage,
 			"company": company,
 			"contact_email": lead.email_id,
 			"contact_mobile": lead.mobile_no,
@@ -206,31 +257,56 @@ def _create_opportunity(lead, context: dict, notes: str, source: str | None):
 	return opportunity
 
 
-def _sales_inbox() -> str:
-	if frappe.db.exists("DocType", "Website Contact Settings"):
-		try:
-			doc = frappe.get_single("Website Contact Settings")
-			if doc.specialist_email:
-				return _text(doc.specialist_email)
-		except Exception:
-			pass
-	return "info@printechs.com"
+def _unique_recipients(*groups) -> list[str]:
+	seen: set[str] = set()
+	recipients: list[str] = []
+	for group in groups:
+		for email in group:
+			normalized = _text(email).lower()
+			if normalized and normalized not in seen:
+				seen.add(normalized)
+				recipients.append(normalized)
+	return recipients
 
 
-def _send_quote_emails(lead, opportunity_name: str | None, notes: str, preferred_contact: str):
+def _product_enquiry_recipients(generate_lead: bool) -> list[str]:
+	recipients = [PRODUCT_ENQUIRY_EMAIL]
+	if not generate_lead:
+		recipients = _unique_recipients(recipients, PRODUCT_ENQUIRY_EMAIL_ONLY_CC)
+	return recipients
+
+
+def _general_enquiry_recipients() -> list[str]:
+	return _unique_recipients(GENERAL_ENQUIRY_EMAILS, CONTACT_NOTIFICATION_EMAILS)
+
+
+def _inquiry_type_label(value: str) -> str:
+	key = _text(value).lower()
+	return INQUIRY_TYPE_LABELS.get(key, value or "General enquiry")
+
+
+def _send_quote_emails(
+	contact,
+	opportunity_name: str | None,
+	notes: str,
+	preferred_contact: str,
+	generate_lead: bool,
+):
+	lead_line = f"Lead: {contact.name}\n" if contact.name else ""
+	opportunity_line = f"Opportunity: {opportunity_name or '-'}\n" if opportunity_name else ""
 	try:
 		frappe.sendmail(
-			recipients=[_sales_inbox()],
-			subject=f"New website quote — {lead.lead_name}",
+			recipients=_product_enquiry_recipients(generate_lead),
+			subject=f"New website quote — {contact.lead_name}",
 			message=(
 				f"New quote request from the website.\n\n"
-				f"Name: {lead.lead_name}\n"
-				f"Company: {lead.company_name or '-'}\n"
-				f"Email: {lead.email_id}\n"
-				f"Phone: {lead.mobile_no or '-'}\n"
+				f"Name: {contact.lead_name}\n"
+				f"Company: {contact.company_name or '-'}\n"
+				f"Email: {contact.email_id}\n"
+				f"Phone: {contact.mobile_no or '-'}\n"
 				f"Preferred contact: {preferred_contact or 'email'}\n"
-				f"Lead: {lead.name}\n"
-				f"Opportunity: {opportunity_name or '-'}\n\n"
+				f"{lead_line}"
+				f"{opportunity_line}\n"
 				f"{notes}"
 			),
 			now=True,
@@ -243,10 +319,10 @@ def _send_quote_emails(lead, opportunity_name: str | None, notes: str, preferred
 
 	try:
 		frappe.sendmail(
-			recipients=[lead.email_id],
+			recipients=[contact.email_id],
 			subject="Quote request received — Printechs",
 			message=(
-				f"Dear {lead.lead_name},\n\n"
+				f"Dear {contact.lead_name},\n\n"
 				"Thank you for contacting Printechs. We have received your quote request "
 				"and our team will respond by email during business hours "
 				"(Sunday–Thursday, 9:00 AM – 6:00 PM AST).\n\n"
@@ -266,12 +342,12 @@ def _format_configuration(configuration: str) -> str:
 	return text
 
 
-def _send_demo_emails(lead, message: str, context: dict):
+def _send_demo_emails(contact, message: str, context: dict, generate_lead: bool):
 	product = _text(context.get("product")) or "Software demo"
-	sales_html = demo_sales_notification_html(lead, context, message)
+	sales_html = demo_sales_notification_html(contact, context, message)
 	try:
 		frappe.sendmail(
-			recipients=[_sales_inbox()],
+			recipients=_product_enquiry_recipients(generate_lead),
 			subject=f"New website demo request — {product}",
 			message=sales_html,
 			now=True,
@@ -281,13 +357,37 @@ def _send_demo_emails(lead, message: str, context: dict):
 
 	try:
 		frappe.sendmail(
-			recipients=[lead.email_id],
+			recipients=[contact.email_id],
 			subject="Demo request received — Printechs",
-			message=demo_customer_confirmation_html(lead, product),
+			message=demo_customer_confirmation_html(contact, product),
 			now=True,
 		)
 	except Exception:
 		frappe.log_error(title="Website demo customer confirmation failed")
+
+
+def _send_contact_emails(contact, message: str, context: dict):
+	inquiry_type = _inquiry_type_label(_text(context.get("inquiryType")))
+	sales_html = contact_sales_notification_html(contact, context, message, inquiry_type)
+	try:
+		frappe.sendmail(
+			recipients=_general_enquiry_recipients(),
+			subject=f"New website enquiry — {contact.lead_name}",
+			message=sales_html,
+			now=True,
+		)
+	except Exception:
+		frappe.log_error(title="Website contact sales notification failed")
+
+	try:
+		frappe.sendmail(
+			recipients=[contact.email_id],
+			subject="Message received — Printechs",
+			message=contact_customer_confirmation_html(contact, inquiry_type),
+			now=True,
+		)
+	except Exception:
+		frappe.log_error(title="Website contact customer confirmation failed")
 
 
 @frappe.whitelist(allow_guest=True)
@@ -334,23 +434,40 @@ def submit_lead():
 	source = _ensure_lead_source(source_name)
 	preferred_contact = _text(context.get("preferredContactMethod")).lower()
 	whatsapp_no = phone if preferred_contact == "whatsapp" else None
+	generate_lead = lead_type in ("quote", "demo") and _resolve_generate_lead(context)
+	contact = _contact_details(name, email, phone, company)
 
-	lead = _get_or_create_lead(name, email, phone, company, source, whatsapp_no)
+	lead = None
+	lead_name = None
+	if generate_lead or lead_type == "contact":
+		lead = _get_or_create_lead(name, email, phone, company, source, whatsapp_no)
+		lead_name = lead.name
+		contact.name = lead_name
+
 	subject = f"{source_name}: {name}"
 	lead_notes = demo_notes if lead_type == "demo" else notes
-	_add_communication("Lead", lead.name, subject, lead_notes, email)
+	if lead:
+		_add_communication("Lead", lead.name, subject, lead_notes, email)
 
 	opportunity_name = None
 	if lead_type == "quote":
-		opportunity = _create_opportunity(lead, context, notes, source)
-		opportunity_name = opportunity.name
-		_add_communication("Opportunity", opportunity.name, subject, notes, email)
-		_send_quote_emails(lead, opportunity_name, notes, preferred_contact)
+		if generate_lead and lead:
+			opportunity = _create_opportunity(lead, context, notes, source, kind="quote")
+			opportunity_name = opportunity.name
+			_add_communication("Opportunity", opportunity.name, subject, notes, email)
+		_send_quote_emails(contact, opportunity_name, notes, preferred_contact, generate_lead)
 	elif lead_type == "demo":
-		_send_demo_emails(lead, demo_message, context)
+		if generate_lead and lead:
+			opportunity = _create_opportunity(lead, context, demo_notes, source, kind="demo")
+			opportunity_name = opportunity.name
+			_add_communication("Opportunity", opportunity.name, subject, demo_notes, email)
+		_send_demo_emails(contact, demo_message, context, generate_lead)
+	elif lead_type == "contact":
+		_send_contact_emails(contact, message, context)
 
 	return {
 		"ok": True,
-		"lead": lead.name,
+		"lead": lead_name,
 		"opportunity": opportunity_name,
+		"generateLead": generate_lead,
 	}
