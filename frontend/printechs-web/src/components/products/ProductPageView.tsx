@@ -101,19 +101,6 @@ export function ProductPageView({
         </Section>
       ) : null}
 
-      {isModernPosTour ? (
-        <Section pad="compact" tone={nextTone()}>
-          <ModernPosProductTour demoHref={demoUrl} quoteHref={quoteUrl} />
-        </Section>
-      ) : page.visualStory?.items.length ? (
-        <Section pad="compact" tone={nextTone()}>
-          <ProductVisualStory
-            heading={page.visualStory.heading}
-            items={page.visualStory.items}
-          />
-        </Section>
-      ) : null}
-
       <Section pad="compact" tone={nextTone()}>
         <ProductSectionHeader
           eyebrow="Product overview"
@@ -130,6 +117,19 @@ export function ProductPageView({
           </p>
         ) : null}
       </Section>
+
+      {isModernPosTour ? (
+        <Section pad="compact" tone={nextTone()}>
+          <ModernPosProductTour demoHref={demoUrl} quoteHref={quoteUrl} />
+        </Section>
+      ) : page.visualStory?.items.length ? (
+        <Section pad="compact" tone={nextTone()}>
+          <ProductVisualStory
+            heading={page.visualStory.heading}
+            items={page.visualStory.items}
+          />
+        </Section>
+      ) : null}
 
       {page.iconSpecifications?.length ? (
         <Section pad="compact" tone={nextTone()}>
