@@ -10,6 +10,9 @@ import { IMAGE_SPECS } from "@/lib/image-specs";
 type ProductsCatalogProps = {
   products: Product[];
   brands: string[];
+  hrefPrefix?: string;
+  ctaLabel?: string;
+  emptyMessage?: string;
 };
 
 const divisionFilters = [
@@ -18,7 +21,13 @@ const divisionFilters = [
   { value: "retail", label: "Retail" },
 ] as const;
 
-export function ProductsCatalog({ products, brands }: ProductsCatalogProps) {
+export function ProductsCatalog({
+  products,
+  brands,
+  hrefPrefix = "/products",
+  ctaLabel = "View product",
+  emptyMessage = "No products match the selected filters. Try another division or brand.",
+}: ProductsCatalogProps) {
   const [division, setDivision] = useState<string>("all");
   const [brand, setBrand] = useState<string>("all");
 
@@ -84,11 +93,11 @@ export function ProductsCatalog({ products, brands }: ProductsCatalogProps) {
           {filtered.map((item) => (
             <Card
               key={item.id}
-              href={`/products/${item.slug}`}
+              href={`${hrefPrefix}/${item.slug}`}
               title={item.name}
               description={item.summary}
               meta={`${item.brand} · ${item.category}`}
-              cta="View product"
+              cta={ctaLabel}
               media={
                 <ImageFrame
                   src={item.image.src}
@@ -106,7 +115,7 @@ export function ProductsCatalog({ products, brands }: ProductsCatalogProps) {
       ) : (
         <div className="rounded-sm border border-line bg-mist p-8 text-center">
           <p className="text-base text-slate">
-            No products match the selected filters. Try another division or brand.
+            {emptyMessage}
           </p>
         </div>
       )}

@@ -6,7 +6,9 @@ import { IMAGE_SPECS } from "@/lib/image-specs";
 import { buildMetadata } from "@/lib/seo";
 import { fetchIndustries } from "@/lib/industry-service";
 
-export const revalidate = 60;
+import { REVALIDATE_STABLE_SECONDS } from "@/lib/revalidate";
+
+export const revalidate = REVALIDATE_STABLE_SECONDS;
 
 export const metadata = buildMetadata({
   title: "Industries | Printechs",

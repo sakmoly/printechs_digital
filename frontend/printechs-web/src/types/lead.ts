@@ -10,6 +10,8 @@ export type LeadContext = {
   sourceUrl?: string;
   preferredTime?: string;
   inquiryType?: string;
+  preferredContactMethod?: string;
+  configuration?: string;
 };
 
 export type LeadSubmission = {

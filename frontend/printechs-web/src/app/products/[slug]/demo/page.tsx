@@ -5,12 +5,17 @@ import {
   getDemoProductSlugsAsync,
   productSupportsDemoAsync,
 } from "@/lib/product-quote-context";
-import { PageIntro } from "@/components/ui/PageIntro";
+import { fetchDemoConfiguration } from "@/lib/form-configuration";
+import { Container } from "@/components/ui/Container";
+import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { Section } from "@/components/ui/Section";
 import { DemoRequestForm } from "@/components/forms/DemoRequestForm";
 import { buildMetadata } from "@/lib/seo";
+import { productHeadingClass } from "@/lib/product-page-theme";
 
-export const revalidate = 60;
+import { REVALIDATE_SECONDS } from "@/lib/revalidate";
+
+export const revalidate = REVALIDATE_SECONDS;
 
 type Props = { params: { slug: string } };
 
@@ -35,35 +40,64 @@ export async function generateMetadata({ params }: Props) {
   });
 }
 
+function demoCrumbs(displayName: string, sourceUrl: string) {
+  const isSoftware = sourceUrl.startsWith("/software/");
+  return [
+    { label: "Home", href: "/" },
+    isSoftware
+      ? { label: "Software", href: "/software" }
+      : { label: "Products", href: "/products" },
+    { label: displayName, href: sourceUrl },
+    { label: "Request Demo" },
+  ];
+}
+
 export default async function ProductDemoPage({ params }: Props) {
   if (!(await productSupportsDemoAsync(params.slug))) notFound();
 
   const quoteContext = await fetchProductQuoteContext(params.slug);
   if (!quoteContext) notFound();
 
+  const configuration = await fetchDemoConfiguration(params.slug);
+  const productHref = quoteContext.sourceUrl;
+
   return (
     <>
-      <PageIntro
-        title="Request Demo"
-        description={`Schedule a demonstration of ${quoteContext.displayName} with a Printechs software specialist.`}
-        crumbs={[
-          { label: "Home", href: "/" },
-          { label: "Products", href: "/products" },
-          { label: quoteContext.displayName, href: quoteContext.sourceUrl },
-          { label: "Request Demo" },
-        ]}
-      />
-      <Section tone="white">
-        <div className="mx-auto max-w-3xl">
-          <p className="mb-6 text-sm text-slate">
+      <section className="border-b border-line bg-white">
+        <Container className="pt-10 pb-8 sm:pt-12 sm:pb-9">
+          <Breadcrumb
+            className="mb-5"
+            items={demoCrumbs(quoteContext.displayName, productHref)}
+          />
+          <p className="text-[0.72rem] font-bold uppercase tracking-[0.24em] text-product-icon">
+            Request Demo
+          </p>
+          <h1
+            className={`mt-3 font-display text-4xl font-semibold tracking-tight sm:text-5xl ${productHeadingClass("display")}`}
+          >
+            {quoteContext.displayName}
+          </h1>
+          <p className="mt-3 max-w-2xl text-base leading-relaxed text-slate">
+            {configuration?.configureOnQuote
+              ? "Tell us about your environment so we can tailor the demonstration. A Printechs software specialist will contact you to schedule the session."
+              : "Schedule a live demonstration with a Printechs software specialist."}
+          </p>
+          <p className="mt-5">
             <Link
-              href={quoteContext.sourceUrl}
-              className="font-semibold text-signal-deep underline-offset-4 hover:underline"
+              href={productHref}
+              className="text-sm font-semibold text-product-icon underline-offset-4 hover:underline"
             >
               ← Back to {quoteContext.displayName}
             </Link>
           </p>
-          <DemoRequestForm context={quoteContext.leadContext} />
+        </Container>
+      </section>
+      <Section tone="white" pad="compact">
+        <div className="mx-auto max-w-3xl">
+          <DemoRequestForm
+            context={quoteContext.leadContext}
+            configuration={configuration ?? undefined}
+          />
         </div>
       </Section>
     </>

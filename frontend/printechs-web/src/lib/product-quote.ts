@@ -21,6 +21,10 @@ export function buildProductQuoteUrl(page: ProductPageContent): string {
 }
 
 export function buildProductDemoUrl(page: ProductPageContent): string {
+  if (page.slug) {
+    return `/products/${page.slug}/demo`;
+  }
+
   const params = new URLSearchParams({
     product: page.displayName,
     url: page.canonicalPath,

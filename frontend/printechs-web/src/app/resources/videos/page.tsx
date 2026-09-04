@@ -1,17 +1,5 @@
-import { StubPage } from "@/components/ui/StubPage";
-import { buildMetadata } from "@/lib/seo";
+import { redirect } from "next/navigation";
 
-export const metadata = buildMetadata({
-  title: "Videos | Printechs",
-  description: "Marketing and demonstration video library foundation.",
-});
-
-export default function Page() {
-  return (
-    <StubPage
-      title="Videos"
-      description="Marketing and demonstration video library foundation."
-      crumbs={[{ label: "Home", href: "/" }, { label: "Resources", href: "/resources" }, { label: "Videos" }]}
-    />
-  );
+export default function VideosPage() {
+  redirect("/success-stories");
 }

@@ -5,6 +5,14 @@
 [post_model_sync]
 # Patches added in this section will be executed after doctypes are migrated
 printechs_digital.patches.v1_0.add_quote_configuration
+printechs_digital.patches.v1_0.add_demo_configuration
 printechs_digital.patches.v1_0.add_homepage_settings
 printechs_digital.patches.v1_0.add_homepage_stories
 printechs_digital.patches.v1_0.add_homepage_phase3
+printechs_digital.patches.v1_0.add_about_settings
+printechs_digital.patches.v1_0.add_about_company_profile
+printechs_digital.patches.v1_0.add_contact_settings
+printechs_digital.patches.v1_0.sync_workspace_links
+printechs_digital.patches.v1_0.add_contact_specialist_fields
+printechs_digital.patches.v1_0.add_contact_whatsapp
+printechs_digital.patches.v1_0.add_event_albums

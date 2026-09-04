@@ -4,9 +4,11 @@ import { Section } from "@/components/ui/Section";
 import { ImageFrame } from "@/components/media/ImageFrame";
 import { IMAGE_SPECS } from "@/lib/image-specs";
 import { buildMetadata } from "@/lib/seo";
-import { fetchBrands } from "@/lib/brand-service";
+import { fetchBrands, brandHref } from "@/lib/brand-service";
 
-export const revalidate = 60;
+import { REVALIDATE_STABLE_SECONDS } from "@/lib/revalidate";
+
+export const revalidate = REVALIDATE_STABLE_SECONDS;
 
 export const metadata = buildMetadata({
   title: "Brands | Printechs",
@@ -30,7 +32,7 @@ export default async function BrandsPage() {
           {brands.map((brand) => (
             <li key={brand.id}>
               <Link
-                href={`/brands/${brand.slug}`}
+                href={brandHref(brand)}
                 aria-label={`${brand.name} products`}
                 className="group flex h-full flex-col items-center rounded-sm border border-line bg-white px-4 py-4 transition duration-300 hover:-translate-y-0.5 hover:border-line-strong hover:shadow-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-signal"
               >

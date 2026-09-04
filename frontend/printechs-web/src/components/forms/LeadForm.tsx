@@ -21,6 +21,9 @@ export function useLeadForm({ type, initialContext }: UseLeadFormOptions) {
     setFormError(null);
     setErrors({});
 
+    const configuration =
+      String(formData.get("configuration") ?? "") || undefined;
+
     const payload: LeadSubmission = {
       type,
       name: String(formData.get("name") ?? ""),
@@ -44,6 +47,9 @@ export function useLeadForm({ type, initialContext }: UseLeadFormOptions) {
           String(formData.get("sourceUrl") ?? initialContext?.sourceUrl ?? "") || undefined,
         preferredTime: String(formData.get("preferredTime") ?? "") || undefined,
         inquiryType: String(formData.get("inquiryType") ?? "") || undefined,
+        preferredContactMethod:
+          String(formData.get("preferredContactMethod") ?? "") || undefined,
+        configuration,
       },
     };
 
@@ -79,16 +85,24 @@ export function useLeadForm({ type, initialContext }: UseLeadFormOptions) {
     }
   }
 
-  return { submit, errors, submitting, result, formError };
+  return { submit, errors, submitting, result, formError, setFormError };
 }
 
 type LeadFormSuccessProps = {
   title: string;
   description: string;
   reference?: string;
+  backHref?: string;
+  backLabel?: string;
 };
 
-export function LeadFormSuccess({ title, description, reference }: LeadFormSuccessProps) {
+export function LeadFormSuccess({
+  title,
+  description,
+  reference,
+  backHref,
+  backLabel,
+}: LeadFormSuccessProps) {
   return (
     <div className="rounded-sm border border-signal/25 bg-signal/5 p-8">
       <p className="text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-signal-deep">
@@ -102,9 +116,15 @@ export function LeadFormSuccess({ title, description, reference }: LeadFormSucce
         </p>
       ) : null}
       <div className="mt-8 flex flex-wrap gap-3">
-        <Button href="/" variant="primary">
-          Back to homepage
-        </Button>
+        {backHref ? (
+          <Button href={backHref} variant="primary">
+            Back to {backLabel || "product"}
+          </Button>
+        ) : (
+          <Button href="/" variant="primary">
+            Back to homepage
+          </Button>
+        )}
         <Button href="/contact" variant="ghost">
           Contact Printechs
         </Button>

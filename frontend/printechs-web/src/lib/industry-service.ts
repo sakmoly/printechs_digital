@@ -1,3 +1,4 @@
+import { cache } from "react";
 import type { Industry } from "@/types/content";
 import { industries as mockIndustries } from "@/data/industries";
 import { erpnextMethod, normalizeMediaAsset } from "@/lib/erpnext-client";
@@ -9,7 +10,7 @@ function normalizeIndustry(industry: Industry): Industry {
   };
 }
 
-export async function fetchIndustries(options: { home?: boolean; limit?: number } = {}): Promise<Industry[]> {
+export const fetchIndustries = cache(async (options: { home?: boolean; limit?: number } = {}): Promise<Industry[]> => {
   const fromErp =
     (await erpnextMethod<Industry[]>("printechs_digital.api.website.list_industries", {
       home: options.home ? 1 : 0,
@@ -21,7 +22,7 @@ export async function fetchIndustries(options: { home?: boolean; limit?: number 
   }
 
   return options.home ? mockIndustries.slice(0, options.limit ?? 12) : mockIndustries;
-}
+});
 
 export async function fetchIndustry(slug: string): Promise<Industry | undefined> {
   const fromErp = await erpnextMethod<Industry>("printechs_digital.api.website.get_industry", {

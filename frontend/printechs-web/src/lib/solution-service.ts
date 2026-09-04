@@ -1,3 +1,4 @@
+import { cache } from "react";
 import type { FeaturedSolution, Industry, Product, Solution, SolutionPageContent } from "@/types/content";
 import { getSolutionPage } from "@/data/solution-pages";
 import { getProductBySlug } from "@/data/products";
@@ -49,7 +50,7 @@ function normalizeFeatured(item: FeaturedSolution): FeaturedSolution {
   };
 }
 
-export async function fetchSolutions(): Promise<Solution[]> {
+export const fetchSolutions = cache(async (): Promise<Solution[]> => {
   const fromErp =
     (await erpnextMethod<Solution[]>("printechs_digital.api.website.list_solutions", {
       limit: 50,
@@ -60,9 +61,9 @@ export async function fetchSolutions(): Promise<Solution[]> {
   }
 
   return mockSolutions;
-}
+});
 
-export async function fetchFeaturedSolutions(limit = 4): Promise<FeaturedSolution[]> {
+export const fetchFeaturedSolutions = cache(async (limit = 4): Promise<FeaturedSolution[]> => {
   const fromErp =
     (await erpnextMethod<FeaturedSolution[]>("printechs_digital.api.website.get_featured_solutions", {
       limit,
@@ -73,7 +74,7 @@ export async function fetchFeaturedSolutions(limit = 4): Promise<FeaturedSolutio
   }
 
   return mockFeaturedSolutions.slice(0, limit);
-}
+});
 
 export async function fetchSolution(slug: string): Promise<Solution | undefined> {
   const fromErp = await erpnextMethod<Solution>("printechs_digital.api.website.get_solution", {

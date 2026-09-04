@@ -1,17 +1,17 @@
-import { StubPage } from "@/components/ui/StubPage";
+import { AboutPageView } from "@/components/company/AboutPageView";
 import { buildMetadata } from "@/lib/seo";
+import { fetchAboutPage } from "@/lib/about-service";
 
-export const metadata = buildMetadata({
-  title: "About Printechs | Printechs",
-  description: "Company overview foundation.",
-});
+import { REVALIDATE_SECONDS } from "@/lib/revalidate";
 
-export default function Page() {
-  return (
-    <StubPage
-      title="About Printechs"
-      description="Company overview foundation."
-      crumbs={[{ label: "Home", href: "/" }, { label: "Company", href: "/company" }, { label: "About" }]}
-    />
-  );
+export const revalidate = REVALIDATE_SECONDS;
+
+export async function generateMetadata() {
+  const content = await fetchAboutPage();
+  return buildMetadata(content.seo);
+}
+
+export default async function AboutPage() {
+  const content = await fetchAboutPage();
+  return <AboutPageView content={content} />;
 }

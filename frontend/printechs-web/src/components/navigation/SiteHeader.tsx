@@ -6,8 +6,48 @@ import { siteConfig } from "@/config/site";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { BrandLogo } from "@/components/ui/BrandLogo";
+import {
+  HeaderActionButton,
+  WhatsAppIcon,
+} from "@/components/navigation/HeaderActionButton";
+import type { HeaderContactActions } from "@/lib/header-contact";
 
-export function SiteHeader() {
+function HeaderContactButtons({
+  contact,
+  className = "",
+  fullWidth = false,
+}: {
+  contact: HeaderContactActions;
+  className?: string;
+  fullWidth?: boolean;
+}) {
+  const widthClass = fullWidth ? "w-full" : "";
+
+  return (
+    <div className={`flex flex-wrap items-center gap-2 ${className}`}>
+      {contact.whatsapp ? (
+        <HeaderActionButton
+          href={contact.whatsapp.href}
+          variant="whatsapp"
+          external
+          className={widthClass}
+        >
+          <WhatsAppIcon />
+          {contact.whatsapp.label}
+        </HeaderActionButton>
+      ) : null}
+      <Button
+        href={siteConfig.primaryCta.href}
+        variant="primary"
+        className={widthClass}
+      >
+        {siteConfig.primaryCta.label}
+      </Button>
+    </div>
+  );
+}
+
+export function SiteHeader({ contact }: { contact: HeaderContactActions }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -52,9 +92,7 @@ export function SiteHeader() {
         </nav>
 
         <div className="hidden shrink-0 lg:block">
-          <Button href={siteConfig.primaryCta.href} variant="primary">
-            {siteConfig.primaryCta.label}
-          </Button>
+          <HeaderContactButtons contact={contact} />
         </div>
 
         <button
@@ -83,13 +121,7 @@ export function SiteHeader() {
               </Link>
             ))}
             <div className="pt-3">
-              <Button
-                href={siteConfig.primaryCta.href}
-                variant="primary"
-                className="w-full"
-              >
-                {siteConfig.primaryCta.label}
-              </Button>
+              <HeaderContactButtons contact={contact} fullWidth />
             </div>
           </Container>
         </div>

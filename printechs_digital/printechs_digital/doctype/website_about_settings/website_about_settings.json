@@ -1,0 +1,52 @@
+{
+ "actions": [],
+ "creation": "2026-09-03 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "published",
+  "page_section",
+  "eyebrow",
+  "tagline",
+  "closing_line",
+  "company_profile_file",
+  "company_profile_label",
+  "content_section",
+  "paragraphs",
+  "seo_section",
+  "meta_title",
+  "meta_description"
+ ],
+ "fields": [
+  {"default": "1", "fieldname": "published", "fieldtype": "Check", "label": "Published"},
+  {"fieldname": "page_section", "fieldtype": "Section Break", "label": "About Page"},
+  {"default": "Printechs", "fieldname": "eyebrow", "fieldtype": "Data", "label": "Eyebrow"},
+  {"fieldname": "tagline", "fieldtype": "Small Text", "label": "Tagline", "reqd": 1},
+  {"fieldname": "closing_line", "fieldtype": "Data", "label": "Closing Line"},
+  {"description": "Upload the company profile PDF on this site (/files/...).", "fieldname": "company_profile_file", "fieldtype": "Attach", "label": "Company Profile PDF"},
+  {"default": "Download Profile", "fieldname": "company_profile_label", "fieldtype": "Data", "label": "Profile Button Label"},
+  {"fieldname": "content_section", "fieldtype": "Section Break", "label": "Body"},
+  {"fieldname": "paragraphs", "fieldtype": "Table", "label": "Paragraphs", "options": "Website About Paragraph", "reqd": 1},
+  {"fieldname": "seo_section", "fieldtype": "Section Break", "label": "SEO"},
+  {"default": "About Printechs | Industrial, Retail & Software Solutions Saudi Arabia", "fieldname": "meta_title", "fieldtype": "Data", "label": "Meta Title"},
+  {"fieldname": "meta_description", "fieldtype": "Text", "label": "Meta Description"}
+ ],
+ "issingle": 1,
+ "links": [],
+ "modified": "2026-09-03 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Printechs Digital",
+ "name": "Website About Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {"create": 1, "delete": 1, "email": 1, "export": 1, "print": 1, "read": 1, "report": 1, "role": "System Manager", "share": 1, "write": 1},
+  {"create": 1, "delete": 0, "email": 1, "export": 1, "print": 1, "read": 1, "report": 1, "role": "Purchase Manager", "share": 1, "write": 1},
+  {"create": 1, "delete": 0, "email": 1, "export": 1, "print": 1, "read": 1, "report": 1, "role": "Purchase User", "share": 1, "write": 1},
+  {"create": 1, "delete": 0, "email": 1, "export": 1, "print": 1, "read": 1, "report": 1, "role": "Sales Manager", "share": 1, "write": 1},
+  {"create": 1, "delete": 0, "email": 1, "export": 1, "print": 1, "read": 1, "report": 1, "role": "Sales User", "share": 1, "write": 1},
+  {"email": 0, "export": 0, "print": 0, "read": 1, "report": 0, "role": "Guest", "share": 0, "write": 0}
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

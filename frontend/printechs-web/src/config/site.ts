@@ -8,20 +8,45 @@ export const siteConfig = {
   /** Demo / prototype environments must never be indexed. */
   allowIndexing: false,
   contactEmail: "info@printechs.com",
-  contactPhone: "+966 11 000 0000",
   contactLocation: "Riyadh, Kingdom of Saudi Arabia",
   officeHours: "Sunday – Thursday, 9:00 AM – 6:00 PM (AST)",
+  whatsapp: {
+    label: "Chat on WhatsApp",
+    href: "https://wa.me/966550733441",
+  },
   primaryCta: {
     label: "Request Quote",
     href: "/request-quote",
   },
+  social: [
+    {
+      platform: "facebook",
+      label: "Facebook",
+      href: "https://www.facebook.com/Printechs/",
+    },
+    {
+      platform: "x",
+      label: "X",
+      href: "https://x.com/printechssaudi",
+    },
+    {
+      platform: "linkedin",
+      label: "LinkedIn",
+      href: "https://www.linkedin.com/company/printechs",
+    },
+    {
+      platform: "instagram",
+      label: "Instagram",
+      href: "https://www.instagram.com/printechssaudiarabia/",
+    },
+  ],
   navigation: [
     { label: "Products", href: "/products" },
     { label: "Brands", href: "/brands" },
     { label: "Solutions", href: "/solutions" },
     { label: "Industries", href: "/industries" },
     { label: "Software", href: "/software" },
-    { label: "Resources", href: "/resources" },
+    { label: "Success Stories", href: "/success-stories" },
     { label: "Company", href: "/company" },
     { label: "Contact", href: "/contact" },
   ],
@@ -58,8 +83,9 @@ export const siteConfig = {
         title: "Company",
         links: [
           { label: "About", href: "/company/about" },
-          { label: "Industries", href: "/industries" },
-          { label: "Resources", href: "/resources" },
+          { label: "Events", href: "/company/events" },
+          { label: "Partners", href: "/brands" },
+          { label: "Success Stories", href: "/success-stories" },
           { label: "Contact", href: "/contact" },
         ],
       },

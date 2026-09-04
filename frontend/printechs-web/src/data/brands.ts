@@ -15,6 +15,7 @@ export const brands: Brand[] = [
     name: "Hitachi",
     summary:
       "Industrial continuous inkjet coding technology for high-speed production lines.",
+    href: "/brands/hitachi",
     logo: brandLogo("brand-hitachi.png", "Hitachi"),
     seo: {
       title: "Hitachi | Printechs Brands",
@@ -27,6 +28,7 @@ export const brands: Brand[] = [
     slug: "rea-jet",
     name: "REA JET",
     summary: "Industrial coding and marking systems for packaging and manufacturing.",
+    href: "/brands/rea-jet",
     logo: brandLogo("brand-rea-jet.png", "REA JET"),
     seo: {
       title: "REA JET | Printechs Brands",
@@ -39,6 +41,7 @@ export const brands: Brand[] = [
     slug: "datalogic",
     name: "Datalogic",
     summary: "Barcode scanning and data capture for retail, warehouse and industry.",
+    href: "/brands/datalogic",
     logo: brandLogo("brand-datalogic.png", "Datalogic"),
     seo: {
       title: "Datalogic | Printechs Brands",
@@ -51,6 +54,7 @@ export const brands: Brand[] = [
     slug: "zebra",
     name: "Zebra",
     summary: "Enterprise mobility, printing and identification technology.",
+    href: "/brands/zebra",
     logo: brandLogo("brand-zebra.png", "Zebra"),
     seo: {
       title: "Zebra | Printechs Brands",
@@ -63,6 +67,7 @@ export const brands: Brand[] = [
     slug: "avery-berkel",
     name: "Avery Berkel",
     summary: "Retail and food weighing systems built for accuracy and uptime.",
+    href: "/brands/avery-berkel",
     logo: brandLogo("brand-avery-berkel.png", "Avery Berkel"),
     seo: {
       title: "Avery Berkel | Printechs Brands",
@@ -75,6 +80,7 @@ export const brands: Brand[] = [
     slug: "cas",
     name: "CAS",
     summary: "Weighing and retail scale technology for store and food operations.",
+    href: "/brands/cas",
     logo: brandLogo("brand-cas.png", "CAS"),
     seo: {
       title: "CAS | Printechs Brands",

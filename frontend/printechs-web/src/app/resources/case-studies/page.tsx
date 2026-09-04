@@ -1,17 +1,5 @@
-import { StubPage } from "@/components/ui/StubPage";
-import { buildMetadata } from "@/lib/seo";
+import { redirect } from "next/navigation";
 
-export const metadata = buildMetadata({
-  title: "Case Studies | Printechs",
-  description: "Customer outcome stories foundation.",
-});
-
-export default function Page() {
-  return (
-    <StubPage
-      title="Case Studies"
-      description="Customer outcome stories foundation."
-      crumbs={[{ label: "Home", href: "/" }, { label: "Resources", href: "/resources" }, { label: "Case Studies" }]}
-    />
-  );
+export default function CaseStudiesPage() {
+  redirect("/success-stories");
 }

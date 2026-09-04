@@ -1,6 +1,6 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { fetchProductsByBrand } from "@/lib/catalog-service";
-import { fetchBrand, fetchBrandSlugs } from "@/lib/brand-service";
+import { brandHref, fetchBrand, fetchBrands } from "@/lib/brand-service";
 import { fetchSuccessStories } from "@/lib/success-story-service";
 import { Section } from "@/components/ui/Section";
 import { Button } from "@/components/ui/Button";
@@ -12,13 +12,17 @@ import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { IMAGE_SPECS } from "@/lib/image-specs";
 import { buildMetadata } from "@/lib/seo";
 
-export const revalidate = 60;
+import { REVALIDATE_SECONDS } from "@/lib/revalidate";
+
+export const revalidate = REVALIDATE_SECONDS;
 
 type Props = { params: { slug: string } };
 
 export async function generateStaticParams() {
-  const slugs = await fetchBrandSlugs();
-  return slugs.map((slug) => ({ slug }));
+  const brands = await fetchBrands();
+  return brands
+    .filter((brand) => brandHref(brand) === `/brands/${brand.slug}`)
+    .map((brand) => ({ slug: brand.slug }));
 }
 
 export async function generateMetadata({ params }: Props) {
@@ -35,6 +39,11 @@ export async function generateMetadata({ params }: Props) {
 export default async function BrandDetailPage({ params }: Props) {
   const brand = await fetchBrand(params.slug);
   if (!brand) notFound();
+
+  const href = brandHref(brand);
+  if (href !== `/brands/${brand.slug}`) {
+    redirect(href);
+  }
 
   const brandProducts = await fetchProductsByBrand(brand.name);
   const brandStories = await fetchSuccessStories({ brand: brand.slug });

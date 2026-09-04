@@ -9,7 +9,9 @@ import { Button } from "@/components/ui/Button";
 import { buildMetadata } from "@/lib/seo";
 import { buildProductQuotePath } from "@/lib/product-quote-context";
 
-export const revalidate = 60;
+import { REVALIDATE_SECONDS } from "@/lib/revalidate";
+
+export const revalidate = REVALIDATE_SECONDS;
 
 type Props = { params: { slug: string } };
 

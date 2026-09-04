@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Brand } from "@/types/content";
+import { brandHref } from "@/lib/brand-service";
 import { ImageFrame } from "@/components/media/ImageFrame";
 import { IMAGE_SPECS } from "@/lib/image-specs";
 
@@ -36,7 +37,7 @@ export function LogoGrid({
         return (
           <li key={brand.id}>
             {linked ? (
-              <Link href={`/brands/${brand.slug}`} className={cardClass} aria-label={brand.name}>
+              <Link href={brandHref(brand)} className={cardClass} aria-label={brand.name}>
                 <BrandMark brand={brand} />
               </Link>
             ) : (

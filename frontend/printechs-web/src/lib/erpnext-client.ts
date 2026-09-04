@@ -1,14 +1,29 @@
 import type { Brand, Product, ProductPageContent } from "@/types/content";
 import { getBrandBySlug } from "@/data/brands";
+import { REVALIDATE_SECONDS } from "@/lib/revalidate";
 
-const DEFAULT_ERPNEXT_URL = "https://printechs.com";
+const DEFAULT_PUBLIC_URL = "https://printechs.com";
 
-export function getErpnextBaseUrl(): string {
+function getConfiguredPublicUrl(): string {
   return (
-    process.env.ERPNEXT_URL ||
     process.env.NEXT_PUBLIC_ERPNEXT_URL ||
-    DEFAULT_ERPNEXT_URL
+    process.env.ERPNEXT_URL ||
+    DEFAULT_PUBLIC_URL
   ).replace(/\/$/, "");
+}
+
+/** Public URL for /files assets and absolute links rendered in HTML. */
+export function getErpnextBaseUrl(): string {
+  return getConfiguredPublicUrl();
+}
+
+/** Server-side API base URL. Override with BUILD_ERPNEXT_URL during next build if needed. */
+export function getErpnextApiBaseUrl(): string {
+  if (process.env.BUILD_ERPNEXT_URL) {
+    return process.env.BUILD_ERPNEXT_URL.replace(/\/$/, "");
+  }
+
+  return getConfiguredPublicUrl();
 }
 
 type FrappeResponse<T> = {
@@ -19,9 +34,9 @@ type FrappeResponse<T> = {
 export async function erpnextMethod<T>(
   method: string,
   params: Record<string, string | number | undefined> = {},
-  revalidate = 60,
+  revalidate = REVALIDATE_SECONDS,
 ): Promise<T | null> {
-  const url = new URL(`/api/method/${method}`, `${getErpnextBaseUrl()}/`);
+  const url = new URL(`/api/method/${method}`, `${getErpnextApiBaseUrl()}/`);
 
   Object.entries(params).forEach(([key, value]) => {
     if (value !== undefined && value !== null && value !== "") {

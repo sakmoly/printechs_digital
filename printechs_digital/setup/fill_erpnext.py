@@ -90,6 +90,52 @@ def fill_erpnext():
 	doc.hero_image_alt = "ERPNext business dashboard with sales, inventory and finance metrics"
 	doc.hero_trust_chips = "Unified operations\nLocal expertise\nZATCA e-invoicing ready"
 	doc.show_demo_cta = 1
+	doc.configure_on_demo = 1
+	doc.set(
+		"demo_options",
+		[
+			{
+				"group_label": "Your environment",
+				"label": "Company size",
+				"option_type": "Select",
+				"required": 1,
+				"sort_order": 1,
+				"choices": "1–10 users\n11–50 users\n51–200 users\n200+ users",
+			},
+			{
+				"group_label": "Your environment",
+				"label": "Deployment preference",
+				"option_type": "Select",
+				"required": 1,
+				"sort_order": 2,
+				"choices": "Cloud SaaS\nOn-premise\nNot sure yet",
+			},
+			{
+				"group_label": "Modules to demo",
+				"label": "Modules to demo",
+				"option_type": "Checkbox",
+				"required": 1,
+				"sort_order": 3,
+				"choices": "Finance & Accounting\nInventory & Warehousing\nSales & CRM\nPurchasing\nManufacturing\nHR & Payroll\nProjects",
+			},
+			{
+				"group_label": "Integrations",
+				"label": "Integrations needed",
+				"option_type": "Checkbox",
+				"required": 0,
+				"sort_order": 4,
+				"choices": "Modern POS\nWMS\nZATCA e-invoicing\nE-commerce\nBanking",
+			},
+			{
+				"group_label": "Current setup",
+				"label": "Current system",
+				"option_type": "Select",
+				"required": 1,
+				"sort_order": 5,
+				"choices": "Spreadsheets / manual processes\nBasic accounting software\nOther ERP\nNew implementation",
+			},
+		],
+	)
 	doc.show_on_products_list = 0
 	doc.show_on_software_list = 1
 	doc.show_item_code_on_website = 0

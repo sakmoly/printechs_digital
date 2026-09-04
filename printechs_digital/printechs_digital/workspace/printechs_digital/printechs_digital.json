@@ -1,7 +1,7 @@
 {
  "charts": [],
- "content": "[{\"id\":\"pd_hdr\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Printechs Digital</b></span>\",\"col\":12}},{\"id\":\"pd_sc_home\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Homepage Settings\",\"col\":3}},{\"id\":\"pd_sc_product\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Website Product\",\"col\":3}},{\"id\":\"pd_sc_brand\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Website Brand\",\"col\":3}},{\"id\":\"pd_sc_industry\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Website Industry\",\"col\":3}},{\"id\":\"pd_sc_solution\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Website Solution\",\"col\":3}},{\"id\":\"pd_sc_story\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Website Success Story\",\"col\":3}},{\"id\":\"pd_sc_new\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"New Website Product\",\"col\":3}},{\"id\":\"pd_sc_site\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Open Website\",\"col\":3}},{\"id\":\"pd_sp1\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"pd_hdr_masters\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Masters</b></span>\",\"col\":12}},{\"id\":\"pd_c_home\",\"type\":\"card\",\"data\":{\"card_name\":\"Home\",\"col\":4}},{\"id\":\"pd_c_catalog\",\"type\":\"card\",\"data\":{\"card_name\":\"Catalog\",\"col\":4}},{\"id\":\"pd_c_stories\",\"type\":\"card\",\"data\":{\"card_name\":\"Stories\",\"col\":4}},{\"id\":\"pd_c_related\",\"type\":\"card\",\"data\":{\"card_name\":\"Related ERP\",\"col\":4}}]",
- "creation": "2026-09-03 16:00:00.000000",
+ "content": "[{\"id\":\"pd_hdr\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Printechs Digital</b></span>\",\"col\":12}},{\"id\":\"pd_sc_home\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Homepage Settings\",\"col\":3}},{\"id\":\"pd_sc_product\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Website Product\",\"col\":3}},{\"id\":\"pd_sc_brand\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Website Brand\",\"col\":3}},{\"id\":\"pd_sc_industry\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Website Industry\",\"col\":3}},{\"id\":\"pd_sc_solution\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Website Solution\",\"col\":3}},{\"id\":\"pd_sc_story\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Website Success Story\",\"col\":3}},{\"id\":\"pd_sc_event\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Website Event Album\",\"col\":3}},{\"id\":\"pd_sc_new\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"New Website Product\",\"col\":3}},{\"id\":\"pd_sc_site\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Open Website\",\"col\":3}},{\"id\":\"pd_sp1\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"pd_hdr_masters\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Masters</b></span>\",\"col\":12}},{\"id\":\"pd_c_home\",\"type\":\"card\",\"data\":{\"card_name\":\"Home\",\"col\":4}},{\"id\":\"pd_c_catalog\",\"type\":\"card\",\"data\":{\"card_name\":\"Catalog\",\"col\":4}},{\"id\":\"pd_c_stories\",\"type\":\"card\",\"data\":{\"card_name\":\"Stories\",\"col\":4}},{\"id\":\"pd_c_related\",\"type\":\"card\",\"data\":{\"card_name\":\"Related ERP\",\"col\":4}}]",
+ "creation": "2026-09-03 16:00:00",
  "custom_blocks": [],
  "docstatus": 0,
  "doctype": "Workspace",
@@ -17,7 +17,8 @@
    "hidden": 0,
    "is_query_report": 0,
    "label": "Home",
-   "link_count": 1,
+   "link_count": 3,
+   "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
   },
@@ -34,8 +35,29 @@
   {
    "hidden": 0,
    "is_query_report": 0,
+   "label": "About Settings",
+   "link_count": 0,
+   "link_to": "Website About Settings",
+   "link_type": "DocType",
+   "onboard": 1,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Contact Settings",
+   "link_count": 0,
+   "link_to": "Website Contact Settings",
+   "link_type": "DocType",
+   "onboard": 1,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
    "label": "Catalog",
    "link_count": 4,
+   "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
   },
@@ -83,7 +105,8 @@
    "hidden": 0,
    "is_query_report": 0,
    "label": "Stories",
-   "link_count": 1,
+   "link_count": 2,
+   "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
   },
@@ -100,8 +123,19 @@
   {
    "hidden": 0,
    "is_query_report": 0,
+   "label": "Website Event Album",
+   "link_count": 0,
+   "link_to": "Website Event Album",
+   "link_type": "DocType",
+   "onboard": 1,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
    "label": "Related ERP",
    "link_count": 4,
+   "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
   },
@@ -146,7 +180,7 @@
    "type": "Link"
   }
  ],
- "modified": "2026-09-03 17:30:00.000000",
+ "modified": "2026-09-03 22:56:16.968745",
  "modified_by": "Administrator",
  "module": "Printechs Digital",
  "name": "Printechs Digital",
@@ -161,12 +195,14 @@
  "shortcuts": [
   {
    "color": "Blue",
+   "doc_view": "",
    "label": "Homepage Settings",
    "link_to": "Website Homepage Settings",
    "type": "DocType"
   },
   {
    "color": "Green",
+   "doc_view": "",
    "format": "{} Published",
    "label": "Website Product",
    "link_to": "Website Product",
@@ -175,6 +211,7 @@
   },
   {
    "color": "Green",
+   "doc_view": "",
    "format": "{} Published",
    "label": "Website Brand",
    "link_to": "Website Brand",
@@ -183,6 +220,7 @@
   },
   {
    "color": "Blue",
+   "doc_view": "",
    "format": "{} Published",
    "label": "Website Industry",
    "link_to": "Website Industry",
@@ -191,6 +229,7 @@
   },
   {
    "color": "Blue",
+   "doc_view": "",
    "format": "{} Published",
    "label": "Website Solution",
    "link_to": "Website Solution",
@@ -199,9 +238,19 @@
   },
   {
    "color": "Orange",
+   "doc_view": "",
    "format": "{} Published",
    "label": "Website Success Story",
    "link_to": "Website Success Story",
+   "stats_filter": "{\"published\":1}",
+   "type": "DocType"
+  },
+  {
+   "color": "Purple",
+   "doc_view": "",
+   "format": "{} Published",
+   "label": "Website Event Album",
+   "link_to": "Website Event Album",
    "stats_filter": "{\"published\":1}",
    "type": "DocType"
   },
@@ -214,6 +263,7 @@
   },
   {
    "color": "Gray",
+   "doc_view": "",
    "label": "Open Website",
    "type": "URL",
    "url": "/newwebsite"

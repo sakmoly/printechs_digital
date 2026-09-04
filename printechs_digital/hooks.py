@@ -137,13 +137,23 @@ doctype_js = {"Item": "public/js/item.js"}
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
-# 	"*": {
-# 		"on_update": "method",
-# 		"on_cancel": "method",
-# 		"on_trash": "method"
-# 	}
-# }
+doc_events = {
+	doctype: {
+		"on_update": "printechs_digital.website_cache_hooks.clear_website_cache",
+		"on_trash": "printechs_digital.website_cache_hooks.clear_website_cache",
+	}
+	for doctype in (
+		"Website Product",
+		"Website Brand",
+		"Website Solution",
+		"Website Industry",
+		"Website Success Story",
+		"Website Event Album",
+		"Website Homepage Settings",
+		"Website About Settings",
+		"Website Contact Settings",
+	)
+}
 
 # Scheduled Tasks
 # ---------------

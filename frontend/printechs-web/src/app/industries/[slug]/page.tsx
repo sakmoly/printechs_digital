@@ -9,7 +9,9 @@ import { buildMetadata } from "@/lib/seo";
 import { fetchIndustry, fetchIndustrySlugs } from "@/lib/industry-service";
 import { fetchSuccessStories } from "@/lib/success-story-service";
 
-export const revalidate = 60;
+import { REVALIDATE_SECONDS } from "@/lib/revalidate";
+
+export const revalidate = REVALIDATE_SECONDS;
 
 type Props = { params: { slug: string } };
 

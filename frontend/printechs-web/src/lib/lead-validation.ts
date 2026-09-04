@@ -36,6 +36,10 @@ export function validateLeadPayload(body: unknown): LeadValidationResult {
     errors.message = "Please tell us how we can help.";
   }
 
+  if (type === "quote" && !message) {
+    errors.message = "Please describe what you need a quote for.";
+  }
+
   if (Object.keys(errors).length > 0) {
     return { ok: false, errors };
   }
@@ -59,6 +63,7 @@ export function validateLeadPayload(body: unknown): LeadValidationResult {
         sourceUrl: clean(contextInput.sourceUrl) || undefined,
         preferredTime: clean(contextInput.preferredTime) || undefined,
         inquiryType: clean(contextInput.inquiryType) || undefined,
+        preferredContactMethod: clean(contextInput.preferredContactMethod) || undefined,
       },
     },
   };

@@ -2,7 +2,8 @@ import Link from "next/link";
 import { siteConfig } from "@/config/site";
 import { Container } from "@/components/ui/Container";
 import { BrandLogo } from "@/components/ui/BrandLogo";
-import { fetchBrands } from "@/lib/brand-service";
+import { SocialLinks } from "@/components/ui/SocialLinks";
+import { fetchBrands, brandHref } from "@/lib/brand-service";
 
 function brandColumnCount(linkCount: number) {
   if (linkCount > 12) {
@@ -30,7 +31,7 @@ export async function SiteFooter() {
     { label: "All Brands", href: "/brands" },
     ...brands.map((brand) => ({
       label: brand.name,
-      href: `/brands/${brand.slug}`,
+      href: brandHref(brand),
     })),
   ];
   const columns = brandColumnCount(brandLinks.length);
@@ -54,9 +55,10 @@ export async function SiteFooter() {
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-paper/68">
             {siteConfig.description}
           </p>
+          <SocialLinks className="mt-5" />
           <Link
             href="/contact"
-            className="mt-5 inline-flex text-sm font-semibold text-signal-bright underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-signal"
+            className="mt-4 inline-flex text-sm font-semibold text-signal-bright underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-signal"
           >
             Contact
           </Link>
@@ -109,12 +111,11 @@ export async function SiteFooter() {
         ))}
       </Container>
 
-      <Container className="flex flex-col gap-2 border-t border-paper/10 py-6 text-xs text-paper/45 sm:flex-row sm:items-center sm:justify-between">
+      <Container className="border-t border-paper/10 py-6 text-xs text-paper/45">
         <p>
           © {new Date().getFullYear()} {siteConfig.legalName}. All rights
           reserved.
         </p>
-        <p>Demo preview environment</p>
       </Container>
     </footer>
   );

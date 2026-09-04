@@ -1,0 +1,20 @@
+{
+ "actions": [],
+ "creation": "2026-09-03 00:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": ["city", "phone", "email", "address", "map_embed_url", "sort_order"],
+ "fields": [
+  {"fieldname": "city", "fieldtype": "Data", "in_list_view": 1, "label": "City", "reqd": 1},
+  {"fieldname": "phone", "fieldtype": "Data", "in_list_view": 1, "label": "Phone"},
+  {"fieldname": "email", "fieldtype": "Data", "in_list_view": 1, "label": "Email"},
+  {"fieldname": "address", "fieldtype": "Small Text", "in_list_view": 1, "label": "Address", "reqd": 1},
+  {"description": "Google Maps embed URL (iframe src).", "fieldname": "map_embed_url", "fieldtype": "Small Text", "label": "Map Embed URL"},
+  {"fieldname": "sort_order", "fieldtype": "Int", "label": "Sort Order"}
+ ],
+ "istable": 1,
+ "module": "Printechs Digital",
+ "name": "Website Contact Office",
+ "permissions": []
+}

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { siteConfig } from "@/config/site";
+import { withBasePath } from "@/lib/paths";
 import type { SeoFields } from "@/types/content";
 
 /**
@@ -18,6 +19,14 @@ export function buildMetadata(seo?: Partial<SeoFields>): Metadata {
     robots: indexable
       ? { index: true, follow: true }
       : { index: false, follow: false },
+    icons: {
+      icon: [
+        { url: withBasePath("/icon.png"), type: "image/png", sizes: "512x512" },
+        { url: withBasePath("/favicon.ico"), sizes: "any" },
+      ],
+      apple: [{ url: withBasePath("/apple-icon.png"), sizes: "180x180", type: "image/png" }],
+      shortcut: [withBasePath("/favicon.ico")],
+    },
     openGraph: {
       title: seo?.openGraphTitle ?? title,
       description: seo?.openGraphDescription ?? description,

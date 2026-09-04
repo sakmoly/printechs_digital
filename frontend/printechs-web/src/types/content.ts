@@ -340,6 +340,7 @@ export type Brand = {
   name: string;
   summary: string;
   logo: MediaAsset;
+  href: string;
   seo: SeoFields;
 };
 
@@ -392,6 +393,27 @@ export type SuccessStoryList = {
   industries: { slug: string; name: string }[];
 };
 
+export type EventAlbum = {
+  id: string;
+  slug: string;
+  title: string;
+  summary: string;
+  eventType: string;
+  eventDate?: string;
+  location?: string;
+  image: MediaAsset;
+  imageCount?: number;
+  href: string;
+  description?: string;
+  gallery?: MediaAsset[];
+  seo: SeoFields;
+};
+
+export type EventAlbumList = {
+  albums: EventAlbum[];
+  eventTypes: string[];
+};
+
 export type Resource = {
   id: string;
   slug: string;
@@ -415,6 +437,62 @@ export type HeroContent = {
   };
   primaryCta: Cta;
   secondaryCta: Cta;
+};
+
+export type AboutPageContent = {
+  eyebrow: string;
+  title: string;
+  tagline: string;
+  paragraphs: string[];
+  closingLine?: string;
+  profileDownload?: {
+    label: string;
+    href: string;
+  } | null;
+  seo: SeoFields;
+};
+
+export type ContactOffice = {
+  city: string;
+  phone: string;
+  email: string;
+  address: string;
+  mapEmbedUrl?: string | null;
+};
+
+export type ContactSpecialistPanel = {
+  eyebrow: string;
+  title: string;
+  description: string;
+  email: string;
+  phone: string;
+  location: string;
+  officeHours: string;
+  whatsapp?: {
+    number: string;
+    label: string;
+    href: string;
+  } | null;
+  pricing: {
+    title: string;
+    linkLabel: string;
+    linkHref: string;
+    description: string;
+  };
+};
+
+export type ContactPageContent = {
+  eyebrow: string;
+  title: string;
+  tagline: string;
+  form: {
+    eyebrow: string;
+    title: string;
+    description: string;
+  };
+  specialist: ContactSpecialistPanel;
+  offices: ContactOffice[];
+  seo: SeoFields;
 };
 
 export type HomepageWhyPoint = {
@@ -471,6 +549,16 @@ export type HomepageContent = {
   featuredSolutions?: HomepageSectionHeading | null;
   industries?: HomepageSectionHeading | null;
   extraBlocks?: HomepageExtraBlock[];
+};
+
+export type HomepageBundle = {
+  homepage: HomepageContent | null;
+  featuredProducts: Product[];
+  featuredSoftware: SoftwareSolution[];
+  brands: Brand[];
+  featuredSolutions: FeaturedSolution[];
+  industries: Industry[];
+  successStories: SuccessStory[];
 };
 
 export type BusinessDivision = {

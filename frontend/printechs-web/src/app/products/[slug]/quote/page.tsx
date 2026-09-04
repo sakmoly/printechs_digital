@@ -8,7 +8,9 @@ import { buildMetadata } from "@/lib/seo";
 import { productHeadingClass } from "@/lib/product-page-theme";
 import type { QuoteConfiguration } from "@/types/quote-config";
 
-export const revalidate = 60;
+import { REVALIDATE_SECONDS } from "@/lib/revalidate";
+
+export const revalidate = REVALIDATE_SECONDS;
 
 type Props = { params: { slug: string } };
 

@@ -1,0 +1,18 @@
+{
+ "actions": [],
+ "creation": "2026-09-03 00:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": ["image", "image_alt", "caption", "sort_order"],
+ "fields": [
+  {"description": "Upload a file on this site (/files/...).", "fieldname": "image", "fieldtype": "Attach Image", "in_list_view": 1, "label": "Image", "reqd": 1},
+  {"fieldname": "image_alt", "fieldtype": "Data", "in_list_view": 1, "label": "Image Alt Text"},
+  {"fieldname": "caption", "fieldtype": "Data", "label": "Caption"},
+  {"fieldname": "sort_order", "fieldtype": "Int", "label": "Sort Order"}
+ ],
+ "istable": 1,
+ "module": "Printechs Digital",
+ "name": "Website Event Album Image",
+ "permissions": []
+}

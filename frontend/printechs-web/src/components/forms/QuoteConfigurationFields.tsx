@@ -20,7 +20,15 @@ function groupOptions(options: QuoteOption[]) {
   return groups;
 }
 
-export function QuoteConfigurationFields({ options }: { options: QuoteOption[] }) {
+export function QuoteConfigurationFields({
+  options,
+  sectionTitle = "Configuration",
+  sectionDescription = "Select the options that match your site. Required fields are marked.",
+}: {
+  options: QuoteOption[];
+  sectionTitle?: string;
+  sectionDescription?: string;
+}) {
   if (!options.length) {
     return null;
   }
@@ -28,11 +36,9 @@ export function QuoteConfigurationFields({ options }: { options: QuoteOption[] }
   return (
     <section>
       <p className="text-[0.72rem] font-bold uppercase tracking-[0.24em] text-product-icon">
-        Configuration
+        {sectionTitle}
       </p>
-      <p className="mt-2 text-sm leading-relaxed text-slate">
-        Select the options that match your site. Required fields are marked.
-      </p>
+      <p className="mt-2 text-sm leading-relaxed text-slate">{sectionDescription}</p>
       <div className="mt-5 space-y-6">
         {groupOptions(options).map((group) => (
           <div key={group.title || group.options.map((option) => option.id).join("-")}>

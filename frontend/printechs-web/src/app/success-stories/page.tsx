@@ -6,7 +6,9 @@ import { SuccessStoryAccordion } from "@/components/stories/SuccessStoryAccordio
 import { buildMetadata } from "@/lib/seo";
 import { fetchSuccessStories } from "@/lib/success-story-service";
 
-export const revalidate = 60;
+import { REVALIDATE_SECONDS } from "@/lib/revalidate";
+
+export const revalidate = REVALIDATE_SECONDS;
 
 type SearchParams = {
   product?: string;

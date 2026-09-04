@@ -1,3 +1,4 @@
+import { cache } from "react";
 import type { SuccessStory, SuccessStoryList } from "@/types/content";
 import { erpnextMethod, normalizeMediaAsset } from "@/lib/erpnext-client";
 
@@ -16,11 +17,11 @@ function normalizeStory(story: SuccessStory): SuccessStory {
   };
 }
 
-export async function fetchSuccessStories(filters: {
+export const fetchSuccessStories = cache(async (filters: {
   product?: string;
   brand?: string;
   industry?: string;
-} = {}): Promise<SuccessStoryList> {
+} = {}): Promise<SuccessStoryList> => {
   const fromErp = await erpnextMethod<SuccessStoryList>(
     "printechs_digital.api.website.list_success_stories",
     {
@@ -40,7 +41,7 @@ export async function fetchSuccessStories(filters: {
     brands: fromErp.brands ?? [],
     industries: fromErp.industries ?? [],
   };
-}
+});
 
 export async function fetchSuccessStory(slug: string): Promise<SuccessStory | undefined> {
   const fromErp = await erpnextMethod<SuccessStory>(
@@ -55,14 +56,14 @@ export async function fetchSuccessStory(slug: string): Promise<SuccessStory | un
   return normalizeStory(fromErp);
 }
 
-export async function fetchFeaturedSuccessStories(limit = 2): Promise<SuccessStory[]> {
+export const fetchFeaturedSuccessStories = cache(async (limit = 2): Promise<SuccessStory[]> => {
   const fromErp = await erpnextMethod<SuccessStory[]>(
     "printechs_digital.api.website.get_featured_success_stories",
     { limit },
   );
 
   return (fromErp ?? []).map(normalizeStory);
-}
+});
 
 export async function fetchSuccessStorySlugs(): Promise<string[]> {
   return (

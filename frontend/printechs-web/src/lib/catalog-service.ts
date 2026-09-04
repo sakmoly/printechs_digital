@@ -1,3 +1,4 @@
+import { cache } from "react";
 import type { Product, SoftwareSolution } from "@/types/content";
 import { getCatalogProducts, getFeaturedProducts, products } from "@/data/products";
 import { getFeaturedSoftware, softwareSolutions } from "@/data/software";
@@ -9,7 +10,7 @@ function mergeProducts(erpProducts: Product[], mockProducts: Product[]): Product
   return [...erpProducts.map(normalizeCatalogProduct), ...mockOnly];
 }
 
-export async function fetchCatalogProducts(): Promise<Product[]> {
+export const fetchCatalogProducts = cache(async (): Promise<Product[]> => {
   const erpProducts =
     (await erpnextMethod<Product[]>("printechs_digital.api.website.list_products", {
       list: "products",
@@ -17,9 +18,9 @@ export async function fetchCatalogProducts(): Promise<Product[]> {
     })) ?? [];
 
   return mergeProducts(erpProducts, getCatalogProducts());
-}
+});
 
-export async function fetchFeaturedProducts(limit = 4): Promise<Product[]> {
+export const fetchFeaturedProducts = cache(async (limit = 4): Promise<Product[]> => {
   const erpProducts =
     (await erpnextMethod<Product[]>("printechs_digital.api.website.get_featured_products", {
       limit,
@@ -31,9 +32,9 @@ export async function fetchFeaturedProducts(limit = 4): Promise<Product[]> {
 
   const merged = mergeProducts(erpProducts, getFeaturedProducts(limit));
   return merged.slice(0, limit);
-}
+});
 
-export async function fetchSoftwareCatalog(): Promise<Product[]> {
+export const fetchSoftwareCatalog = cache(async (): Promise<Product[]> => {
   const erpProducts =
     (await erpnextMethod<Product[]>("printechs_digital.api.website.list_products", {
       list: "software",
@@ -53,9 +54,9 @@ export async function fetchSoftwareCatalog(): Promise<Product[]> {
   }));
 
   return mergeProducts(erpProducts, mockSoftware);
-}
+});
 
-export async function fetchFeaturedSoftware(limit = 6): Promise<SoftwareSolution[]> {
+export const fetchFeaturedSoftware = cache(async (limit = 6): Promise<SoftwareSolution[]> => {
   const erpProducts =
     (await erpnextMethod<Product[]>("printechs_digital.api.website.list_products", {
       list: "software",
@@ -79,7 +80,7 @@ export async function fetchFeaturedSoftware(limit = 6): Promise<SoftwareSolution
   const erpSlugs = new Set(erpAsSoftware.map((item) => item.slug));
   const mockOnly = getFeaturedSoftware(limit).filter((item) => !erpSlugs.has(item.slug));
   return [...erpAsSoftware, ...mockOnly].slice(0, limit);
-}
+});
 
 export async function fetchProductsByBrand(brandName: string): Promise<Product[]> {
   const catalog = await fetchCatalogProducts();

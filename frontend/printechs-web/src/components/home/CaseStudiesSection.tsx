@@ -48,7 +48,7 @@ export function CaseStudiesSection({
                 alt={item.image.alt}
                 spec={IMAGE_SPECS.caseStudy}
                 fill
-                className="aspect-video"
+                className="aspect-[21/9]"
                 imageClassName="media-zoom object-cover"
                 sizes="(max-width: 768px) 100vw, 50vw"
               />

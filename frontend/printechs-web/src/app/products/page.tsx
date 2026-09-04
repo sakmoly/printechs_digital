@@ -4,7 +4,9 @@ import { Section } from "@/components/ui/Section";
 import { ProductsCatalog } from "@/components/products/ProductsCatalog";
 import { buildMetadata } from "@/lib/seo";
 
-export const revalidate = 60;
+import { REVALIDATE_SECONDS } from "@/lib/revalidate";
+
+export const revalidate = REVALIDATE_SECONDS;
 
 export const metadata = buildMetadata({
   title: "Products | Printechs",
