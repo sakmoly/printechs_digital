@@ -3,6 +3,7 @@ import type { ResolvedProductPage } from "@/lib/product-service";
 import { ProductHero } from "@/components/products/ProductHero";
 import { ProductSectionHeader } from "@/components/products/ProductSectionHeader";
 import { ProductVisualStory } from "@/components/products/ProductVisualStory";
+import { ModernPosProductTour } from "@/components/products/ModernPosProductTour";
 import { ProductFullSpecs } from "@/components/products/ProductFullSpecs";
 import {
   ProductApplicationCards,
@@ -21,7 +22,7 @@ import { IMAGE_SPECS } from "@/lib/image-specs";
 import { ProductContentSections } from "@/components/products/ProductContentSections";
 import { ProductFaq } from "@/components/products/ProductFaq";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { buildProductQuoteUrl } from "@/lib/product-quote";
+import { buildProductDemoUrl, buildProductQuoteUrl } from "@/lib/product-quote";
 import { productSectionTone } from "@/lib/product-page-theme";
 
 type ProductPageViewProps = ResolvedProductPage;
@@ -39,6 +40,8 @@ export function ProductPageView({
   ];
 
   const quoteUrl = buildProductQuoteUrl(page);
+  const demoUrl = buildProductDemoUrl(page);
+  const isModernPosTour = page.slug === "modern-pos";
   const relatedImageSpec =
     page.productType === "software" ? IMAGE_SPECS.software : IMAGE_SPECS.product;
 
@@ -98,7 +101,11 @@ export function ProductPageView({
         </Section>
       ) : null}
 
-      {page.visualStory?.items.length ? (
+      {isModernPosTour ? (
+        <Section pad="compact" tone={nextTone()}>
+          <ModernPosProductTour demoHref={demoUrl} quoteHref={quoteUrl} />
+        </Section>
+      ) : page.visualStory?.items.length ? (
         <Section pad="compact" tone={nextTone()}>
           <ProductVisualStory
             heading={page.visualStory.heading}
