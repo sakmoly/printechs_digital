@@ -18,6 +18,7 @@ export function generateMetadata({ params }: Props) {
     return buildMetadata({
       title: "Request Quote | Printechs",
       description: "Request a quote from Printechs.",
+      indexPage: false,
     });
   }
 
@@ -25,6 +26,7 @@ export function generateMetadata({ params }: Props) {
     title: `Request Quote — ${quoteContext.displayName} | Printechs`,
     description: `Request a quote for ${quoteContext.displayName} solutions from Printechs.`,
     canonicalPath: `/solutions/${params.slug}/quote`,
+    indexPage: false,
   });
 }
 

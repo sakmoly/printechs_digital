@@ -8,6 +8,12 @@ type ButtonProps = {
   children: ReactNode;
   variant?: ButtonVariant;
   className?: string;
+  analyticsEvent?: string;
+  analyticsLocation?: string;
+  analyticsProduct?: string;
+  analyticsBrand?: string;
+  analyticsCategory?: string;
+  analyticsSolution?: string;
 };
 
 const variants: Record<ButtonVariant, string> = {
@@ -26,10 +32,22 @@ export function Button({
   children,
   variant = "primary",
   className = "",
+  analyticsEvent,
+  analyticsLocation,
+  analyticsProduct,
+  analyticsBrand,
+  analyticsCategory,
+  analyticsSolution,
 }: ButtonProps) {
   return (
     <Link
       href={href}
+      data-analytics-event={analyticsEvent}
+      data-analytics-location={analyticsLocation}
+      data-analytics-product={analyticsProduct}
+      data-analytics-brand={analyticsBrand}
+      data-analytics-category={analyticsCategory}
+      data-analytics-solution={analyticsSolution}
       className={`inline-flex min-h-11 items-center justify-center rounded-sm px-5 py-2.5 text-sm font-semibold tracking-wide transition duration-300 ease-premium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${variants[variant]} ${className}`}
     >
       {children}

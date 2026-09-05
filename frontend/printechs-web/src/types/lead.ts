@@ -1,3 +1,5 @@
+import type { LeadAttribution } from "@/lib/analytics/types";
+
 export type LeadType = "quote" | "contact" | "demo";
 
 export type LeadContext = {
@@ -13,6 +15,7 @@ export type LeadContext = {
   preferredContactMethod?: string;
   configuration?: string;
   generateLead?: boolean;
+  attribution?: LeadAttribution;
 };
 
 export type LeadSubmission = {

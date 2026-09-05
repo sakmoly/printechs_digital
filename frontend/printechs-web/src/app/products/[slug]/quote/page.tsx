@@ -41,6 +41,7 @@ export async function generateMetadata({ params }: Props) {
     title: `Request Quote — ${name} | Printechs`,
     description: `Request a quote for ${name} from Printechs.`,
     canonicalPath: `/products/${params.slug}/quote`,
+    indexPage: false,
   });
 }
 

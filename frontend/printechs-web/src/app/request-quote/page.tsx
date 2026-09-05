@@ -12,6 +12,7 @@ type Props = {
 export const metadata = buildMetadata({
   title: "Request Quote | Printechs",
   description: "Request a quote for Printechs products and solutions.",
+  indexPage: false,
 });
 
 function param(value: string | string[] | undefined): string | undefined {

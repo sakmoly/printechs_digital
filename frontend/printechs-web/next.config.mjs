@@ -1,5 +1,5 @@
 /** @type {import('next').NextConfig} */
-const basePath = "/newwebsite";
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "/newwebsite";
 
 const nextConfig = {
   // Temporary demo preview path. Change or remove later for root/subdomain deploy.

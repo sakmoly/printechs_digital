@@ -8,6 +8,10 @@ import {
   QuoteConfigurationFields,
   formatQuoteConfiguration,
 } from "@/components/forms/QuoteConfigurationFields";
+import { getLeadAttribution } from "@/lib/analytics/attribution";
+import { trackFormError, trackFormSuccess } from "@/lib/analytics/events";
+import { getPageLocation, getPageTitle } from "@/lib/analytics/page-location";
+import { apiPath } from "@/lib/api-path";
 
 const fieldClass =
   "mt-2 w-full rounded-sm border border-line bg-white px-4 py-2.5 text-sm text-ink shadow-sm transition placeholder:text-slate/70 focus-visible:border-product-icon focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-product-icon/20";
@@ -54,6 +58,9 @@ export function QuoteRequestForm({ configuration, context }: QuoteRequestFormPro
     <form
       className="overflow-hidden rounded-sm border border-line bg-white shadow-soft"
       noValidate
+      data-analytics-form="quote"
+      data-analytics-product={productName}
+      data-analytics-category={category}
       onSubmit={(event) => {
         event.preventDefault();
         const form = event.currentTarget;
@@ -73,7 +80,7 @@ export function QuoteRequestForm({ configuration, context }: QuoteRequestFormPro
         data.set("message", message);
         setError("");
         setSubmitting(true);
-        void fetch("/newwebsite/api/leads", {
+        void fetch(apiPath("/api/leads"), {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -93,11 +100,26 @@ export function QuoteRequestForm({ configuration, context }: QuoteRequestFormPro
               sourceUrl: configuration?.sourceUrl || context?.sourceUrl,
               configuration: configText,
               generateLead: configuration?.generateLead,
+              attribution: getLeadAttribution(),
             },
           }),
         })
           .then(async (response) => {
-            if (!response.ok) throw new Error("Could not submit quote request");
+            if (!response.ok) {
+              trackFormError("quote", {
+                page_title: getPageTitle(),
+                page_location: getPageLocation(window.location.pathname, window.location.search),
+                product_name: productName,
+                product_category: category,
+              });
+              throw new Error("Could not submit quote request");
+            }
+            trackFormSuccess("quote", {
+              page_title: getPageTitle(),
+              page_location: getPageLocation(window.location.pathname, window.location.search),
+              product_name: productName,
+              product_category: category,
+            });
             setDone(true);
           })
           .catch(() => setError("Could not submit the quote request. Please try again or call Printechs."))

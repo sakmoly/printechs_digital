@@ -91,16 +91,30 @@ export function ProductHero({ page, brand, crumbs, successStoriesHref }: Product
             </div>
 
             <div className="mt-8 flex flex-wrap gap-3">
-              <Button href={quoteUrl} variant="primary">
+              <Button
+                href={quoteUrl}
+                variant="primary"
+                analyticsEvent="request_quote_click"
+                analyticsLocation="hero"
+                analyticsProduct={page.displayName}
+                analyticsBrand={page.brand}
+                analyticsCategory={page.category}
+              >
                 Request Quote →
               </Button>
               {page.primaryDownload ? (
-                <Button href={page.primaryDownload.href} variant="ghost">
+                <Button href={page.primaryDownload.href} variant="ghost" analyticsLocation="hero">
                   ↓ Download Datasheet
                 </Button>
               ) : null}
               {page.productType === "software" || page.showDemoCta ? (
-                <Button href={demoUrl} variant="ghost">
+                <Button
+                  href={demoUrl}
+                  variant="ghost"
+                  analyticsEvent="demo_request_click"
+                  analyticsLocation="hero"
+                  analyticsProduct={page.displayName}
+                >
                   Book a Demo
                 </Button>
               ) : null}

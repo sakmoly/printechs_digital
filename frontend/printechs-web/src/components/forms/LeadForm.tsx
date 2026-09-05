@@ -4,6 +4,9 @@ import { useState } from "react";
 import type { LeadSubmission, LeadSubmissionResult } from "@/types/lead";
 import { apiPath } from "@/lib/api-path";
 import { Button } from "@/components/ui/Button";
+import { getLeadAttribution } from "@/lib/analytics/attribution";
+import { trackFormError, trackFormSuccess } from "@/lib/analytics/events";
+import { getPageLocation, getPageTitle } from "@/lib/analytics/page-location";
 
 type UseLeadFormOptions = {
   type: LeadSubmission["type"];
@@ -51,6 +54,7 @@ export function useLeadForm({ type, initialContext }: UseLeadFormOptions) {
           String(formData.get("preferredContactMethod") ?? "") || undefined,
         configuration,
         generateLead: initialContext?.generateLead,
+        attribution: getLeadAttribution(),
       },
     };
 
@@ -66,6 +70,12 @@ export function useLeadForm({ type, initialContext }: UseLeadFormOptions) {
         | { ok: false; errors?: Record<string, string>; message?: string };
 
       if (!response.ok) {
+        trackFormError(type, {
+          page_title: getPageTitle(),
+          page_location: getPageLocation(window.location.pathname, window.location.search),
+          product_name: payload.context?.product,
+          product_category: payload.context?.category,
+        });
         if ("errors" in data && data.errors) {
           setErrors(data.errors);
         } else {
@@ -78,8 +88,21 @@ export function useLeadForm({ type, initialContext }: UseLeadFormOptions) {
         return;
       }
 
+      trackFormSuccess(type, {
+        form_name: type,
+        page_title: getPageTitle(),
+        page_location: getPageLocation(window.location.pathname, window.location.search),
+        product_name: payload.context?.product,
+        product_category: payload.context?.category,
+      });
       setResult(data as LeadSubmissionResult);
     } catch {
+      trackFormError(type, {
+        page_title: getPageTitle(),
+        page_location: getPageLocation(window.location.pathname, window.location.search),
+        product_name: payload.context?.product,
+        product_category: payload.context?.category,
+      });
       setFormError("Unable to submit right now. Please try again or email us directly.");
     } finally {
       setSubmitting(false);

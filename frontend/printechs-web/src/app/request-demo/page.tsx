@@ -18,6 +18,7 @@ export const metadata = buildMetadata({
   title: "Request Demo | Printechs",
   description: "Book a software demonstration with Printechs.",
   canonicalPath: "/request-demo",
+  indexPage: false,
 });
 
 function param(value: string | string[] | undefined): string | undefined {

@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { ImageFrame } from "@/components/media/ImageFrame";
 import { IMAGE_SPECS } from "@/lib/image-specs";
 import { withBasePath } from "@/lib/paths";
+import { trackVideoEvent } from "@/lib/analytics/events";
+import { getPageLocation, getPageTitle } from "@/lib/analytics/page-location";
 
 type PosterVideoProps = {
   type: "youtube" | "vimeo" | "hosted";
@@ -11,6 +13,8 @@ type PosterVideoProps = {
   title: string;
   poster?: string;
   className?: string;
+  productName?: string;
+  brand?: string;
 };
 
 export function PosterVideo({
@@ -19,11 +23,49 @@ export function PosterVideo({
   title,
   poster,
   className = "",
+  productName,
+  brand,
 }: PosterVideoProps) {
   const [playing, setPlaying] = useState(false);
+  const fired = useRef({ start: false, complete: false });
+  const hostedMilestones = useRef({ p25: false, p50: false, p75: false });
   const posterSrc = poster
     ? withBasePath(poster)
     : "/images/placeholders/video-poster.svg";
+
+  function videoParams() {
+    return {
+      video_title: title,
+      product_name: productName,
+      brand,
+      page_title: getPageTitle(),
+      page_location: getPageLocation(window.location.pathname, window.location.search),
+    };
+  }
+
+  function handlePlayStart() {
+    if (fired.current.start) return;
+    fired.current.start = true;
+    trackVideoEvent("video_start", videoParams());
+  }
+
+  function handleHostedTimeUpdate(currentTime: number, duration: number) {
+    if (!duration) return;
+    const ratio = currentTime / duration;
+    const milestones = hostedMilestones.current;
+    if (ratio >= 0.25 && !milestones.p25) {
+      milestones.p25 = true;
+      trackVideoEvent("video_25_percent", videoParams());
+    }
+    if (ratio >= 0.5 && !milestones.p50) {
+      milestones.p50 = true;
+      trackVideoEvent("video_50_percent", videoParams());
+    }
+    if (ratio >= 0.75 && !milestones.p75) {
+      milestones.p75 = true;
+      trackVideoEvent("video_75_percent", videoParams());
+    }
+  }
 
   if (playing) {
     if (type === "youtube" || type === "vimeo") {
@@ -45,25 +87,29 @@ export function PosterVideo({
     }
 
     return (
-      <div className={`aspect-video overflow-hidden bg-ink ${className}`}>
-        <video
-          className="h-full w-full object-cover"
-          controls
-          autoPlay
-          preload="metadata"
-          poster={withBasePath(posterSrc)}
-          title={title}
-        >
-          <source src={withBasePath(source)} />
-        </video>
-      </div>
+      <HostedTrackedVideo
+        source={source}
+        title={title}
+        poster={posterSrc}
+        className={className}
+        onStart={handlePlayStart}
+        onProgress={handleHostedTimeUpdate}
+        onComplete={() => {
+          if (fired.current.complete) return;
+          fired.current.complete = true;
+          trackVideoEvent("video_complete", videoParams());
+        }}
+      />
     );
   }
 
   return (
     <button
       type="button"
-      onClick={() => setPlaying(true)}
+      onClick={() => {
+        handlePlayStart();
+        setPlaying(true);
+      }}
       className={`group relative block aspect-video w-full overflow-hidden bg-ink text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-signal ${className}`}
       aria-label={`Play video: ${title}`}
     >
@@ -85,5 +131,50 @@ export function PosterVideo({
         }
       />
     </button>
+  );
+}
+
+function HostedTrackedVideo({
+  source,
+  title,
+  poster,
+  className,
+  onStart,
+  onProgress,
+  onComplete,
+}: {
+  source: string;
+  title: string;
+  poster: string;
+  className: string;
+  onStart: () => void;
+  onProgress: (currentTime: number, duration: number) => void;
+  onComplete: () => void;
+}) {
+  const started = useRef(false);
+
+  return (
+    <div className={`aspect-video overflow-hidden bg-ink ${className}`}>
+      <video
+        className="h-full w-full object-cover"
+        controls
+        autoPlay
+        preload="metadata"
+        poster={withBasePath(poster)}
+        title={title}
+        onPlay={() => {
+          if (started.current) return;
+          started.current = true;
+          onStart();
+        }}
+        onTimeUpdate={(event) => {
+          const video = event.currentTarget;
+          onProgress(video.currentTime, video.duration);
+        }}
+        onEnded={onComplete}
+      >
+        <source src={withBasePath(source)} />
+      </video>
+    </div>
   );
 }

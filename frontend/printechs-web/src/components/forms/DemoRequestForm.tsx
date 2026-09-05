@@ -73,6 +73,9 @@ export function DemoRequestForm({ context, configuration }: DemoRequestFormProps
     <form
       className="overflow-hidden rounded-sm border border-line bg-white shadow-soft"
       noValidate
+      data-analytics-form="demo"
+      data-analytics-product={productName}
+      data-analytics-category={category}
       onSubmit={(event) => {
         event.preventDefault();
         const form = event.currentTarget;

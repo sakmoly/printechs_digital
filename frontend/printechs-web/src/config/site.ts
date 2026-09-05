@@ -5,8 +5,8 @@ export const siteConfig = {
   description:
     "Industrial coding, retail technology and enterprise software solutions for businesses across Saudi Arabia.",
   locale: "en",
-  /** Demo / prototype environments must never be indexed. */
-  allowIndexing: false,
+  /** Enable search indexing at production launch via NEXT_PUBLIC_ALLOW_INDEXING=true */
+  allowIndexing: process.env.NEXT_PUBLIC_ALLOW_INDEXING === "true",
   contactEmail: "info@printechs.com",
   contactLocation: "Riyadh, Kingdom of Saudi Arabia",
   officeHours: "Sunday – Thursday, 9:00 AM – 6:00 PM (AST)",

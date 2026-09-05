@@ -176,10 +176,22 @@ export function ProductTourSections({
           Want to see {productName ?? "this product"} with your workflow?
         </p>
         <div className="mt-4 flex flex-wrap gap-3">
-          <Button href={demoHref} variant="primary">
+          <Button
+            href={demoHref}
+            variant="primary"
+            analyticsEvent="demo_request_click"
+            analyticsLocation="product_tour"
+            analyticsProduct={productName}
+          >
             Book a Demo
           </Button>
-          <Button href={quoteHref} variant="ghost">
+          <Button
+            href={quoteHref}
+            variant="ghost"
+            analyticsEvent="request_quote_click"
+            analyticsLocation="product_tour"
+            analyticsProduct={productName}
+          >
             Request a Quote
           </Button>
         </div>

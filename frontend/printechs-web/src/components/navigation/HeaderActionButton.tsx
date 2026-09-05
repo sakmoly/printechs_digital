@@ -19,18 +19,27 @@ export function HeaderActionButton({
   variant = "secondary",
   className = "",
   external = false,
+  analyticsLocation = "header",
 }: {
   href: string;
   children: ReactNode;
   variant?: keyof typeof variants;
   className?: string;
   external?: boolean;
+  analyticsLocation?: string;
 }) {
   const classes = `${baseClass} ${variants[variant]} ${className}`;
+  const analyticsProps =
+    variant === "whatsapp"
+      ? {
+          "data-analytics-event": "whatsapp_click",
+          "data-analytics-location": analyticsLocation,
+        }
+      : {};
 
   if (external) {
     return (
-      <a href={href} target="_blank" rel="noopener noreferrer" className={classes}>
+      <a href={href} target="_blank" rel="noopener noreferrer" className={classes} {...analyticsProps}>
         {children}
       </a>
     );

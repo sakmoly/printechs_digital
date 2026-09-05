@@ -1,4 +1,5 @@
 import type { ResolvedSolutionPage } from "@/lib/solution-service";
+import { SolutionPageTracker } from "@/components/analytics/SolutionPageTracker";
 import { SolutionHero } from "@/components/solutions/SolutionHero";
 import { SolutionCategoryGrid } from "@/components/solutions/SolutionCategoryGrid";
 import { SolutionCategoryProducts } from "@/components/solutions/SolutionCategoryProducts";
@@ -49,6 +50,7 @@ export function SolutionPageView({
 
   return (
     <>
+      <SolutionPageTracker slug={page.slug} name={page.displayName} />
       <SolutionHero page={page} crumbs={crumbs} />
 
       {benefitItems.length > 0 ? (
@@ -134,10 +136,16 @@ export function SolutionPageView({
               </p>
             </div>
             <div className="flex shrink-0 flex-wrap gap-3 lg:justify-end">
-              <Button href={quoteUrl} variant="on-dark">
+              <Button
+                href={quoteUrl}
+                variant="on-dark"
+                analyticsEvent="request_quote_click"
+                analyticsLocation="bottom_cta"
+                analyticsSolution={page.displayName}
+              >
                 Request Quote →
               </Button>
-              <Button href="/contact" variant="secondary">
+              <Button href="/contact" variant="secondary" analyticsLocation="bottom_cta">
                 Contact Printechs
               </Button>
             </div>

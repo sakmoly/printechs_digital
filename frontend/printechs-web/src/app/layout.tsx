@@ -1,7 +1,12 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Sora, Source_Sans_3 } from "next/font/google";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { buildMetadata } from "@/lib/seo";
+import { GoogleTagManager } from "@/components/analytics/GoogleTagManager";
+import { MicrosoftClarity } from "@/components/analytics/MicrosoftClarity";
+import { AnalyticsProvider } from "@/components/analytics/AnalyticsProvider";
+import { GlobalStructuredData } from "@/components/analytics/GlobalStructuredData";
 import "./globals.css";
 
 const display = Sora({
@@ -31,7 +36,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${display.variable} ${body.variable} font-body antialiased`}>
-        <SiteShell>{children}</SiteShell>
+        <GoogleTagManager />
+        <MicrosoftClarity />
+        <GlobalStructuredData />
+        <Suspense fallback={null}>
+          <AnalyticsProvider>
+            <SiteShell>{children}</SiteShell>
+          </AnalyticsProvider>
+        </Suspense>
       </body>
     </html>
   );

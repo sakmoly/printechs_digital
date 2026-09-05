@@ -22,6 +22,7 @@ import { ImageFrame } from "@/components/media/ImageFrame";
 import { IMAGE_SPECS } from "@/lib/image-specs";
 import { ProductContentSections } from "@/components/products/ProductContentSections";
 import { ProductFaq } from "@/components/products/ProductFaq";
+import { ProductPageTracker } from "@/components/analytics/ProductPageTracker";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { buildProductDemoUrl, buildProductQuoteUrl } from "@/lib/product-quote";
 import { productSectionTone } from "@/lib/product-page-theme";
@@ -432,6 +433,7 @@ export function ProductPageView({
 
   return (
     <>
+      <ProductPageTracker page={page} />
       <ProductHero
         page={page}
         brand={brand}
@@ -472,12 +474,20 @@ export function ProductPageView({
                 </p>
               </div>
               <div className="flex shrink-0 flex-wrap gap-3 lg:justify-end">
-                <Button href={quoteUrl} variant="on-dark">
+                <Button
+                  href={quoteUrl}
+                  variant="on-dark"
+                  analyticsEvent="request_quote_click"
+                  analyticsLocation="bottom_cta"
+                  analyticsProduct={page.displayName}
+                  analyticsBrand={page.brand}
+                  analyticsCategory={page.category}
+                >
                   {page.productType === "software"
                     ? "Talk to a Specialist →"
                     : "Request Quote →"}
                 </Button>
-                <Button href="/contact" variant="secondary">
+                <Button href="/contact" variant="secondary" analyticsLocation="bottom_cta">
                   Contact Printechs
                 </Button>
               </div>

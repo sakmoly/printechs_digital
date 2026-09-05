@@ -19,3 +19,4 @@ printechs_digital.patches.v1_0.sync_workspace_links
 printechs_digital.patches.v1_0.add_contact_specialist_fields
 printechs_digital.patches.v1_0.add_contact_whatsapp
 printechs_digital.patches.v1_0.add_event_albums
+printechs_digital.patches.v1_0.add_lead_attribution_fields

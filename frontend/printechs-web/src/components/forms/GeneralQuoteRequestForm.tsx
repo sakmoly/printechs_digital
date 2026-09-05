@@ -72,6 +72,7 @@ export function GeneralQuoteRequestForm({
     <form
       className="overflow-hidden rounded-sm border border-line bg-white shadow-soft"
       noValidate
+      data-analytics-form="quote"
       onSubmit={(event) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);

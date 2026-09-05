@@ -49,6 +49,65 @@ def _as_dict(value):
 	return {}
 
 
+def _attribution_dict(context: dict) -> dict:
+	return _as_dict(context.get("attribution"))
+
+
+def _attribution_block(context: dict) -> str:
+	attribution = _attribution_dict(context)
+	if not attribution:
+		return ""
+
+	lines = []
+	for key, label in (
+		("utm_source", "UTM Source"),
+		("utm_medium", "UTM Medium"),
+		("utm_campaign", "UTM Campaign"),
+		("utm_content", "UTM Content"),
+		("utm_term", "UTM Term"),
+		("landing_page", "Landing Page"),
+		("referrer", "Referrer"),
+		("first_visit_at", "First Visit"),
+	):
+		value = _text(attribution.get(key))
+		if value:
+			lines.append(f"{label}: {value}")
+	return "\n".join(lines)
+
+
+def _apply_lead_attribution(lead, context: dict) -> bool:
+	attribution = _attribution_dict(context)
+	if not attribution and not _text(context.get("productSlug")) and not _text(context.get("sourceUrl")):
+		return False
+
+	changed = False
+	field_map = {
+		"web_utm_source": _text(attribution.get("utm_source")),
+		"web_utm_medium": _text(attribution.get("utm_medium")),
+		"web_utm_campaign": _text(attribution.get("utm_campaign")),
+		"web_utm_content": _text(attribution.get("utm_content")),
+		"web_utm_term": _text(attribution.get("utm_term")),
+		"web_landing_page": _text(attribution.get("landing_page")),
+		"web_referrer": _text(attribution.get("referrer")),
+		"web_product_slug": _text(context.get("productSlug")),
+		"web_source_url": _text(context.get("sourceUrl")),
+	}
+	first_visit = _text(attribution.get("first_visit_at"))
+	if first_visit:
+		field_map["web_first_visit_at"] = first_visit
+
+	for fieldname, value in field_map.items():
+		if not value:
+			continue
+		if not lead.meta.get_field(fieldname):
+			continue
+		if not lead.get(fieldname):
+			lead.set(fieldname, value)
+			changed = True
+
+	return changed
+
+
 def _context_block(context: dict) -> str:
 	lines = []
 	for key, label in (
@@ -67,6 +126,14 @@ def _context_block(context: dict) -> str:
 			value = INQUIRY_TYPE_LABELS.get(value.lower(), value)
 		if value:
 			lines.append(f"{label}: {value}")
+
+	attribution_text = _attribution_block(context)
+	if attribution_text:
+		if lines:
+			lines.append("")
+		lines.append("Acquisition")
+		lines.extend(attribution_text.splitlines())
+
 	return "\n".join(lines)
 
 
@@ -97,8 +164,10 @@ def _get_or_create_lead(
 	phone: str,
 	company: str,
 	source: str | None,
+	context: dict | None = None,
 	whatsapp_no: str | None = None,
 ):
+	context = context or {}
 	existing = frappe.db.get_value("Lead", {"email_id": email}, "name")
 	if existing:
 		lead = frappe.get_doc("Lead", existing)
@@ -111,6 +180,8 @@ def _get_or_create_lead(
 			changed = True
 		if company and not lead.company_name:
 			lead.company_name = company
+			changed = True
+		if _apply_lead_attribution(lead, context):
 			changed = True
 		if changed:
 			lead.flags.ignore_permissions = True
@@ -130,6 +201,7 @@ def _get_or_create_lead(
 	)
 	if source:
 		lead.source = source
+	_apply_lead_attribution(lead, context)
 	lead.flags.ignore_permissions = True
 	lead.insert(ignore_permissions=True)
 	return lead
@@ -440,7 +512,7 @@ def submit_lead():
 	lead = None
 	lead_name = None
 	if generate_lead or lead_type == "contact":
-		lead = _get_or_create_lead(name, email, phone, company, source, whatsapp_no)
+		lead = _get_or_create_lead(name, email, phone, company, source, context, whatsapp_no)
 		lead_name = lead.name
 		contact.name = lead_name
 
@@ -467,6 +539,8 @@ def submit_lead():
 
 	return {
 		"ok": True,
+		"reference": lead_name or opportunity_name or "WEB-LEAD",
+		"message": "Thank you. Your request has been received.",
 		"lead": lead_name,
 		"opportunity": opportunity_name,
 		"generateLead": generate_lead,

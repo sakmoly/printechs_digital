@@ -30,6 +30,7 @@ export async function generateMetadata({ params }: Props) {
     return buildMetadata({
       title: "Request Demo | Printechs",
       description: "Book a software demonstration with Printechs.",
+      indexPage: false,
     });
   }
 
@@ -37,6 +38,7 @@ export async function generateMetadata({ params }: Props) {
     title: `Request Demo — ${quoteContext.displayName} | Printechs`,
     description: `Schedule a demonstration of ${quoteContext.displayName} with Printechs.`,
     canonicalPath: `/products/${params.slug}/demo`,
+    indexPage: false,
   });
 }
 

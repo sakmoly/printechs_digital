@@ -28,6 +28,7 @@ export function ContactForm() {
     <form
       className="space-y-5"
       noValidate
+      data-analytics-form="contact"
       onSubmit={(event) => {
         event.preventDefault();
         void submit(new FormData(event.currentTarget));
