@@ -23,9 +23,18 @@ function ScreenshotPlaceholder() {
 }
 
 function resolveImageSrc(section: ProductTourSection): string | null {
-  const src = section.image?.src;
+  const src = section.image?.src?.trim();
   if (!src) return null;
-  return src;
+  try {
+    const url = new URL(src, "https://printechs.com");
+    url.pathname = url.pathname
+      .split("/")
+      .map((segment) => encodeURIComponent(decodeURIComponent(segment)))
+      .join("/");
+    return url.toString();
+  } catch {
+    return src.replace(/ /g, "%20");
+  }
 }
 
 type TourScreenshotProps = {
@@ -118,6 +127,85 @@ function TourSectionBlock({
   );
 }
 
+function partitionTourSections(sections: ProductTourSection[]) {
+  const above: ProductTourSection[] = [];
+  const below: ProductTourSection[] = [];
+
+  for (const section of sections) {
+    if (section.ctaPlacement === "below_demo_bar") {
+      below.push(section);
+    } else {
+      above.push(section);
+    }
+  }
+
+  return { above, below };
+}
+
+function TourSectionList({
+  sections,
+  onOpenLightbox,
+  onImageError,
+}: {
+  sections: ProductTourSection[];
+  onOpenLightbox: (sectionId: string) => void;
+  onImageError: (sectionId: string) => void;
+}) {
+  if (!sections.length) return null;
+
+  return (
+    <div className="space-y-12 lg:space-y-16">
+      {sections.map((section, index) => (
+        <TourSectionBlock
+          key={section.id}
+          section={section}
+          index={index}
+          onOpenLightbox={() => onOpenLightbox(section.id)}
+          onImageError={onImageError}
+        />
+      ))}
+    </div>
+  );
+}
+
+function TourDemoCta({
+  demoHref,
+  quoteHref,
+  productName,
+}: {
+  demoHref: string;
+  quoteHref: string;
+  productName?: string;
+}) {
+  return (
+    <div className="rounded-sm border border-line bg-mist/50 px-5 py-6 sm:px-6">
+      <p className="text-base font-semibold text-ink">
+        Want to see {productName ?? "this product"} with your workflow?
+      </p>
+      <div className="mt-4 flex flex-wrap gap-3">
+        <Button
+          href={demoHref}
+          variant="primary"
+          analyticsEvent="demo_request_click"
+          analyticsLocation="product_tour"
+          analyticsProduct={productName}
+        >
+          Book a Demo
+        </Button>
+        <Button
+          href={quoteHref}
+          variant="ghost"
+          analyticsEvent="request_quote_click"
+          analyticsLocation="product_tour"
+          analyticsProduct={productName}
+        >
+          Request a Quote
+        </Button>
+      </div>
+    </div>
+  );
+}
+
 export function ProductTourSections({
   tour,
   demoHref,
@@ -149,6 +237,9 @@ export function ProductTourSections({
     setLightboxOpen(true);
   };
 
+  const { above, below } = partitionTourSections(tour.sections);
+  const showDemoCta = above.length > 0 || below.length > 0;
+
   return (
     <div>
       <ProductSectionHeader
@@ -157,45 +248,35 @@ export function ProductTourSections({
         description={tour.subheading}
       />
 
-      <div className="mt-10 space-y-12 lg:space-y-16">
-        {tour.sections.map((section, index) => (
-          <TourSectionBlock
-            key={section.id}
-            section={section}
-            index={index}
-            onOpenLightbox={() => openLightbox(section.id)}
+      {above.length ? (
+        <div className="mt-10">
+          <TourSectionList
+            sections={above}
+            onOpenLightbox={openLightbox}
             onImageError={(sectionId) =>
               setImageFailures((current) => ({ ...current, [sectionId]: true }))
             }
           />
-        ))}
-      </div>
-
-      <div className="mt-12 rounded-sm border border-line bg-mist/50 px-5 py-6 sm:px-6">
-        <p className="text-base font-semibold text-ink">
-          Want to see {productName ?? "this product"} with your workflow?
-        </p>
-        <div className="mt-4 flex flex-wrap gap-3">
-          <Button
-            href={demoHref}
-            variant="primary"
-            analyticsEvent="demo_request_click"
-            analyticsLocation="product_tour"
-            analyticsProduct={productName}
-          >
-            Book a Demo
-          </Button>
-          <Button
-            href={quoteHref}
-            variant="ghost"
-            analyticsEvent="request_quote_click"
-            analyticsLocation="product_tour"
-            analyticsProduct={productName}
-          >
-            Request a Quote
-          </Button>
         </div>
-      </div>
+      ) : null}
+
+      {showDemoCta ? (
+        <div className={above.length ? "mt-12" : "mt-10"}>
+          <TourDemoCta demoHref={demoHref} quoteHref={quoteHref} productName={productName} />
+        </div>
+      ) : null}
+
+      {below.length ? (
+        <div className="mt-12">
+          <TourSectionList
+            sections={below}
+            onOpenLightbox={openLightbox}
+            onImageError={(sectionId) =>
+              setImageFailures((current) => ({ ...current, [sectionId]: true }))
+            }
+          />
+        </div>
+      ) : null}
 
       {lightboxOpen && lightboxSlides.length > 0 ? (
         <ImageLightbox

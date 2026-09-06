@@ -5,6 +5,7 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "cta_placement",
   "eyebrow",
   "heading",
   "body",
@@ -14,6 +15,15 @@
   "sort_order"
  ],
  "fields": [
+  {
+   "default": "Above Demo Bar",
+   "description": "Controls whether this tour block appears above or below the Book Demo / Request Quote bar.",
+   "fieldname": "cta_placement",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Position on Page",
+   "options": "Above Demo Bar\nBelow Demo Bar"
+  },
   {
    "description": "Short label shown above the title, e.g. Checkout or Inventory",
    "fieldname": "eyebrow",

@@ -167,6 +167,8 @@ export type ProductTourSection = {
   description: string;
   features: string[];
   image?: MediaAsset;
+  ctaPlacement?: "above_demo_bar" | "below_demo_bar";
+  sortOrder?: number;
 };
 
 export type ProductTour = {

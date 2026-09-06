@@ -1,6 +1,7 @@
 # Copyright (c) 2026, Printechs and contributors
 
 import re
+from urllib.parse import quote, unquote
 
 import frappe
 from frappe.utils import cstr, get_url, strip_html
@@ -41,8 +42,17 @@ def absolute_url(path: str | None) -> str | None:
 		return None
 	if path.startswith(("http://", "https://")):
 		return path.replace("http://", "https://", 1)
+	if path.startswith("/"):
+		parts = path.split("/")
+		path = "/".join(quote(unquote(part), safe="") if part else part for part in parts)
 	url = get_url(path)
 	return url.replace("http://", "https://", 1) if url else url
+
+
+def map_cta_placement(value: str | None) -> str:
+	if cstr(value).strip().lower() == "below demo bar":
+		return "below_demo_bar"
+	return "above_demo_bar"
 
 
 def media_asset(path: str | None, alt: str, width: int = 1200, height: int = 1200) -> dict | None:
@@ -366,6 +376,8 @@ def map_website_product(doc) -> dict:
 						1600,
 						1000,
 					),
+					"ctaPlacement": map_cta_placement(getattr(row, "cta_placement", None)),
+					"sortOrder": row.sort_order or idx + 1,
 				}
 			)
 		if tour_sections:

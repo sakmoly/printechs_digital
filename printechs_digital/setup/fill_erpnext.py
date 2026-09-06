@@ -466,3 +466,48 @@ def fill_erpnext():
 	doc.save()
 	frappe.db.commit()
 	return doc.name
+
+
+def add_sample_content_section(slug: str = "erpnext"):
+	"""Add one sample Content Section row and place it after Platform modules."""
+	name = frappe.db.get_value("Website Product", {"slug": slug}, "name")
+	if not name:
+		frappe.throw(f"Website Product not found: {slug}")
+
+	doc = frappe.get_doc("Website Product", name)
+	if doc.content_sections:
+		return {"status": "skipped", "slug": slug, "count": len(doc.content_sections)}
+
+	doc.append(
+		"content_sections",
+		{
+			"heading": "Extend ERPNext with specialised business solutions",
+			"body": (
+				"Add purpose-built applications and integrations to support complex "
+				"operational, financial and reporting requirements beyond the standard ERP workflow.\n\n"
+				"Printechs solutions include L/C Management, Sales Posting, PRAI Studio & Analytics, "
+				"and integrations with Modern POS and Warehouse Management — all connected to your ERPNext ledger."
+			),
+			"image": "/files/specialised_business_solutions.png",
+			"image_alt": (
+				"ERPNext business solutions integrating L/C management, sales posting, "
+				"analytics, POS and warehouse operations"
+			),
+			"link_label": "Request a live demo",
+			"link_href": "/software/erpnext/demo",
+			"sort_order": 1,
+		},
+	)
+
+	target_section = "content_sections"
+	target_sort = 6
+	for row in doc.page_section_order or []:
+		if row.section == target_section:
+			row.sort_order = target_sort
+		elif row.sort_order >= target_sort:
+			row.sort_order += 1
+
+	doc.flags.ignore_permissions = True
+	doc.save()
+	frappe.db.commit()
+	return {"status": "added", "slug": slug, "website_product": doc.name}
