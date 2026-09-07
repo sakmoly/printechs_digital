@@ -21,3 +21,4 @@ printechs_digital.patches.v1_0.add_contact_whatsapp
 printechs_digital.patches.v1_0.add_event_albums
 printechs_digital.patches.v1_0.add_lead_attribution_fields
 printechs_digital.patches.v1_0.add_tour_cta_placement
+printechs_digital.patches.v1_0.add_hero_custom_ctas

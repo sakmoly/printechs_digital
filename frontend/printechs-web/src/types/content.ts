@@ -205,6 +205,11 @@ export type ProductPageContent = {
   videoUrl?: string;
   /** Short trust chips shown in hero below CTAs */
   heroTrustChips?: string[];
+  /** Optional CMS hero buttons — replaces default quote/demo when set */
+  heroCtas?: {
+    primary?: Cta;
+    secondary?: Cta;
+  };
   /** Primary datasheet/brochure for hero download button */
   primaryDownload?: ProductDownload;
   showDemoCta?: boolean;

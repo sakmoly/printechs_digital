@@ -91,23 +91,47 @@ export function ProductHero({ page, brand, crumbs, successStoriesHref }: Product
             </div>
 
             <div className="mt-8 flex flex-wrap gap-3">
-              <Button
-                href={quoteUrl}
-                variant="primary"
-                analyticsEvent="request_quote_click"
-                analyticsLocation="hero"
-                analyticsProduct={page.displayName}
-                analyticsBrand={page.brand}
-                analyticsCategory={page.category}
-              >
-                Request Quote →
-              </Button>
+              {page.heroCtas?.primary ? (
+                <Button
+                  href={page.heroCtas.primary.href}
+                  variant="primary"
+                  analyticsEvent="hero_cta_click"
+                  analyticsLocation="hero"
+                  analyticsProduct={page.displayName}
+                  analyticsBrand={page.brand}
+                  analyticsCategory={page.category}
+                >
+                  {page.heroCtas.primary.label}
+                </Button>
+              ) : (
+                <Button
+                  href={quoteUrl}
+                  variant="primary"
+                  analyticsEvent="request_quote_click"
+                  analyticsLocation="hero"
+                  analyticsProduct={page.displayName}
+                  analyticsBrand={page.brand}
+                  analyticsCategory={page.category}
+                >
+                  Request Quote →
+                </Button>
+              )}
               {page.primaryDownload ? (
                 <Button href={page.primaryDownload.href} variant="ghost" analyticsLocation="hero">
                   ↓ Download Datasheet
                 </Button>
               ) : null}
-              {page.productType === "software" || page.showDemoCta ? (
+              {page.heroCtas?.secondary ? (
+                <Button
+                  href={page.heroCtas.secondary.href}
+                  variant="ghost"
+                  analyticsEvent="hero_cta_click"
+                  analyticsLocation="hero"
+                  analyticsProduct={page.displayName}
+                >
+                  {page.heroCtas.secondary.label}
+                </Button>
+              ) : page.heroCtas?.primary ? null : page.productType === "software" || page.showDemoCta ? (
                 <Button
                   href={demoUrl}
                   variant="ghost"

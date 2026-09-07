@@ -450,7 +450,12 @@ export function ProductPageView({
         }
 
         return (
-          <Section key={sectionKey} pad="compact" tone={nextTone()}>
+          <Section
+            key={sectionKey}
+            id={sectionKey === "applications" ? "applications" : undefined}
+            pad="compact"
+            tone={nextTone()}
+          >
             {content}
           </Section>
         );

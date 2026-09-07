@@ -49,6 +49,23 @@ def absolute_url(path: str | None) -> str | None:
 	return url.replace("http://", "https://", 1) if url else url
 
 
+def resolve_cta_href(href: str | None) -> str | None:
+	if not href:
+		return None
+	href = cstr(href).strip()
+	if href.startswith(("#", "mailto:", "tel:")):
+		return href
+	return absolute_url(href) or href
+
+
+def map_hero_cta(label: str | None, href: str | None) -> dict | None:
+	label = cstr(label).strip()
+	resolved_href = resolve_cta_href(href)
+	if not label or not resolved_href:
+		return None
+	return {"label": label, "href": resolved_href}
+
+
 def map_cta_placement(value: str | None) -> str:
 	if cstr(value).strip().lower() == "below demo bar":
 		return "below_demo_bar"
@@ -249,6 +266,16 @@ def map_website_product(doc) -> dict:
 			"type": "datasheet",
 		}
 
+	hero_ctas = None
+	if doc.use_custom_hero_ctas:
+		primary = map_hero_cta(doc.hero_primary_cta_label, doc.hero_primary_cta_href)
+		secondary = map_hero_cta(doc.hero_secondary_cta_label, doc.hero_secondary_cta_href)
+		if primary or secondary:
+			hero_ctas = {
+				"primary": primary,
+				"secondary": secondary,
+			}
+
 	benefits = [
 		{
 			"icon": normalize_icon(row.icon),
@@ -420,6 +447,7 @@ def map_website_product(doc) -> dict:
 		},
 		"heroTrustChips": split_lines(doc.hero_trust_chips) or None,
 		"primaryDownload": primary_download,
+		"heroCtas": hero_ctas,
 		"showDemoCta": bool(doc.show_demo_cta),
 		"keyValueCards": benefits or None,
 		"visualStory": {
