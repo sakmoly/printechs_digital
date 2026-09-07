@@ -213,6 +213,8 @@ export type ProductPageContent = {
   /** Primary datasheet/brochure for hero download button */
   primaryDownload?: ProductDownload;
   showDemoCta?: boolean;
+  /** Default Request Quote button in the page hero */
+  showQuoteInHero?: boolean;
   /** Request Quote button inside Product Tour demo bar */
   showQuoteInProductTour?: boolean;
   trustIndicators?: TrustIndicator[];

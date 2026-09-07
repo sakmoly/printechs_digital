@@ -148,14 +148,17 @@ def parent_software_payload(parent_name: str | None) -> dict | None:
 
 
 def resolve_canonical_path(doc) -> str:
-	if doc.canonical_path:
-		return doc.canonical_path
-
 	parent_name = getattr(doc, "parent_software", None)
 	if parent_name and doc.product_type == "Software":
 		parent_slug = frappe.db.get_value("Website Product", parent_name, "slug")
 		if parent_slug:
-			return f"/software/{parent_slug}/{doc.slug}"
+			nested_path = f"/software/{parent_slug}/{doc.slug}"
+			if doc.canonical_path and doc.canonical_path != nested_path:
+				return nested_path
+			return doc.canonical_path or nested_path
+
+	if doc.canonical_path:
+		return doc.canonical_path
 
 	if doc.product_type == "Software":
 		return f"/software/{doc.slug}"
@@ -480,6 +483,7 @@ def map_website_product(doc) -> dict:
 		"primaryDownload": primary_download,
 		"heroCtas": hero_ctas,
 		"showDemoCta": bool(doc.show_demo_cta),
+		"showQuoteInHero": bool(doc.get("show_quote_in_hero", 1)),
 		"showQuoteInProductTour": bool(doc.get("show_quote_in_product_tour", 1)),
 		"keyValueCards": benefits or None,
 		"visualStory": {

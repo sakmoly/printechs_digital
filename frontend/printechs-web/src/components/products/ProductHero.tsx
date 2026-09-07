@@ -103,7 +103,7 @@ export function ProductHero({ page, brand, crumbs, successStoriesHref }: Product
                 >
                   {page.heroCtas.primary.label}
                 </Button>
-              ) : (
+              ) : page.showQuoteInHero !== false ? (
                 <Button
                   href={quoteUrl}
                   variant="primary"
@@ -115,7 +115,7 @@ export function ProductHero({ page, brand, crumbs, successStoriesHref }: Product
                 >
                   Request Quote →
                 </Button>
-              )}
+              ) : null}
               {page.primaryDownload ? (
                 <Button href={page.primaryDownload.href} variant="ghost" analyticsLocation="hero">
                   ↓ Download Datasheet

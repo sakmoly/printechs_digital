@@ -24,3 +24,4 @@ printechs_digital.patches.v1_0.add_tour_cta_placement
 printechs_digital.patches.v1_0.add_hero_custom_ctas
 printechs_digital.patches.v1_0.add_show_quote_in_product_tour
 printechs_digital.patches.v1_0.add_parent_software
+printechs_digital.patches.v1_0.add_show_quote_in_hero
