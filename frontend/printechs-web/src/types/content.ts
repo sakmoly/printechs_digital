@@ -213,6 +213,8 @@ export type ProductPageContent = {
   /** Primary datasheet/brochure for hero download button */
   primaryDownload?: ProductDownload;
   showDemoCta?: boolean;
+  /** Request Quote button inside Product Tour demo bar */
+  showQuoteInProductTour?: boolean;
   trustIndicators?: TrustIndicator[];
   keyValueCards?: KeyValueCard[];
   visualStory?: {
@@ -250,6 +252,11 @@ export type ProductPageContent = {
   seo: SeoFields;
   canonicalPath: string;
   breadcrumbRoot: { label: string; href: string };
+  parentSoftware?: {
+    slug: string;
+    displayName: string;
+    href: string;
+  };
 };
 
 /** @deprecated Use ProductPageContent — kept for transitional imports. */

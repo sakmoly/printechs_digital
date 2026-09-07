@@ -2,7 +2,12 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 
 const baseClass =
-  "inline-flex min-h-11 items-center justify-center gap-2 rounded-sm px-4 py-2.5 text-sm font-semibold tracking-wide transition duration-300 ease-premium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent";
+  "inline-flex items-center justify-center gap-1.5 rounded-sm font-semibold tracking-wide transition duration-300 ease-premium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent";
+
+const sizeClass = {
+  default: "min-h-11 px-4 py-2.5 text-sm",
+  compact: "min-h-9 px-3 py-1.5 text-xs sm:text-[0.8125rem]",
+};
 
 const variants = {
   primary:
@@ -17,6 +22,7 @@ export function HeaderActionButton({
   href,
   children,
   variant = "secondary",
+  size = "default",
   className = "",
   external = false,
   analyticsLocation = "header",
@@ -24,11 +30,12 @@ export function HeaderActionButton({
   href: string;
   children: ReactNode;
   variant?: keyof typeof variants;
+  size?: keyof typeof sizeClass;
   className?: string;
   external?: boolean;
   analyticsLocation?: string;
 }) {
-  const classes = `${baseClass} ${variants[variant]} ${className}`;
+  const classes = `${baseClass} ${sizeClass[size]} ${variants[variant]} ${className}`;
   const analyticsProps =
     variant === "whatsapp"
       ? {
@@ -37,9 +44,23 @@ export function HeaderActionButton({
         }
       : {};
 
-  if (external) {
+  if (external || href.startsWith("mailto:")) {
+    const openInNewTab = external && !href.startsWith("mailto:");
     return (
-      <a href={href} target="_blank" rel="noopener noreferrer" className={classes} {...analyticsProps}>
+      <a
+        href={href}
+        {...(openInNewTab ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+        className={classes}
+        {...analyticsProps}
+      >
+        {children}
+      </a>
+    );
+  }
+
+  if (href.includes("#")) {
+    return (
+      <a href={href} className={classes} {...analyticsProps}>
         {children}
       </a>
     );

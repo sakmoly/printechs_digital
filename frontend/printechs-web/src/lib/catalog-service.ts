@@ -104,6 +104,16 @@ export async function fetchPublishedProductSlugs(): Promise<string[]> {
   return Array.from(new Set([...slugs, ...mockSlugs]));
 }
 
+export async function fetchNestedSoftwarePaths(): Promise<
+  Array<{ parent: string; slug: string }>
+> {
+  return (
+    (await erpnextMethod<Array<{ parent: string; slug: string }>>(
+      "printechs_digital.api.website.get_nested_software_paths",
+    )) ?? []
+  );
+}
+
 export function getCatalogProductsMock(): Product[] {
   return getCatalogProducts();
 }

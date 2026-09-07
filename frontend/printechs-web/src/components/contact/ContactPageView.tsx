@@ -4,17 +4,19 @@ import { Section } from "@/components/ui/Section";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { ContactInfoPanel } from "@/components/contact/ContactInfoPanel";
 import { ContactOfficeBlock } from "@/components/contact/ContactOfficeBlock";
+import { ContactHashScroll } from "@/components/contact/ContactHashScroll";
 
 export function ContactPageView({ content }: { content: ContactPageContent }) {
   return (
     <>
+      <ContactHashScroll />
       <PageIntro
         title={content.title}
         description={content.tagline}
         crumbs={[{ label: "Home", href: "/" }, { label: "Contact" }]}
       />
 
-      <Section tone="muted" pad="compact">
+      <Section tone="muted" pad="compact" id="locations" className="scroll-mt-28">
         <div className="space-y-12">
           {content.offices.map((office, index) => (
             <ContactOfficeBlock key={office.city} office={office} reverse={index % 2 === 1} />

@@ -11,12 +11,17 @@ export const siteConfig = {
   contactLocation: "Riyadh, Kingdom of Saudi Arabia",
   officeHours: "Sunday – Thursday, 9:00 AM – 6:00 PM (AST)",
   whatsapp: {
-    label: "Chat on WhatsApp",
+    label: "WhatsApp",
     href: "https://wa.me/966550733441",
   },
+  headerEmail: {
+    label: "Email",
+    href: "mailto:info@printechs.com",
+  },
+  /** Homepage hero default. */
   primaryCta: {
-    label: "Request Quote",
-    href: "/request-quote",
+    label: "Contact",
+    href: "/contact",
   },
   social: [
     {
@@ -48,7 +53,8 @@ export const siteConfig = {
     { label: "Software", href: "/software" },
     { label: "Success Stories", href: "/success-stories" },
     { label: "Company", href: "/company" },
-    { label: "Contact", href: "/contact" },
+    { label: "Our Location", href: "/contact#locations" },
+    { label: "Email", href: "mailto:info@printechs.com" },
   ],
   footer: {
     columns: [

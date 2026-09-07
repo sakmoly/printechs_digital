@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { siteConfig } from "@/config/site";
 import { Container } from "@/components/ui/Container";
-import { Button } from "@/components/ui/Button";
 import { BrandLogo } from "@/components/ui/BrandLogo";
 import {
   HeaderActionButton,
@@ -12,7 +11,41 @@ import {
 } from "@/components/navigation/HeaderActionButton";
 import type { HeaderContactActions } from "@/lib/header-contact";
 
-function HeaderContactButtons({
+const navLinkClass =
+  "relative whitespace-nowrap text-sm font-medium text-white/85 transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-signal after:absolute after:-bottom-1 after:left-0 after:h-px after:w-0 after:bg-accent after:transition-all after:duration-300 hover:after:w-full";
+
+const mobileNavLinkClass =
+  "rounded-sm px-2 py-3.5 text-base text-white/90 hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-signal";
+
+function NavItem({
+  href,
+  label,
+  mobile = false,
+  onNavigate,
+}: {
+  href: string;
+  label: string;
+  mobile?: boolean;
+  onNavigate?: () => void;
+}) {
+  const className = mobile ? mobileNavLinkClass : navLinkClass;
+
+  if (href.startsWith("mailto:") || href.startsWith("tel:")) {
+    return (
+      <a href={href} className={className} onClick={onNavigate}>
+        {label}
+      </a>
+    );
+  }
+
+  return (
+    <Link href={href} className={className} onClick={onNavigate}>
+      {label}
+    </Link>
+  );
+}
+
+function HeaderWhatsAppButton({
   contact,
   className = "",
   fullWidth = false,
@@ -23,26 +56,20 @@ function HeaderContactButtons({
 }) {
   const widthClass = fullWidth ? "w-full" : "";
 
+  if (!contact.whatsapp) return null;
+
   return (
-    <div className={`flex flex-wrap items-center gap-2 ${className}`}>
-      {contact.whatsapp ? (
-        <HeaderActionButton
-          href={contact.whatsapp.href}
-          variant="whatsapp"
-          external
-          className={widthClass}
-        >
-          <WhatsAppIcon />
-          {contact.whatsapp.label}
-        </HeaderActionButton>
-      ) : null}
-      <Button
-        href={siteConfig.primaryCta.href}
-        variant="primary"
+    <div className={className}>
+      <HeaderActionButton
+        href={contact.whatsapp.href}
+        variant="whatsapp"
+        size="compact"
+        external
         className={widthClass}
       >
-        {siteConfig.primaryCta.label}
-      </Button>
+        <WhatsAppIcon className="h-3.5 w-3.5" />
+        {contact.whatsapp.label}
+      </HeaderActionButton>
     </div>
   );
 }
@@ -81,18 +108,12 @@ export function SiteHeader({ contact }: { contact: HeaderContactActions }) {
           aria-label="Primary"
         >
           {siteConfig.navigation.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="relative whitespace-nowrap text-sm font-medium text-white/85 transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-signal after:absolute after:-bottom-1 after:left-0 after:h-px after:w-0 after:bg-accent after:transition-all after:duration-300 hover:after:w-full"
-            >
-              {item.label}
-            </Link>
+            <NavItem key={item.href} href={item.href} label={item.label} />
           ))}
         </nav>
 
         <div className="hidden shrink-0 lg:block">
-          <HeaderContactButtons contact={contact} />
+          <HeaderWhatsAppButton contact={contact} />
         </div>
 
         <button
@@ -111,17 +132,16 @@ export function SiteHeader({ contact }: { contact: HeaderContactActions }) {
         <div id="mobile-nav" className="border-t border-white/10 bg-ink lg:hidden">
           <Container className="flex max-h-[calc(100vh-4rem)] flex-col gap-1 overflow-y-auto py-4">
             {siteConfig.navigation.map((item) => (
-              <Link
+              <NavItem
                 key={item.href}
                 href={item.href}
-                className="rounded-sm px-2 py-3.5 text-base text-white/90 hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-signal"
-                onClick={() => setOpen(false)}
-              >
-                {item.label}
-              </Link>
+                label={item.label}
+                mobile
+                onNavigate={() => setOpen(false)}
+              />
             ))}
             <div className="pt-3">
-              <HeaderContactButtons contact={contact} fullWidth />
+              <HeaderWhatsAppButton contact={contact} fullWidth />
             </div>
           </Container>
         </div>

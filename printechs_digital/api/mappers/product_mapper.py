@@ -129,6 +129,39 @@ def breadcrumb_root(product_type: str | None) -> dict:
 	return {"label": "Products", "href": "/products"}
 
 
+def parent_software_payload(parent_name: str | None) -> dict | None:
+	if not parent_name:
+		return None
+	row = frappe.db.get_value(
+		"Website Product",
+		parent_name,
+		["slug", "display_name"],
+		as_dict=True,
+	)
+	if not row:
+		return None
+	return {
+		"slug": row.slug,
+		"displayName": row.display_name,
+		"href": f"/software/{row.slug}",
+	}
+
+
+def resolve_canonical_path(doc) -> str:
+	if doc.canonical_path:
+		return doc.canonical_path
+
+	parent_name = getattr(doc, "parent_software", None)
+	if parent_name and doc.product_type == "Software":
+		parent_slug = frappe.db.get_value("Website Product", parent_name, "slug")
+		if parent_slug:
+			return f"/software/{parent_slug}/{doc.slug}"
+
+	if doc.product_type == "Software":
+		return f"/software/{doc.slug}"
+	return f"/products/{doc.slug}"
+
+
 def get_website_brand_row(brand_link: str | None, brand_name: str | None) -> dict | None:
 	fields = ["name", "slug", "display_name", "logo"]
 	if brand_link:
@@ -422,9 +455,7 @@ def map_website_product(doc) -> dict:
 		if row.question and row.answer
 	]
 
-	canonical_path = doc.canonical_path or (
-		f"/software/{doc.slug}" if doc.product_type == "Software" else f"/products/{doc.slug}"
-	)
+	canonical_path = resolve_canonical_path(doc)
 
 	page = {
 		"slug": doc.slug,
@@ -449,6 +480,7 @@ def map_website_product(doc) -> dict:
 		"primaryDownload": primary_download,
 		"heroCtas": hero_ctas,
 		"showDemoCta": bool(doc.show_demo_cta),
+		"showQuoteInProductTour": bool(doc.get("show_quote_in_product_tour", 1)),
 		"keyValueCards": benefits or None,
 		"visualStory": {
 			"heading": doc.visual_story_heading or "See it in action",
@@ -486,6 +518,7 @@ def map_website_product(doc) -> dict:
 		},
 		"canonicalPath": canonical_path,
 		"breadcrumbRoot": breadcrumb_root(doc.product_type),
+		"parentSoftware": parent_software_payload(getattr(doc, "parent_software", None)),
 	}
 
 	if doc.show_item_code_on_website and doc.item_code:
@@ -497,9 +530,7 @@ def map_website_product(doc) -> dict:
 def map_catalog_product(doc) -> dict:
 	brand_name = doc.brand_name or doc.brand
 	image_path = doc.card_image or doc.hero_image
-	canonical_path = doc.canonical_path or (
-		f"/software/{doc.slug}" if doc.product_type == "Software" else f"/products/{doc.slug}"
-	)
+	canonical_path = resolve_canonical_path(doc)
 
 	return {
 		"id": f"erp-{doc.slug}",

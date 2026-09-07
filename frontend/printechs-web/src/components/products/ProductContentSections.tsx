@@ -22,6 +22,16 @@ type ProductContentSectionsProps = {
   sections: ProductContentSection[];
 };
 
+function sectionAnchorId(heading: string): string {
+  return heading
+    .toLowerCase()
+    .replace(/&/g, "")
+    .replace(/[^\w\s-]/g, "")
+    .trim()
+    .replace(/[\s_]+/g, "-")
+    .replace(/-+/g, "-");
+}
+
 export function ProductContentSections({ sections }: ProductContentSectionsProps) {
   return (
     <div className="space-y-12 lg:space-y-16">
@@ -33,10 +43,11 @@ export function ProductContentSections({ sections }: ProductContentSectionsProps
         return (
           <article
             key={section.heading}
+            id={sectionAnchorId(section.heading)}
             className={
               hasMedia
-                ? "grid items-center gap-8 lg:grid-cols-2 lg:gap-12"
-                : "max-w-3xl"
+                ? "scroll-mt-28 grid items-center gap-8 lg:grid-cols-2 lg:gap-12"
+                : "scroll-mt-28 max-w-3xl"
             }
           >
             {hasMedia ? (

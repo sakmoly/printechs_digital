@@ -127,6 +127,7 @@ function renderProductPageSection(
             demoHref={demoUrl}
             quoteHref={quoteUrl}
             productName={page.displayName}
+            showQuoteCta={page.showQuoteInProductTour !== false}
           />
         );
       }
@@ -368,6 +369,9 @@ export function ProductPageView({
   const crumbs = [
     { label: "Home", href: "/" },
     page.breadcrumbRoot,
+    ...(page.parentSoftware
+      ? [{ label: page.parentSoftware.displayName, href: page.parentSoftware.href }]
+      : []),
     { label: page.displayName },
   ];
 

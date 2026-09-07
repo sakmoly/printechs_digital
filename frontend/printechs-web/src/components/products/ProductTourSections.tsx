@@ -12,6 +12,7 @@ type ProductTourSectionsProps = {
   demoHref: string;
   quoteHref: string;
   productName?: string;
+  showQuoteCta?: boolean;
 };
 
 function ScreenshotPlaceholder() {
@@ -172,10 +173,12 @@ function TourDemoCta({
   demoHref,
   quoteHref,
   productName,
+  showQuoteCta = true,
 }: {
   demoHref: string;
   quoteHref: string;
   productName?: string;
+  showQuoteCta?: boolean;
 }) {
   return (
     <div className="rounded-sm border border-line bg-mist/50 px-5 py-6 sm:px-6">
@@ -192,15 +195,17 @@ function TourDemoCta({
         >
           Book a Demo
         </Button>
-        <Button
-          href={quoteHref}
-          variant="ghost"
-          analyticsEvent="request_quote_click"
-          analyticsLocation="product_tour"
-          analyticsProduct={productName}
-        >
-          Request a Quote
-        </Button>
+        {showQuoteCta ? (
+          <Button
+            href={quoteHref}
+            variant="ghost"
+            analyticsEvent="request_quote_click"
+            analyticsLocation="product_tour"
+            analyticsProduct={productName}
+          >
+            Request a Quote
+          </Button>
+        ) : null}
       </div>
     </div>
   );
@@ -211,6 +216,7 @@ export function ProductTourSections({
   demoHref,
   quoteHref,
   productName,
+  showQuoteCta = true,
 }: ProductTourSectionsProps) {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
@@ -262,7 +268,12 @@ export function ProductTourSections({
 
       {showDemoCta ? (
         <div className={above.length ? "mt-12" : "mt-10"}>
-          <TourDemoCta demoHref={demoHref} quoteHref={quoteHref} productName={productName} />
+          <TourDemoCta
+            demoHref={demoHref}
+            quoteHref={quoteHref}
+            productName={productName}
+            showQuoteCta={showQuoteCta}
+          />
         </div>
       ) : null}
 

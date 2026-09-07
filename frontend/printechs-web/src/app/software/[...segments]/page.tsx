@@ -1,7 +1,10 @@
 import { notFound } from "next/navigation";
 import { softwareSolutions, getSoftwareBySlug } from "@/data/software";
 import { fetchProductPage } from "@/lib/product-service";
-import { fetchPublishedProductSlugs } from "@/lib/catalog-service";
+import {
+  fetchNestedSoftwarePaths,
+  fetchPublishedProductSlugs,
+} from "@/lib/catalog-service";
 import { ProductPageView } from "@/components/products/ProductPageView";
 import { PageIntro } from "@/components/ui/PageIntro";
 import { Section } from "@/components/ui/Section";
@@ -13,17 +16,31 @@ import { REVALIDATE_SECONDS } from "@/lib/revalidate";
 
 export const revalidate = REVALIDATE_SECONDS;
 
-type Props = { params: { slug: string } };
+type Props = { params: { segments: string[] } };
+
+function resolveSoftwareSlug(segments: string[]): string {
+  return segments[segments.length - 1] ?? "";
+}
 
 export async function generateStaticParams() {
   const slugs = await fetchPublishedProductSlugs();
   const softwareSlugs = softwareSolutions.map((item) => item.slug);
-  return Array.from(new Set([...slugs, ...softwareSlugs])).map((slug) => ({ slug }));
+  const nested = await fetchNestedSoftwarePaths();
+
+  const topLevel = Array.from(new Set([...slugs, ...softwareSlugs])).map((slug) => ({
+    segments: [slug],
+  }));
+  const nestedRoutes = nested.map(({ parent, slug }) => ({
+    segments: [parent, slug],
+  }));
+
+  return [...topLevel, ...nestedRoutes];
 }
 
 export async function generateMetadata({ params }: Props) {
-  const resolved = await fetchProductPage(params.slug);
-  const software = getSoftwareBySlug(params.slug);
+  const slug = resolveSoftwareSlug(params.segments);
+  const resolved = await fetchProductPage(slug);
+  const software = getSoftwareBySlug(slug);
 
   if (resolved) {
     return buildMetadata({
@@ -51,12 +68,27 @@ export async function generateMetadata({ params }: Props) {
 }
 
 export default async function SoftwareDetailPage({ params }: Props) {
-  const resolved = await fetchProductPage(params.slug);
+  const slug = resolveSoftwareSlug(params.segments);
+  const resolved = await fetchProductPage(slug);
+
   if (resolved) {
+    if (params.segments.length === 2) {
+      const expectedPrefix = `/software/${params.segments[0]}`;
+      if (!resolved.page.canonicalPath.startsWith(expectedPrefix)) {
+        notFound();
+      }
+    } else if (params.segments.length !== 1) {
+      notFound();
+    }
+
     return <ProductPageView {...resolved} />;
   }
 
-  const software = getSoftwareBySlug(params.slug);
+  if (params.segments.length !== 1) {
+    notFound();
+  }
+
+  const software = getSoftwareBySlug(slug);
   if (!software) notFound();
 
   return (

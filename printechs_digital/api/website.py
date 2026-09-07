@@ -84,6 +84,22 @@ def get_product_slugs():
 
 
 @frappe.whitelist(allow_guest=True)
+def get_nested_software_paths():
+	rows = frappe.get_all(
+		"Website Product",
+		filters={"published": 1, "parent_software": ["is", "set"]},
+		fields=["slug", "parent_software"],
+		order_by="modified desc",
+	)
+	paths = []
+	for row in rows:
+		parent_slug = frappe.db.get_value("Website Product", row.parent_software, "slug")
+		if parent_slug and row.slug:
+			paths.append({"parent": parent_slug, "slug": row.slug})
+	return paths
+
+
+@frappe.whitelist(allow_guest=True)
 def get_quote_context(slug: str):
 	name = frappe.db.get_value("Website Product", {"slug": slug, "published": 1}, "name")
 	if not name:
