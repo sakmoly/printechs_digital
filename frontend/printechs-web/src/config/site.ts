@@ -14,10 +14,6 @@ export const siteConfig = {
     label: "WhatsApp",
     href: "https://wa.me/966550733441",
   },
-  headerEmail: {
-    label: "Email",
-    href: "mailto:info@printechs.com",
-  },
   /** Homepage hero default. */
   primaryCta: {
     label: "Contact",
@@ -53,8 +49,6 @@ export const siteConfig = {
     { label: "Software", href: "/software" },
     { label: "Success Stories", href: "/success-stories" },
     { label: "Company", href: "/company" },
-    { label: "Our Location", href: "/contact#locations" },
-    { label: "Email", href: "mailto:info@printechs.com" },
   ],
   footer: {
     columns: [
