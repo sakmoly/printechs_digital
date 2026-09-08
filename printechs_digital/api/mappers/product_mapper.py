@@ -4,7 +4,7 @@ import re
 from urllib.parse import quote, unquote
 
 import frappe
-from frappe.utils import cstr, get_url, strip_html
+from frappe.utils import cint, cstr, get_url, strip_html
 
 from printechs_digital.constants.product_page_sections import DEFAULT_PAGE_SECTION_ORDER
 
@@ -75,11 +75,12 @@ def map_cta_placement(value: str | None) -> str:
 	return "above_demo_bar"
 
 
-def map_image_side(value: str | None, index: int) -> str:
+def map_image_side(value: str | None, index: int) -> str | None:
+	"""Use Desk Left/Right when set. Empty lets the page alternate in the list it renders."""
 	raw = cstr(value).strip().lower()
 	if raw in ("left", "right"):
 		return raw
-	return "right" if index % 2 == 1 else "left"
+	return None
 
 
 def media_asset(path: str | None, alt: str, width: int = 1200, height: int = 1200) -> dict | None:
@@ -113,10 +114,43 @@ def map_page_section_order(doc) -> list[str]:
 	return list(DEFAULT_PAGE_SECTION_ORDER)
 
 
+def _row_sort_tuple(row, field: str = "sort_order") -> tuple[int, int]:
+	"""Use Sort Order when set; otherwise the Desk table row (idx)."""
+	idx = cint(row.get("idx"))
+	raw = row.get(field)
+	if raw in (None, ""):
+		return (idx, idx)
+	order = cint(raw)
+	if order <= 0:
+		return (idx, idx)
+	return (order, idx)
+
+
 def sorted_rows(rows: list | None, field: str = "sort_order") -> list:
 	if not rows:
 		return []
-	return sorted(rows, key=lambda row: (row.get(field) or 0, row.idx or 0))
+	return sorted(rows, key=lambda row: _row_sort_tuple(row, field))
+
+
+def sorted_content_sections(rows: list | None) -> list:
+	"""Keep Industry and Core lists in Desk table order (No. / idx)."""
+	if not rows:
+		return []
+	grouped: dict[str, list] = {}
+	seen_types: list[str] = []
+	for row in rows:
+		key = cstr(getattr(row, "section_type", None)).strip() or "Industry Solution"
+		if key not in grouped:
+			grouped[key] = []
+			seen_types.append(key)
+		grouped[key].append(row)
+	preferred = ["Industry Solution", "Core Module"]
+	type_order = [key for key in preferred if key in grouped]
+	type_order.extend(key for key in seen_types if key not in preferred)
+	ordered: list = []
+	for key in type_order:
+		ordered.extend(sorted(grouped[key], key=lambda row: cint(row.get("idx"))))
+	return ordered
 
 
 def normalize_icon(icon: str | None) -> str | None:
@@ -412,7 +446,7 @@ def map_website_product(doc) -> dict:
 	package_contents = [row.item_description for row in sorted_rows(doc.package_contents)]
 
 	content_sections = []
-	for idx, row in enumerate(sorted_rows(doc.get("content_sections"))):
+	for idx, row in enumerate(sorted_content_sections(doc.get("content_sections"))):
 		heading = cstr(row.heading).strip()
 		body = html_to_paragraphs(row.body)
 		if not heading or not body:
@@ -424,6 +458,7 @@ def map_website_product(doc) -> dict:
 			"sectionType": "core_module" if section_type == "Core Module" else "industry_solution",
 			"image": media_asset(row.image, row.image_alt or heading, 1600, 1000),
 			"imageSide": map_image_side(getattr(row, "image_side", None), idx),
+			"sortOrder": cint(row.idx) or cint(row.sort_order) or idx + 1,
 			"videoUrl": cstr(row.video_url).strip() or None,
 		}
 		link_href = cstr(row.link_href).strip()

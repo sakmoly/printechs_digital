@@ -5,7 +5,7 @@ import re
 import frappe
 from frappe import _
 from frappe.model.document import Document
-from frappe.utils import cstr, strip_html
+from frappe.utils import cint, cstr, strip_html
 
 from printechs_digital.constants.product_page_sections import PAGE_SECTION_LABELS
 
@@ -137,7 +137,13 @@ class WebsiteProduct(Document):
 		validate_child_table(self, "tour_sections", "image", "Tour Screenshot")
 		validate_child_table(self, "visual_story_items", "image", "Visual Story Image")
 		validate_child_table(self, "downloads", "file", "Download File")
+		self.sync_content_section_sort_order()
 		self.validate_page_section_order()
+
+	def sync_content_section_sort_order(self):
+		"""Keep Sort Order equal to the Desk row number (No. / idx)."""
+		for row in self.get("content_sections") or []:
+			row.sort_order = cint(row.idx)
 
 	def validate_page_section_order(self):
 		rows = self.get("page_section_order") or []

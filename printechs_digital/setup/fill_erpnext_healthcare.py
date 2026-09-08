@@ -69,7 +69,7 @@ def _link_parent_healthcare_section(parent_name: str):
 		if (row.heading or "").strip().lower() != "healthcare":
 			continue
 		row.body = PARENT_TEASER
-		row.link_label = ""
+		row.link_label = "Explore Healthcare ERP"
 		row.link_href = HEALTHCARE_PATH
 		updated = True
 		break

@@ -15,7 +15,7 @@
   {"description": "Optional YouTube URL", "fieldname": "video_url", "fieldtype": "Data", "label": "Video URL"},
   {"fieldname": "link_label", "fieldtype": "Data", "label": "Link Label"},
   {"fieldname": "link_href", "fieldtype": "Data", "label": "Link URL"},
-  {"fieldname": "sort_order", "fieldtype": "Int", "label": "Sort Order"}
+  {"description": "Same as the No. column. The website follows this table order: Industry rows together, Core Module rows together.", "fieldname": "sort_order", "fieldtype": "Int", "label": "Sort Order"}
  ],
  "istable": 1,
  "module": "Printechs Digital",

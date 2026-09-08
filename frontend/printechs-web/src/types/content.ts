@@ -160,6 +160,7 @@ export type ProductContentSection = {
   sectionType?: ProductContentSectionType;
   image?: MediaAsset;
   imageSide?: "left" | "right";
+  sortOrder?: number;
   videoUrl?: string;
   link?: { label: string; href: string };
 };

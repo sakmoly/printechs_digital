@@ -58,6 +58,22 @@ type SectionRenderContext = {
   relatedImageSpec: (typeof IMAGE_SPECS)[keyof typeof IMAGE_SPECS];
 };
 
+function sortContentSections<T extends { heading: string; sortOrder?: number }>(
+  sections: T[],
+): T[] {
+  return sections
+    .map((section, index) => ({ section, index }))
+    .sort((left, right) => {
+      const leftOrder = left.section.sortOrder ?? 0;
+      const rightOrder = right.section.sortOrder ?? 0;
+      const leftKey = leftOrder > 0 ? leftOrder : left.index + 1000;
+      const rightKey = rightOrder > 0 ? rightOrder : right.index + 1000;
+      if (leftKey !== rightKey) return leftKey - rightKey;
+      return left.index - right.index;
+    })
+    .map(({ section }) => section);
+}
+
 function applicationSectionTitle(page: ProductPageContent): string {
   const category = page.category.toLowerCase();
   if (category.includes("warehouse")) return "Built for warehouse operations";
@@ -196,9 +212,10 @@ function renderProductPageSection(
     case "capability_modules":
       if (!page.capabilityModules?.length) return null;
       {
-        const coreSections =
+        const coreSections = sortContentSections(
           page.contentSections?.filter((section) => section.sectionType === "core_module") ??
-          [];
+            [],
+        );
         const coreByHeading = new Map(
           coreSections.map((section) => [section.heading.trim().toLowerCase(), section]),
         );
@@ -278,10 +295,11 @@ function renderProductPageSection(
       );
 
     case "content_sections": {
-      const industrySections =
+      const industrySections = sortContentSections(
         page.contentSections?.filter(
           (section) => section.sectionType !== "core_module",
-        ) ?? [];
+        ) ?? [],
+      );
       if (!industrySections.length) return null;
       return <ProductContentSections sections={industrySections} />;
     }
