@@ -31,6 +31,7 @@ import {
   type ProductPageSectionKey,
 } from "@/lib/product-page-section-order";
 import type { ProductPageContent } from "@/types/content";
+import { coreSectionAnchorId } from "@/lib/section-anchor";
 
 type ProductPageViewProps = ResolvedProductPage;
 
@@ -177,17 +178,49 @@ function renderProductPageSection(
 
     case "capability_modules":
       if (!page.capabilityModules?.length) return null;
-      return (
-        <>
-          <ProductSectionHeader
-            eyebrow="Platform modules"
-            title="What this platform helps you manage"
-          />
-          <div className="mt-6">
-            <ProductCapabilityGrid modules={page.capabilityModules} />
-          </div>
-        </>
-      );
+      {
+        const coreSections =
+          page.contentSections?.filter((section) => section.sectionType === "core_module") ??
+          [];
+        const coreByHeading = new Map(
+          coreSections.map((section) => [section.heading.trim().toLowerCase(), section]),
+        );
+        const modules = page.capabilityModules.map((module) => {
+          const match = coreByHeading.get(module.title.trim().toLowerCase());
+          const href = match?.link?.href
+            ? match.link.href
+            : match
+              ? `#${coreSectionAnchorId(module.title)}`
+              : undefined;
+          return { ...module, href };
+        });
+
+        return (
+          <>
+            <ProductSectionHeader
+              eyebrow="Platform modules"
+              title="What this platform helps you manage"
+            />
+            <div className="mt-6">
+              <ProductCapabilityGrid modules={modules} />
+            </div>
+            {coreSections.length ? (
+              <div className="mt-12 lg:mt-16">
+                <ProductSectionHeader
+                  eyebrow="Core platform"
+                  title="Explore each ERPNext module"
+                />
+                <div className="mt-10">
+                  <ProductContentSections
+                    sections={coreSections}
+                    eyebrow="Core platform"
+                  />
+                </div>
+              </div>
+            ) : null}
+          </>
+        );
+      }
 
     case "software_capabilities":
       if (!page.softwareCapabilities?.length || page.capabilityModules?.length) return null;
@@ -224,9 +257,14 @@ function renderProductPageSection(
         </>
       );
 
-    case "content_sections":
-      if (!page.contentSections?.length) return null;
-      return <ProductContentSections sections={page.contentSections} />;
+    case "content_sections": {
+      const industrySections =
+        page.contentSections?.filter(
+          (section) => section.sectionType !== "core_module",
+        ) ?? [];
+      if (!industrySections.length) return null;
+      return <ProductContentSections sections={industrySections} />;
+    }
 
     case "ecosystem":
       if (!ecosystemItems.length) return null;

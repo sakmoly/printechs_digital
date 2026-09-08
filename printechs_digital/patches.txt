@@ -25,3 +25,7 @@ printechs_digital.patches.v1_0.add_hero_custom_ctas
 printechs_digital.patches.v1_0.add_show_quote_in_product_tour
 printechs_digital.patches.v1_0.add_parent_software
 printechs_digital.patches.v1_0.add_show_quote_in_hero
+printechs_digital.patches.v1_0.add_content_section_type
+printechs_digital.patches.v1_0.add_erpnext_finance_page
+printechs_digital.patches.v1_0.add_erpnext_core_module_pages
+printechs_digital.patches.v1_0.add_image_side_on_sections

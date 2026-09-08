@@ -1,8 +1,9 @@
-import Link from "next/link";
 import type { ProductContentSection } from "@/types/content";
 import { ImageFrame } from "@/components/media/ImageFrame";
 import { IMAGE_SPECS } from "@/lib/image-specs";
 import { ProductSectionHeader } from "@/components/products/ProductSectionHeader";
+import { coreSectionAnchorId, sectionAnchorId } from "@/lib/section-anchor";
+import { withBasePath } from "@/lib/paths";
 
 function youtubeEmbedSrc(url: string): string | null {
   try {
@@ -20,30 +21,30 @@ function youtubeEmbedSrc(url: string): string | null {
 
 type ProductContentSectionsProps = {
   sections: ProductContentSection[];
+  eyebrow?: string;
 };
 
-function sectionAnchorId(heading: string): string {
-  return heading
-    .toLowerCase()
-    .replace(/&/g, "")
-    .replace(/[^\w\s-]/g, "")
-    .trim()
-    .replace(/[\s_]+/g, "-")
-    .replace(/-+/g, "-");
-}
-
-export function ProductContentSections({ sections }: ProductContentSectionsProps) {
+export function ProductContentSections({
+  sections,
+  eyebrow = "In more detail",
+}: ProductContentSectionsProps) {
   return (
     <div className="space-y-12 lg:space-y-16">
       {sections.map((section, index) => {
         const embedSrc = section.videoUrl ? youtubeEmbedSrc(section.videoUrl) : null;
         const hasMedia = Boolean(section.image || embedSrc);
-        const imageOnRight = index % 2 === 1;
+        const imageOnRight = section.imageSide
+          ? section.imageSide === "right"
+          : index % 2 === 1;
 
         return (
           <article
             key={section.heading}
-            id={sectionAnchorId(section.heading)}
+            id={
+              section.sectionType === "core_module"
+                ? coreSectionAnchorId(section.heading)
+                : sectionAnchorId(section.heading)
+            }
             className={
               hasMedia
                 ? "scroll-mt-28 grid items-center gap-8 lg:grid-cols-2 lg:gap-12"
@@ -82,19 +83,25 @@ export function ProductContentSections({ sections }: ProductContentSectionsProps
             </div>
             ) : null}
             <div className={imageOnRight && hasMedia ? "lg:order-1" : ""}>
-              <ProductSectionHeader eyebrow="In more detail" title={section.heading} />
+              <ProductSectionHeader eyebrow={eyebrow} title={section.heading} />
               <div className="mt-5 max-w-xl space-y-4 text-base leading-relaxed text-slate">
                 {section.body.split("\n\n").map((paragraph) => (
                   <p key={paragraph.slice(0, 48)}>{paragraph}</p>
                 ))}
               </div>
-              {section.link ? (
-                <Link
-                  href={section.link.href}
+              {section.link?.href && section.link.label ? (
+                <a
+                  href={
+                    section.link.href.startsWith("#") ||
+                    section.link.href.startsWith("http") ||
+                    section.link.href.startsWith("mailto:")
+                      ? section.link.href
+                      : withBasePath(section.link.href)
+                  }
                   className="mt-5 inline-flex text-sm font-semibold text-signal-deep underline-offset-4 hover:underline"
                 >
                   {section.link.label} →
-                </Link>
+                </a>
               ) : null}
             </div>
           </article>

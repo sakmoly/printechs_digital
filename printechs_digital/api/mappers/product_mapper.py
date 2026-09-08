@@ -55,6 +55,9 @@ def resolve_cta_href(href: str | None) -> str | None:
 	href = cstr(href).strip()
 	if href.startswith(("#", "mailto:", "tel:")):
 		return href
+	# Keep site-relative paths so the Next app can apply /newwebsite.
+	if href.startswith("/") and not href.startswith("//"):
+		return href
 	return absolute_url(href) or href
 
 
@@ -70,6 +73,13 @@ def map_cta_placement(value: str | None) -> str:
 	if cstr(value).strip().lower() == "below demo bar":
 		return "below_demo_bar"
 	return "above_demo_bar"
+
+
+def map_image_side(value: str | None, index: int) -> str:
+	raw = cstr(value).strip().lower()
+	if raw in ("left", "right"):
+		return raw
+	return "right" if index % 2 == 1 else "left"
 
 
 def media_asset(path: str | None, alt: str, width: int = 1200, height: int = 1200) -> dict | None:
@@ -402,19 +412,24 @@ def map_website_product(doc) -> dict:
 	package_contents = [row.item_description for row in sorted_rows(doc.package_contents)]
 
 	content_sections = []
-	for row in sorted_rows(doc.get("content_sections")):
+	for idx, row in enumerate(sorted_rows(doc.get("content_sections"))):
 		heading = cstr(row.heading).strip()
 		body = html_to_paragraphs(row.body)
 		if not heading or not body:
 			continue
+		section_type = cstr(getattr(row, "section_type", None)).strip() or "Industry Solution"
 		section = {
 			"heading": heading,
 			"body": body,
+			"sectionType": "core_module" if section_type == "Core Module" else "industry_solution",
 			"image": media_asset(row.image, row.image_alt or heading, 1600, 1000),
+			"imageSide": map_image_side(getattr(row, "image_side", None), idx),
 			"videoUrl": cstr(row.video_url).strip() or None,
 		}
-		if row.link_label and row.link_href:
-			section["link"] = {"label": row.link_label, "href": row.link_href}
+		link_href = cstr(row.link_href).strip()
+		link_label = cstr(row.link_label).strip()
+		if link_href:
+			section["link"] = {"label": link_label, "href": link_href}
 		content_sections.append(section)
 
 	product_tour = None
@@ -440,6 +455,7 @@ def map_website_product(doc) -> dict:
 						1000,
 					),
 					"ctaPlacement": map_cta_placement(getattr(row, "cta_placement", None)),
+					"imageSide": map_image_side(getattr(row, "image_side", None), idx),
 					"sortOrder": row.sort_order or idx + 1,
 				}
 			)

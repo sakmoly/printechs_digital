@@ -12,6 +12,7 @@
   "features",
   "image",
   "image_alt",
+  "image_side",
   "sort_order"
  ],
  "fields": [
@@ -62,6 +63,14 @@
    "fieldname": "image_alt",
    "fieldtype": "Data",
    "label": "Screenshot Alt Text"
+  },
+  {
+   "description": "Screenshot on the left or right of the text. Empty = alternate by sort order (1 left, 2 right, 3 left).",
+   "fieldname": "image_side",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Image Side",
+   "options": "\nLeft\nRight"
   },
   {
    "fieldname": "sort_order",

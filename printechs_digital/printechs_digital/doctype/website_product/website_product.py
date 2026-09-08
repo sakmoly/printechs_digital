@@ -108,7 +108,12 @@ class WebsiteProduct(Document):
 		if self.brand and not self.brand_name:
 			self.brand_name = self.brand
 
-		if self.product_type == "Software":
+		if self.product_type == "Software" and self.parent_software:
+			parent_slug = frappe.db.get_value("Website Product", self.parent_software, "slug")
+			self.canonical_path = (
+				f"/software/{parent_slug}/{self.slug}" if parent_slug else f"/software/{self.slug}"
+			)
+		elif self.product_type == "Software":
 			self.canonical_path = f"/software/{self.slug}"
 		else:
 			self.canonical_path = f"/products/{self.slug}"

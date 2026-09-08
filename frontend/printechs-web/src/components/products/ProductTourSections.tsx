@@ -95,7 +95,9 @@ function TourSectionBlock({
   onOpenLightbox: () => void;
   onImageError: (sectionId: string) => void;
 }) {
-  const imageOnRight = index % 2 === 1;
+  const imageOnRight = section.imageSide
+    ? section.imageSide === "right"
+    : index % 2 === 1;
 
   return (
     <article className="grid items-center gap-8 lg:grid-cols-2 lg:gap-12">
@@ -247,7 +249,7 @@ export function ProductTourSections({
   const showDemoCta = above.length > 0 || below.length > 0;
 
   return (
-    <div>
+    <div id="product-tour" className="scroll-mt-28">
       <ProductSectionHeader
         eyebrow="Product tour"
         title={tour.heading}

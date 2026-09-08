@@ -12,6 +12,7 @@ import { Card } from "@/components/ui/Card";
 import { FeatureGrid } from "@/components/ui/FeatureGrid";
 import { ImageFrame } from "@/components/media/ImageFrame";
 import { IMAGE_SPECS } from "@/lib/image-specs";
+import { withBasePath } from "@/lib/paths";
 
 /** Mockup-style benefit row: large icon left, text right, 4 columns */
 export function ProductBenefitIcons({ items }: { items: KeyValueCard[] }) {
@@ -61,32 +62,64 @@ export function ProductIconSpecGrid({ items }: { items: IconSpecification[] }) {
   );
 }
 
-export function ProductCapabilityGrid({ modules }: { modules: CapabilityModule[] }) {
+export function ProductCapabilityGrid({
+  modules,
+}: {
+  modules: Array<CapabilityModule & { href?: string }>;
+}) {
   return (
     <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {modules.map((module) => (
-        <li
-          key={module.title}
-          className="rounded-md border border-line bg-gradient-to-b from-product-icon/5 to-white p-5 shadow-soft"
-        >
-          <div className="flex items-center gap-3">
-            {module.icon ? (
-              <ProductIconFrame name={module.icon} variant="benefit" />
+      {modules.map((module) => {
+        const card = (
+          <>
+            <div className="flex items-center gap-3">
+              {module.icon ? (
+                <ProductIconFrame name={module.icon} variant="benefit" />
+              ) : null}
+              <h3 className="font-display text-lg font-semibold text-ink">
+                {module.title}
+              </h3>
+            </div>
+            <ul className="mt-4 space-y-2">
+              {module.items.map((item) => (
+                <li key={item} className="flex gap-2 text-sm text-slate">
+                  <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-product-icon" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+            {module.href ? (
+              <span className="mt-4 inline-flex text-sm font-semibold text-signal-deep">
+                Learn more →
+              </span>
             ) : null}
-            <h3 className="font-display text-lg font-semibold text-ink">
-              {module.title}
-            </h3>
-          </div>
-          <ul className="mt-4 space-y-2">
-            {module.items.map((item) => (
-              <li key={item} className="flex gap-2 text-sm text-slate">
-                <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-product-icon" />
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-        </li>
-      ))}
+          </>
+        );
+
+        const cardClassName =
+          "block h-full rounded-md border border-line bg-gradient-to-b from-product-icon/5 to-white p-5 shadow-soft transition duration-300 hover:-translate-y-0.5 hover:border-product-icon/25 hover:shadow-lift focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-signal";
+        const resolvedHref = module.href
+          ? module.href.startsWith("#") ||
+            module.href.startsWith("http") ||
+            module.href.startsWith("mailto:")
+            ? module.href
+            : withBasePath(module.href)
+          : undefined;
+
+        return (
+          <li key={module.title}>
+            {resolvedHref ? (
+              <a href={resolvedHref} className={cardClassName}>
+                {card}
+              </a>
+            ) : (
+              <div className="h-full rounded-md border border-line bg-gradient-to-b from-product-icon/5 to-white p-5 shadow-soft">
+                {card}
+              </div>
+            )}
+          </li>
+        );
+      })}
     </ul>
   );
 }

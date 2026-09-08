@@ -152,10 +152,14 @@ export type ProductReference = {
   image?: MediaAsset;
 };
 
+export type ProductContentSectionType = "core_module" | "industry_solution";
+
 export type ProductContentSection = {
   heading: string;
   body: string;
+  sectionType?: ProductContentSectionType;
   image?: MediaAsset;
+  imageSide?: "left" | "right";
   videoUrl?: string;
   link?: { label: string; href: string };
 };
@@ -167,6 +171,7 @@ export type ProductTourSection = {
   description: string;
   features: string[];
   image?: MediaAsset;
+  imageSide?: "left" | "right";
   ctaPlacement?: "above_demo_bar" | "below_demo_bar";
   sortOrder?: number;
 };
