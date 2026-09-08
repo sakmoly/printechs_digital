@@ -21,6 +21,17 @@ import { FeatureGrid } from "@/components/ui/FeatureGrid";
 import { ImageFrame } from "@/components/media/ImageFrame";
 import { IMAGE_SPECS } from "@/lib/image-specs";
 import { ProductContentSections } from "@/components/products/ProductContentSections";
+import {
+  ModuleAudience,
+  ModuleConnectionHub,
+  ModuleDashboard,
+  ModuleImplementationCta,
+  ModuleIntegration,
+  ModuleKeyFeatures,
+  ModuleLocalization,
+  ModuleProcessSteps,
+  ModuleReports,
+} from "@/components/products/ModuleStorySections";
 import { ProductFaq } from "@/components/products/ProductFaq";
 import { ProductPageTracker } from "@/components/analytics/ProductPageTracker";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -104,7 +115,7 @@ function renderProductPageSection(
       return (
         <>
           <ProductSectionHeader
-            eyebrow="Product overview"
+            eyebrow="Module overview"
             title={page.storyHeading ?? "Built for your operation"}
           />
           <div className="mt-5 max-w-3xl space-y-4 text-base leading-relaxed text-slate">
@@ -112,7 +123,13 @@ function renderProductPageSection(
               <p key={paragraph.slice(0, 48)}>{paragraph}</p>
             ))}
           </div>
-          {brand ? (
+          {page.connectionHeading ? (
+            <p className="mt-8 font-display text-xl font-semibold text-ink">
+              {page.connectionHeading}
+            </p>
+          ) : null}
+          <ModuleConnectionHub page={page} />
+          {brand && !page.connectionItems?.length ? (
             <p className="mt-5 text-sm leading-relaxed text-slate">
               Supplied and supported by Printechs across Saudi Arabia.
             </p>
@@ -244,12 +261,15 @@ function renderProductPageSection(
       );
 
     case "applications":
+      if (page.audienceItems?.length) {
+        return <ModuleAudience page={page} />;
+      }
       if (!applicationCards.length) return null;
       return (
         <>
           <ProductSectionHeader
             eyebrow="Applications"
-            title={applicationSectionTitle(page)}
+            title={page.audienceHeading ?? applicationSectionTitle(page)}
           />
           <div className="mt-6">
             <ProductApplicationCards cards={applicationCards} />
@@ -281,10 +301,14 @@ function renderProductPageSection(
       if (!page.supportServiceItems?.length) return null;
       return (
         <>
-          <ProductSectionHeader eyebrow="Services & support" title="Support & services" />
+          <ProductSectionHeader
+            eyebrow="Printechs implementation"
+            title={page.implementationHeading ?? "Support & services"}
+          />
           <div className="mt-6">
             <ProductSupportGrid items={page.supportServiceItems} />
           </div>
+          <ModuleImplementationCta page={page} />
         </>
       );
 
@@ -329,6 +353,9 @@ function renderProductPageSection(
 
     case "related_products":
       if (!page.relatedProducts?.length) return null;
+      if (page.integrationHeading) {
+        return <ModuleIntegration page={page} />;
+      }
       return (
         <>
           <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
@@ -370,6 +397,26 @@ function renderProductPageSection(
           </FeatureGrid>
         </>
       );
+
+    case "key_features":
+      if (!page.keyFeatures?.length) return null;
+      return <ModuleKeyFeatures page={page} />;
+
+    case "process_steps":
+      if (!page.processSteps?.length) return null;
+      return <ModuleProcessSteps page={page} />;
+
+    case "localization":
+      if (!page.localizationHeading && !page.localizationBody) return null;
+      return <ModuleLocalization page={page} />;
+
+    case "reports":
+      if (!page.reportItems?.length && !page.reportsImage) return null;
+      return <ModuleReports page={page} />;
+
+    case "dashboard":
+      if (!page.dashboardHeading && !page.dashboardBody) return null;
+      return <ModuleDashboard page={page} />;
 
     case "faqs":
       if (!page.faqs?.length) return null;
@@ -470,7 +517,11 @@ export function ProductPageView({
       page.packageContents?.length ||
       page.relatedProducts?.length ||
       page.contentSections?.length ||
-      page.faqs?.length,
+      page.faqs?.length ||
+      page.keyFeatures?.length ||
+      page.processSteps?.length ||
+      page.audienceItems?.length ||
+      page.reportItems?.length,
   );
 
   return (
@@ -494,7 +545,13 @@ export function ProductPageView({
         return (
           <Section
             key={sectionKey}
-            id={sectionKey === "applications" ? "applications" : undefined}
+            id={
+              sectionKey === "applications"
+                ? "applications"
+                : sectionKey === "capability_modules"
+                  ? "modules"
+                  : undefined
+            }
             pad="compact"
             tone={nextTone()}
           >
@@ -522,7 +579,7 @@ export function ProductPageView({
               </div>
               <div className="flex shrink-0 flex-wrap gap-3 lg:justify-end">
                 <Button
-                  href={quoteUrl}
+                  href={page.finalCta?.primary?.href || quoteUrl}
                   variant="on-dark"
                   analyticsEvent="request_quote_click"
                   analyticsLocation="bottom_cta"
@@ -530,12 +587,17 @@ export function ProductPageView({
                   analyticsBrand={page.brand}
                   analyticsCategory={page.category}
                 >
-                  {page.productType === "software"
-                    ? "Talk to a Specialist →"
-                    : "Request Quote →"}
+                  {page.finalCta?.primary?.label ||
+                    (page.productType === "software"
+                      ? "Talk to a Specialist →"
+                      : "Request Quote →")}
                 </Button>
-                <Button href="/contact" variant="secondary" analyticsLocation="bottom_cta">
-                  Contact Printechs
+                <Button
+                  href={page.finalCta?.secondary?.href || "/contact"}
+                  variant="secondary"
+                  analyticsLocation="bottom_cta"
+                >
+                  {page.finalCta?.secondary?.label || "Contact Printechs"}
                 </Button>
               </div>
             </div>

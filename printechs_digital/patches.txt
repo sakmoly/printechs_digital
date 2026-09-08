@@ -29,3 +29,4 @@ printechs_digital.patches.v1_0.add_content_section_type
 printechs_digital.patches.v1_0.add_erpnext_finance_page
 printechs_digital.patches.v1_0.add_erpnext_core_module_pages
 printechs_digital.patches.v1_0.add_image_side_on_sections
+printechs_digital.patches.v1_0.add_module_page_cms

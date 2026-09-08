@@ -525,10 +525,88 @@ def map_website_product(doc) -> dict:
 		"pageSectionOrder": map_page_section_order(doc),
 		"faqs": faqs or None,
 		"relatedProducts": related_products or None,
+		"keyFeaturesHeading": cstr(getattr(doc, "key_features_heading", None)).strip() or None,
+		"keyFeatures": [
+			{
+				"title": row.title,
+				"description": row.description,
+				"icon": normalize_icon(row.icon),
+			}
+			for row in sorted_rows(doc.get("key_features"))
+			if row.title and row.description
+		]
+		or None,
+		"connectionHeading": cstr(getattr(doc, "connection_heading", None)).strip() or None,
+		"connectionCenterLabel": cstr(getattr(doc, "connection_center_label", None)).strip()
+		or None,
+		"connectionItems": [
+			{"title": row.title, "href": cstr(row.href).strip() or None}
+			for row in sorted_rows(doc.get("connection_items"))
+			if row.title
+		]
+		or None,
+		"processHeading": cstr(getattr(doc, "process_heading", None)).strip() or None,
+		"processSubheading": cstr(getattr(doc, "process_subheading", None)).strip() or None,
+		"processSteps": [
+			{
+				"groupTitle": row.group_title,
+				"title": row.title,
+				"description": cstr(row.description).strip() or None,
+			}
+			for row in sorted_rows(doc.get("process_steps"))
+			if row.group_title and row.title
+		]
+		or None,
+		"localizationHeading": cstr(getattr(doc, "localization_heading", None)).strip() or None,
+		"localizationBody": cstr(getattr(doc, "localization_body", None)).strip() or None,
+		"localizationChips": split_lines(getattr(doc, "localization_chips", None)) or None,
+		"reportsHeading": cstr(getattr(doc, "reports_heading", None)).strip() or None,
+		"reportsImage": media_asset(
+			getattr(doc, "reports_image", None),
+			cstr(getattr(doc, "reports_image_alt", None)).strip() or "Financial reports",
+			1600,
+			1000,
+		),
+		"reportItems": [
+			row.title
+			for row in sorted_rows(doc.get("report_items"))
+			if row.title
+		]
+		or None,
+		"dashboardHeading": cstr(getattr(doc, "dashboard_heading", None)).strip() or None,
+		"dashboardBody": cstr(getattr(doc, "dashboard_body", None)).strip() or None,
+		"dashboardImage": media_asset(
+			getattr(doc, "dashboard_image", None),
+			cstr(getattr(doc, "dashboard_image_alt", None)).strip() or "Management dashboard",
+			1600,
+			1000,
+		),
+		"audienceHeading": cstr(getattr(doc, "audience_heading", None)).strip() or None,
+		"audienceItems": [
+			{"title": row.title, "description": cstr(row.description).strip() or None}
+			for row in sorted_rows(doc.get("audience_items"))
+			if row.title
+		]
+		or None,
+		"integrationHeading": cstr(getattr(doc, "integration_heading", None)).strip() or None,
+		"implementationHeading": cstr(getattr(doc, "implementation_heading", None)).strip()
+		or None,
+		"implementationCta": map_hero_cta(
+			getattr(doc, "implementation_cta_label", None),
+			getattr(doc, "implementation_cta_href", None),
+		),
 		"finalCta": {
 			"heading": doc.final_cta_heading or f"Ready to deploy {doc.display_name}?",
 			"description": doc.final_cta_description
 			or "Contact Printechs for pricing, installation, and support across Saudi Arabia.",
+			"primary": map_hero_cta(
+				getattr(doc, "final_cta_primary_label", None),
+				getattr(doc, "final_cta_primary_href", None),
+			),
+			"secondary": map_hero_cta(
+				getattr(doc, "final_cta_secondary_label", None),
+				getattr(doc, "final_cta_secondary_href", None),
+			),
 		},
 		"seo": {
 			"title": doc.meta_title or f"{doc.display_name} | Printechs",

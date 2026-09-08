@@ -34,7 +34,7 @@ export function Section({
   return (
     <section
       id={id}
-      className={`${padClass[pad]} ${toneClass[tone]} ${className}`}
+      className={`${padClass[pad]} ${toneClass[tone]} ${id ? "scroll-mt-28" : ""} ${className}`}
     >
       {flush ? children : <Container>{children}</Container>}
     </section>

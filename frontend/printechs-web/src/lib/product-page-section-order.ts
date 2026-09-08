@@ -12,6 +12,11 @@ export const DEFAULT_PRODUCT_PAGE_SECTION_ORDER = [
   "downloads",
   "related_products",
   "faqs",
+  "key_features",
+  "process_steps",
+  "localization",
+  "reports",
+  "dashboard",
 ] as const;
 
 export type ProductPageSectionKey = (typeof DEFAULT_PRODUCT_PAGE_SECTION_ORDER)[number];
@@ -30,6 +35,11 @@ export const PRODUCT_PAGE_SECTION_LABELS: Record<ProductPageSectionKey, string> 
   downloads: "Downloads & Package",
   related_products: "Related Products",
   faqs: "FAQ",
+  key_features: "Key Features",
+  process_steps: "Process / Workflow",
+  localization: "Localization",
+  reports: "Reports",
+  dashboard: "Management Dashboard",
 };
 
 const SECTION_KEY_SET = new Set<string>(DEFAULT_PRODUCT_PAGE_SECTION_ORDER);

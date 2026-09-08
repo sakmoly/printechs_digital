@@ -1,0 +1,17 @@
+{
+ "actions": [],
+ "creation": "2026-09-08 00:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": ["title", "description", "sort_order"],
+ "fields": [
+  {"fieldname": "title", "fieldtype": "Data", "in_list_view": 1, "label": "Title", "reqd": 1},
+  {"fieldname": "description", "fieldtype": "Small Text", "label": "Description"},
+  {"fieldname": "sort_order", "fieldtype": "Int", "label": "Sort Order"}
+ ],
+ "istable": 1,
+ "module": "Printechs Digital",
+ "name": "Website Product Audience Item",
+ "permissions": []
+}

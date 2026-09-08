@@ -15,7 +15,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Section",
-   "options": "benefits\noverview\nproduct_tour\nicon_specifications\ncapability_modules\nsoftware_capabilities\napplications\ncontent_sections\necosystem\nsupport\ndownloads\nrelated_products\nfaqs",
+   "options": "benefits\noverview\nproduct_tour\nicon_specifications\ncapability_modules\nsoftware_capabilities\napplications\ncontent_sections\necosystem\nsupport\ndownloads\nrelated_products\nfaqs\nkey_features\nprocess_steps\nlocalization\nreports\ndashboard",
    "reqd": 1
   },
   {

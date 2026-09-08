@@ -47,6 +47,8 @@ class WebsiteProduct(Document):
 				("hero_image", f"product-{slug}-hero"),
 				("card_image", f"product-{slug}-card"),
 				("primary_download_file", f"product-{slug}-download"),
+				("reports_image", f"product-{slug}-reports"),
+				("dashboard_image", f"product-{slug}-dashboard"),
 			],
 		)
 		localize_child_table(
@@ -124,6 +126,8 @@ class WebsiteProduct(Document):
 				("hero_image", "Hero Image"),
 				("card_image", "Card Image"),
 				("primary_download_file", "Primary Download File"),
+				("reports_image", "Reports Image"),
+				("dashboard_image", "Dashboard Image"),
 			],
 		)
 		validate_child_table(self, "applications", "image", "Application Image")

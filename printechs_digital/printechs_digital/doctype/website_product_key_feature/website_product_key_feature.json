@@ -1,0 +1,18 @@
+{
+ "actions": [],
+ "creation": "2026-09-08 00:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": ["title", "description", "icon", "sort_order"],
+ "fields": [
+  {"fieldname": "title", "fieldtype": "Data", "in_list_view": 1, "label": "Feature Title", "reqd": 1},
+  {"fieldname": "description", "fieldtype": "Small Text", "label": "Feature Description", "reqd": 1},
+  {"fieldname": "icon", "fieldtype": "Select", "in_list_view": 1, "label": "Feature Icon", "options": "speed\nlines\nshield\nintegration\nbattery\nscan\nandroid\ncheckout\ninventory\nstore\nloyalty\ninstall\nconsumables\nmaintenance\ntraining\ndisplay\nconnectivity\ndurability\nzatca\ncloud\nreport\ndevice\nrugged\nprint"},
+  {"fieldname": "sort_order", "fieldtype": "Int", "label": "Sort Order"}
+ ],
+ "istable": 1,
+ "module": "Printechs Digital",
+ "name": "Website Product Key Feature",
+ "permissions": []
+}

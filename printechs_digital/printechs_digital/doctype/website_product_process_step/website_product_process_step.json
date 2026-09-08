@@ -1,0 +1,18 @@
+{
+ "actions": [],
+ "creation": "2026-09-08 00:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": ["group_title", "title", "description", "sort_order"],
+ "fields": [
+  {"description": "e.g. Sales, Procurement, Inventory", "fieldname": "group_title", "fieldtype": "Data", "in_list_view": 1, "label": "Group", "reqd": 1},
+  {"fieldname": "title", "fieldtype": "Data", "in_list_view": 1, "label": "Title", "reqd": 1},
+  {"description": "Use arrows in the title or description, e.g. Quotation \u2192 Sales Order \u2192 Invoice", "fieldname": "description", "fieldtype": "Text", "label": "Description"},
+  {"fieldname": "sort_order", "fieldtype": "Int", "label": "Sort Order"}
+ ],
+ "istable": 1,
+ "module": "Printechs Digital",
+ "name": "Website Product Process Step",
+ "permissions": []
+}

@@ -14,6 +14,11 @@ DEFAULT_PAGE_SECTION_ORDER = [
 	"downloads",
 	"related_products",
 	"faqs",
+	"key_features",
+	"process_steps",
+	"localization",
+	"reports",
+	"dashboard",
 ]
 
 PAGE_SECTION_LABELS = {
@@ -30,6 +35,11 @@ PAGE_SECTION_LABELS = {
 	"downloads": "Downloads & Package",
 	"related_products": "Related Products",
 	"faqs": "FAQ",
+	"key_features": "Key Features",
+	"process_steps": "Process / Workflow",
+	"localization": "Localization",
+	"reports": "Reports",
+	"dashboard": "Management Dashboard",
 }
 
 PAGE_SECTION_SELECT_OPTIONS = "\n".join(DEFAULT_PAGE_SECTION_ORDER)
