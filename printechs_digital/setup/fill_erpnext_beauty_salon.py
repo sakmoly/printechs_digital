@@ -10,7 +10,6 @@ from printechs_digital.setup.fill_erpnext import (
 )
 
 BEAUTY_PATH = "/software/erpnext/beauty-salon-management"
-WHATSAPP_HREF = "https://wa.me/966550733441"
 
 PARENT_TEASER = (
 	"Beauty Cloud manages the salon journey from booking and service execution to POS, "
@@ -584,8 +583,8 @@ def fill_erpnext_beauty_salon():
 	doc.set("related_products", [row for row in related if row.get("href")])
 
 	doc.implementation_heading = "Why Beauty Cloud?"
-	doc.implementation_cta_label = "WhatsApp Us"
-	doc.implementation_cta_href = WHATSAPP_HREF
+	doc.implementation_cta_label = "Talk to Our Team"
+	doc.implementation_cta_href = "/contact"
 	doc.set(
 		"support_items",
 		[
