@@ -34,6 +34,11 @@ const nextConfig = {
         destination: "/software/erpnext",
         permanent: true,
       },
+      {
+        source: "/software/erpnext/people-projects",
+        destination: "/software/erpnext/hr-project-management",
+        permanent: true,
+      },
     ];
   },
   images: {

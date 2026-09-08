@@ -23,10 +23,20 @@ from printechs_digital.api.website_cache import (
 	_cached_list_event_albums,
 )
 
+# Old nested slugs still linked from the ERPNext parent page / bookmarks.
+SOFTWARE_SLUG_ALIASES = {
+	"people-projects": "hr-project-management",
+}
+
+
+def _resolve_product_slug(slug: str) -> str:
+	return SOFTWARE_SLUG_ALIASES.get((slug or "").strip(), slug)
+
 
 @frappe.whitelist(allow_guest=True)
 def get_product(slug: str):
 	"""Return published Website Product as frontend ProductPageContent."""
+	slug = _resolve_product_slug(slug)
 	name = frappe.db.get_value("Website Product", {"slug": slug, "published": 1}, "name")
 	if not name:
 		frappe.throw("Product not found", frappe.DoesNotExistError)
@@ -80,6 +90,9 @@ def get_product_slugs():
 		pluck="slug",
 		order_by="modified desc",
 	)
+	for old_slug, new_slug in SOFTWARE_SLUG_ALIASES.items():
+		if new_slug in rows and old_slug not in rows:
+			rows.append(old_slug)
 	return rows
 
 
@@ -96,11 +109,15 @@ def get_nested_software_paths():
 		parent_slug = frappe.db.get_value("Website Product", row.parent_software, "slug")
 		if parent_slug and row.slug:
 			paths.append({"parent": parent_slug, "slug": row.slug})
+			for old_slug, new_slug in SOFTWARE_SLUG_ALIASES.items():
+				if row.slug == new_slug:
+					paths.append({"parent": parent_slug, "slug": old_slug})
 	return paths
 
 
 @frappe.whitelist(allow_guest=True)
 def get_quote_context(slug: str):
+	slug = _resolve_product_slug(slug)
 	name = frappe.db.get_value("Website Product", {"slug": slug, "published": 1}, "name")
 	if not name:
 		frappe.throw("Product not found", frappe.DoesNotExistError)

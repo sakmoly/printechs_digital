@@ -74,7 +74,7 @@ def fill_erpnext_finance():
 	doc.brand = "Printechs"
 	doc.category = "ERP Software"
 	doc.subcategory = "Finance & Accounting"
-	doc.category_label = "ERPNEXT FINANCE"
+	doc.category_label = "ERPNext Core Module"
 	doc.tagline = "One financial system connected to your entire business"
 	doc.short_description = (
 		"Connect accounting, receivables, payables, banking, VAT, ZATCA e-invoicing "
@@ -91,7 +91,7 @@ def fill_erpnext_finance():
 	doc.hero_image_alt = (
 		"ERPNext Finance dashboard showing receivables, payables and financial reports"
 	)
-	doc.hero_trust_chips = "General Ledger\nReceivables & Payables\nVAT & ZATCA\nReal-Time Reporting"
+	doc.hero_trust_chips = "General Ledger\nReceivables & Payables\nZATCA Integration\nReal-Time Reporting"
 	doc.use_custom_hero_ctas = 1
 	doc.hero_primary_cta_label = "Book a Consultation"
 	doc.hero_primary_cta_href = "/contact"
@@ -117,10 +117,11 @@ def fill_erpnext_finance():
 	doc.final_cta_primary_href = "/contact"
 	doc.final_cta_secondary_label = "Explore ERPNext"
 	doc.final_cta_secondary_href = "/software/erpnext#modules"
-	doc.meta_title = "ERPNext Finance & Accounting | Printechs"
+	doc.meta_title = "ERPNext Finance & Accounting Software Saudi Arabia | Printechs"
 	doc.meta_description = (
-		"ERPNext Finance with Printechs: one financial system connected to sales, purchasing, "
-		"inventory and payroll, with VAT, ZATCA workflows and real-time reporting in Saudi Arabia."
+		"ERPNext Finance and accounting software in Saudi Arabia: receivables, payables, "
+		"banking, VAT, ZATCA e-invoicing integration and financial reporting, connected to "
+		"sales, purchasing, inventory and payroll."
 	)
 	doc.canonical_path = FINANCE_PATH
 	doc.index_page = 1
@@ -162,8 +163,8 @@ def fill_erpnext_finance():
 			},
 			{
 				"icon": "zatca",
-				"title": "VAT & ZATCA E-Invoicing",
-				"description": "Support Saudi VAT requirements and connect business invoicing processes with ZATCA Phase 2 workflows.",
+				"title": "VAT & ZATCA e-invoicing integration",
+				"description": "Support Saudi VAT requirements and ZATCA e-invoicing integration from the same ERPNext invoices your team already posts.",
 				"sort_order": 5,
 			},
 			{
@@ -195,7 +196,7 @@ def fill_erpnext_finance():
 			{"title": "Sales → Finance", "href": "/software/erpnext/sales-purchase", "sort_order": 1},
 			{"title": "Purchase → Finance", "href": "/software/erpnext/sales-purchase", "sort_order": 2},
 			{"title": "Inventory → Finance", "href": "/software/erpnext/inventory", "sort_order": 3},
-			{"title": "Payroll → Finance", "href": "/software/erpnext/people-projects", "sort_order": 4},
+			{"title": "Payroll → Finance", "href": "/software/erpnext/hr-project-management", "sort_order": 4},
 			{"title": "Assets → Finance", "href": "/software/erpnext", "sort_order": 5},
 		],
 	)
@@ -343,9 +344,9 @@ def fill_erpnext_finance():
 		{"display_name_override": "Purchasing", "summary_override": "Orders, receipts and supplier bills", "href": "/software/erpnext/sales-purchase", "sort_order": 2},
 		{"display_name_override": "Inventory", "summary_override": "Stock valuation and movements", "href": "/software/erpnext/inventory", "sort_order": 3},
 		{"display_name_override": "Manufacturing", "summary_override": "Material issue and finished goods", "href": "/software/erpnext/manufacturing-module", "sort_order": 4},
-		{"display_name_override": "HR & Payroll", "summary_override": "Salary liabilities and payments", "href": "/software/erpnext/people-projects", "sort_order": 5},
+		{"display_name_override": "HR & Payroll", "summary_override": "Salary liabilities and payments", "href": "/software/erpnext/hr-project-management", "sort_order": 5},
 		{"display_name_override": "Assets", "summary_override": "Purchase, depreciation and books", "href": "/software/erpnext", "sort_order": 6},
-		{"display_name_override": "Projects", "summary_override": "Timesheets, billing and cost", "href": "/software/erpnext/people-projects", "sort_order": 7},
+		{"display_name_override": "Projects", "summary_override": "Timesheets, billing and cost", "href": "/software/erpnext/hr-project-management", "sort_order": 7},
 		{"display_name_override": "CRM", "summary_override": "Customers and opportunities", "href": "/software/erpnext/sales-purchase", "sort_order": 8},
 	]
 	zatca_name = published_name("zatca-integration")
@@ -393,7 +394,7 @@ def fill_erpnext_finance():
 			},
 			{
 				"question": "Can ERPNext integrate with ZATCA?",
-				"answer": "<p>Printechs connects ERPNext sales documents to ZATCA Phase 2 workflows so e-invoices follow the same invoice your team already posts. Scope is agreed during implementation rather than assumed as a generic one-click certification.</p>",
+				"answer": "<p>Printechs can implement ZATCA e-invoicing integration from ERPNext sales documents. The exact scope is agreed during implementation, rather than assumed as automatic or full compliance for every case.</p>",
 				"sort_order": 3,
 			},
 			{
