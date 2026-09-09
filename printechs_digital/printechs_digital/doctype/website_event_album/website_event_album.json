@@ -38,7 +38,7 @@
   {"fieldname": "summary", "fieldtype": "Small Text", "label": "Summary"},
   {"fieldname": "description", "fieldtype": "Text Editor", "label": "Description"},
   {"fieldname": "media_section", "fieldtype": "Section Break", "label": "Photos"},
-  {"fieldname": "cover_image", "fieldtype": "Attach Image", "label": "Cover Image", "reqd": 1},
+  {"description": "Recommended size: 1600 × 900 px (16:9). Upload a file on this site (/files/...).", "fieldname": "cover_image", "fieldtype": "Attach Image", "label": "Cover Image", "reqd": 1},
   {"fieldname": "cover_image_alt", "fieldtype": "Data", "label": "Cover Image Alt Text"},
   {"fieldname": "gallery", "fieldtype": "Table", "label": "Gallery", "options": "Website Event Album Image"},
   {"fieldname": "seo_section", "fieldtype": "Section Break", "label": "SEO"},

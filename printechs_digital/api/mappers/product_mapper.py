@@ -326,6 +326,36 @@ def map_capability_modules(rows: list | None) -> list:
 	return modules
 
 
+def _href_targets_product(href: str | None, doc) -> bool:
+	path = cstr(href).strip().split("?", 1)[0].split("#", 1)[0].rstrip("/")
+	slug = cstr(doc.slug).strip()
+	if not path or not slug:
+		return False
+	if path.endswith(f"/{slug}") or path == f"/{slug}":
+		return True
+	canonical = cstr(getattr(doc, "canonical_path", None)).rstrip("/")
+	return bool(canonical) and path.endswith(canonical)
+
+
+def resolve_product_video_url(doc) -> str | None:
+	own = cstr(getattr(doc, "video_url", None)).strip()
+	if own:
+		return own
+	slug = cstr(doc.slug).strip()
+	if not slug:
+		return None
+	rows = frappe.get_all(
+		"Website Product Content Section",
+		fields=["video_url", "link_href"],
+		filters={"video_url": ["!=", ""]},
+	)
+	for row in rows:
+		video = cstr(row.video_url).strip()
+		if video and _href_targets_product(row.link_href, doc):
+			return video
+	return None
+
+
 def map_website_product(doc) -> dict:
 	product_type = map_product_type(doc.product_type)
 	brand_name = doc.brand_name or doc.brand
@@ -530,6 +560,7 @@ def map_website_product(doc) -> dict:
 			"width": 1200,
 			"height": 1200,
 		},
+		"videoUrl": resolve_product_video_url(doc),
 		"heroTrustChips": split_lines(doc.hero_trust_chips) or None,
 		"primaryDownload": primary_download,
 		"heroCtas": hero_ctas,

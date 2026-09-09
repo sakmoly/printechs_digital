@@ -20,7 +20,7 @@
    "reqd": 1
   },
   {
-   "description": "Upload a file on this site. External links will not display on the website.",
+   "description": "Recommended size: 1200 × 800 px (3:2). Upload a file on this site (/files/...). External links will not display.",
    "fieldname": "image",
    "fieldtype": "Attach Image",
    "in_list_view": 1,

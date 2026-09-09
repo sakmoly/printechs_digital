@@ -9,7 +9,7 @@
   {"default": "Industry Solution", "description": "Core Module appears under Platform modules. Industry Solution appears in the industry blocks below.", "fieldname": "section_type", "fieldtype": "Select", "in_list_view": 1, "label": "Section Type", "options": "Core Module\nIndustry Solution"},
   {"fieldname": "heading", "fieldtype": "Data", "in_list_view": 1, "label": "Heading", "reqd": 1},
   {"fieldname": "body", "fieldtype": "Text", "label": "Body", "reqd": 1},
-  {"description": "Upload a file on this site. External links will not display on the website.", "fieldname": "image", "fieldtype": "Attach Image", "label": "Image"},
+  {"description": "Recommended size: 1600 × 1000 px (16:10). Upload a file on this site (/files/...). External links will not display.", "fieldname": "image", "fieldtype": "Attach Image", "label": "Image"},
   {"fieldname": "image_alt", "fieldtype": "Data", "label": "Image Alt Text"},
   {"description": "Image on the left or right of the text. Empty = alternate by sort order (1 left, 2 right, 3 left).", "fieldname": "image_side", "fieldtype": "Select", "in_list_view": 1, "label": "Image Side", "options": "\nLeft\nRight"},
   {"description": "Optional YouTube URL", "fieldname": "video_url", "fieldtype": "Data", "label": "Video URL"},

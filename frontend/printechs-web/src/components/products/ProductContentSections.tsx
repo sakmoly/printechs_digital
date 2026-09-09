@@ -1,23 +1,11 @@
 import type { ProductContentSection } from "@/types/content";
 import { ImageFrame } from "@/components/media/ImageFrame";
+import { PosterVideo } from "@/components/media/PosterVideo";
 import { IMAGE_SPECS } from "@/lib/image-specs";
 import { ProductSectionHeader } from "@/components/products/ProductSectionHeader";
 import { coreSectionAnchorId, sectionAnchorId } from "@/lib/section-anchor";
 import { withBasePath } from "@/lib/paths";
-
-function youtubeEmbedSrc(url: string): string | null {
-  try {
-    const parsed = new URL(url);
-    if (parsed.hostname.includes("youtu.be")) {
-      const id = parsed.pathname.replace("/", "").trim();
-      return id ? `https://www.youtube.com/embed/${id}` : null;
-    }
-    const id = parsed.searchParams.get("v");
-    return id ? `https://www.youtube.com/embed/${id}` : null;
-  } catch {
-    return null;
-  }
-}
+import { youtubeVideoId } from "@/lib/youtube";
 
 type ProductContentSectionsProps = {
   sections: ProductContentSection[];
@@ -31,8 +19,8 @@ export function ProductContentSections({
   return (
     <div className="space-y-12 lg:space-y-16">
       {sections.map((section, index) => {
-        const embedSrc = section.videoUrl ? youtubeEmbedSrc(section.videoUrl) : null;
-        const hasMedia = Boolean(section.image || embedSrc);
+        const videoId = section.videoUrl ? youtubeVideoId(section.videoUrl) : null;
+        const hasMedia = Boolean(section.image || videoId);
         const imageOnRight = section.imageSide
           ? section.imageSide === "right"
           : index % 2 === 1;
@@ -53,7 +41,15 @@ export function ProductContentSections({
           >
             {hasMedia ? (
             <div className={imageOnRight ? "lg:order-2" : ""}>
-              {section.image ? (
+              {videoId ? (
+                <PosterVideo
+                  type="youtube"
+                  source={videoId}
+                  title={section.heading}
+                  poster={section.image?.src}
+                  className="overflow-hidden rounded-md border border-line"
+                />
+              ) : section.image ? (
                 <ImageFrame
                   src={section.image.src}
                   alt={section.image.alt}
@@ -64,21 +60,6 @@ export function ProductContentSections({
                   sizes="(max-width: 1024px) 100vw, 44rem"
                   showSizeLabel={false}
                 />
-              ) : null}
-              {embedSrc ? (
-                <div
-                  className={`overflow-hidden rounded-md border border-line bg-ink ${
-                    section.image ? "mt-4" : ""
-                  }`}
-                >
-                  <iframe
-                    src={embedSrc}
-                    title={section.heading}
-                    className="aspect-video w-full"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  />
-                </div>
               ) : null}
             </div>
             ) : null}

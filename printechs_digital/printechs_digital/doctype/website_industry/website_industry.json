@@ -30,7 +30,7 @@
   {"default": "1", "fieldname": "show_on_home", "fieldtype": "Check", "label": "Show on Homepage"},
   {"fieldname": "sort_order", "fieldtype": "Int", "label": "Sort Order"},
   {"fieldname": "column_break_main", "fieldtype": "Column Break"},
-  {"description": "Upload a file on this site. External URLs will not display.", "fieldname": "image", "fieldtype": "Attach Image", "label": "Image", "reqd": 1},
+  {"description": "Recommended size: 1200 × 800 px (3:2). Upload a file on this site (/files/...). External URLs will not display.", "fieldname": "image", "fieldtype": "Attach Image", "label": "Image", "reqd": 1},
   {"fieldname": "image_alt", "fieldtype": "Data", "label": "Image Alt Text"},
   {"fieldname": "summary", "fieldtype": "Small Text", "label": "Summary", "reqd": 1},
   {"fieldname": "related_section", "fieldtype": "Section Break", "label": "Related Slugs"},

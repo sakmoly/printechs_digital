@@ -79,6 +79,7 @@ export function PosterVideo({
             className="h-full w-full"
             src={embedSrc}
             title={title}
+            referrerPolicy="strict-origin-when-cross-origin"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
           />

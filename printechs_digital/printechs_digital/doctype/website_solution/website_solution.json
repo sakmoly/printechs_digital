@@ -37,7 +37,7 @@
   {"description": "Optional Home card title. Defaults to Solution Name.", "fieldname": "card_title", "fieldtype": "Data", "label": "Home Card Title"},
   {"fieldname": "card_summary", "fieldtype": "Small Text", "label": "Home Card Summary"},
   {"description": "Defaults to /solutions/{slug}", "fieldname": "href", "fieldtype": "Data", "label": "Link URL"},
-  {"description": "Upload a file on this site. External URLs will not display.", "fieldname": "image", "fieldtype": "Attach Image", "label": "Image", "reqd": 1},
+  {"description": "Recommended size: 1600 × 1000 px (16:10). Upload a file on this site (/files/...). External URLs will not display.", "fieldname": "image", "fieldtype": "Attach Image", "label": "Image", "reqd": 1},
   {"fieldname": "image_alt", "fieldtype": "Data", "label": "Image Alt Text"},
   {"fieldname": "summary", "fieldtype": "Small Text", "label": "Summary", "reqd": 1},
   {"fieldname": "related_section", "fieldtype": "Section Break", "label": "Related Slugs"},

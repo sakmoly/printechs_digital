@@ -21,12 +21,15 @@ const body = Source_Sans_3({
   weight: ["400", "500", "600", "700"],
 });
 
-export const metadata: Metadata = buildMetadata({
-  title: "Printechs | Technology That Moves Business Forward",
-  description:
-    "Industrial coding, retail technology and enterprise software solutions for businesses across Saudi Arabia.",
-  canonicalPath: "/",
-});
+export const metadata: Metadata = {
+  ...buildMetadata({
+    title: "Printechs | Technology That Moves Business Forward",
+    description:
+      "Industrial coding, retail technology and enterprise software solutions for businesses across Saudi Arabia.",
+    canonicalPath: "/",
+  }),
+  referrer: "strict-origin-when-cross-origin",
+};
 
 export default function RootLayout({
   children,

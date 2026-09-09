@@ -4,7 +4,9 @@ import { Container } from "@/components/ui/Container";
 import { Breadcrumb, type Crumb } from "@/components/ui/Breadcrumb";
 import { Button } from "@/components/ui/Button";
 import { ImageFrame } from "@/components/media/ImageFrame";
+import { PosterVideo } from "@/components/media/PosterVideo";
 import { IMAGE_SPECS } from "@/lib/image-specs";
+import { youtubeVideoId } from "@/lib/youtube";
 import { buildProductDemoUrl, buildProductQuoteUrl } from "@/lib/product-quote";
 import { ProductIcon, trustChipIcons } from "@/components/products/ProductIcon";
 import {
@@ -31,6 +33,7 @@ type ProductHeroProps = {
 
 export function ProductHero({ page, brand, crumbs, successStoriesHref }: ProductHeroProps) {
   const imageSpec = heroImageSpec(page.productType);
+  const videoId = page.videoUrl ? youtubeVideoId(page.videoUrl) : null;
   const quoteUrl = buildProductQuoteUrl(page);
   const demoUrl = buildProductDemoUrl(page);
   const categoryLabel =
@@ -181,25 +184,39 @@ export function ProductHero({ page, brand, crumbs, successStoriesHref }: Product
                   : "relative w-full max-w-lg rounded-md border border-line bg-white p-6 shadow-soft sm:p-8"
               }
             >
-              <ImageFrame
-                src={page.heroImage.src}
-                alt={page.heroImage.alt}
-                spec={imageSpec}
-                fill
-                priority
-                className={
-                  page.productType === "software"
-                    ? "aspect-[16/10]"
-                    : "aspect-square"
-                }
-                imageClassName={
-                  page.productType === "software"
-                    ? "object-cover object-center"
-                    : "object-contain p-4"
-                }
-                sizes="(max-width: 1024px) 100vw, 42vw"
-                showSizeLabel={false}
-              />
+              {videoId ? (
+                <PosterVideo
+                  type="youtube"
+                  source={videoId}
+                  title={page.displayName}
+                  poster={page.heroImage.src}
+                  className={
+                    page.productType === "software"
+                      ? "aspect-[16/10] w-full"
+                      : "aspect-square w-full"
+                  }
+                />
+              ) : (
+                <ImageFrame
+                  src={page.heroImage.src}
+                  alt={page.heroImage.alt}
+                  spec={imageSpec}
+                  fill
+                  priority
+                  className={
+                    page.productType === "software"
+                      ? "aspect-[16/10]"
+                      : "aspect-square"
+                  }
+                  imageClassName={
+                    page.productType === "software"
+                      ? "object-cover object-center"
+                      : "object-contain p-4"
+                  }
+                  sizes="(max-width: 1024px) 100vw, 42vw"
+                  showSizeLabel={false}
+                />
+              )}
             </div>
             {page.gallery?.length ? (
               <div className="absolute -bottom-3 -right-2 hidden w-28 overflow-hidden rounded-md border border-line bg-white shadow-soft sm:block lg:-right-6 lg:w-32">

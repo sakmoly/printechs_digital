@@ -54,7 +54,7 @@
    "label": "Feature Points"
   },
   {
-   "description": "Upload a screenshot on this site (/files/...). External links will not display.",
+   "description": "Recommended size: 1600 × 1000 px (16:10). Upload a screenshot on this site (/files/...). External links will not display.",
    "fieldname": "image",
    "fieldtype": "Attach Image",
    "label": "Screenshot"

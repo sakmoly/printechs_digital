@@ -568,7 +568,11 @@ export function ProductPageView({
                 ? "applications"
                 : sectionKey === "capability_modules"
                   ? "modules"
-                  : undefined
+                  : sectionKey === "overview"
+                    ? "overview"
+                    : sectionKey === "process_steps"
+                      ? "process"
+                      : undefined
             }
             pad="compact"
             tone={nextTone()}
