@@ -23,14 +23,24 @@ from printechs_digital.api.website_cache import (
 	_cached_list_event_albums,
 )
 
-# Old nested slugs still linked from the ERPNext parent page / bookmarks.
-SOFTWARE_SLUG_ALIASES = {
+# Old slugs still linked from bookmarks, ISR pages, and older catalogue cards.
+PRODUCT_SLUG_ALIASES = {
 	"people-projects": "hr-project-management",
+	"cas-cl-5200b-30kg-x-5g10g-bench-type-scale": "cas-cl-5200b",
+	"cas-cl-5200p-30kg-x-5g10g-pole-type-scale": "cas-cl-5200p",
+	"cas-cl-5500d-30kg-x-5g10g-pole-type-scale": "cas-cl-5500d",
+	"cas-cl-5500h-30kg-x-5g10g-hanging-scale": "cas-cl-5500h",
+	"cas-cn-1-30p-scale": "cas-cn1",
+	"dotjet-eggshell-printer-dj880-standalone-printer-with-conveyor": "dotjet-dj880",
+	"kezojet-kt10": "ukcm-kt10",
 }
+
+# Back-compat name used by nested software path generation.
+SOFTWARE_SLUG_ALIASES = PRODUCT_SLUG_ALIASES
 
 
 def _resolve_product_slug(slug: str) -> str:
-	return SOFTWARE_SLUG_ALIASES.get((slug or "").strip(), slug)
+	return PRODUCT_SLUG_ALIASES.get((slug or "").strip(), slug)
 
 
 @frappe.whitelist(allow_guest=True)
@@ -90,7 +100,7 @@ def get_product_slugs():
 		pluck="slug",
 		order_by="modified desc",
 	)
-	for old_slug, new_slug in SOFTWARE_SLUG_ALIASES.items():
+	for old_slug, new_slug in PRODUCT_SLUG_ALIASES.items():
 		if new_slug in rows and old_slug not in rows:
 			rows.append(old_slug)
 	return rows

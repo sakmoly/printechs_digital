@@ -27,8 +27,14 @@ SITE_FILES = Path("/home/erpnext/frappe-bench/sites/site1.local/public/files")
 INDUSTRY_DIR = Path("/home/erpnext/frappe-bench/frontend/printechs-web/public/images/industries")
 
 VIDEO_UX2 = "https://youtu.be/2hVqni_pMMs"
+VIDEO_ANIM = "https://youtu.be/KcHESzxBRyE"
 VIDEO_HEAD = "https://youtu.be/9NcoKlOHQ2o"
 VIDEO_CLEAN = "https://youtu.be/P5zv7qJ_r_k"
+VIDEO_STARTUP = "https://youtu.be/8ZTN7LBzEco"
+VIDEO_SAFER = "https://youtu.be/bxRy-XdaRWo"
+VIDEO_DAIRY = "https://youtu.be/UrlwpJ-P5pQ"
+VIDEO_HSPEED = "https://youtu.be/gIQBZ5vzhS4"
+VIDEO_NOZZLES = "https://youtu.be/jOOo-R96yUE"
 
 OFFICIAL_IMAGES = {
 	"hitachi-ux2-028.webp": "https://hitachi-industrial.eu/wp-content/uploads/2025/05/HITACHI_UX2_028-1.webp",
@@ -39,6 +45,11 @@ OFFICIAL_IMAGES = {
 	"hitachi-ux2-cabinet.webp": "https://hitachi-industrial.eu/wp-content/uploads/2025/05/Hitachi_UX2_016-023webp.webp",
 	"hitachi-ux2-print-tea.webp": "https://hitachi-industrial.eu/wp-content/uploads/2025/05/Tea_print_sample.webp",
 	"hitachi-ux2-print-oil.webp": "https://hitachi-industrial.eu/wp-content/uploads/2025/05/Body_oil_print_sample.webp",
+	"hitachi-ux2-print-margarine.webp": "https://hitachi-industrial.eu/wp-content/uploads/2025/05/Margarine_print_sample.webp",
+	"hitachi-ux2-print-tictac.webp": "https://hitachi-industrial.eu/wp-content/uploads/2025/05/TicTac_s_print_sample.webp",
+	"hitachi-ux2-industry-dairy.webp": "https://hitachi-industrial.eu/wp-content/uploads/2025/05/Dairy_Industry_Hoover.webp",
+	"hitachi-ux2-industry-packaging.webp": "https://hitachi-industrial.eu/wp-content/uploads/2025/05/Packaging_Hoover.webp",
+	"hitachi-ux2-industry-cosmetics.webp": "https://hitachi-industrial.eu/wp-content/uploads/2025/05/Cosmetics-Pharmaceuticals_Hoover.webp",
 }
 
 
@@ -48,6 +59,17 @@ def copy_public_image(filename: str) -> str:
 	if source.exists() and not target.exists():
 		copy2(source, target)
 	return f"/files/{filename}"
+
+
+def cover_square(source: Path, dest_name: str) -> str:
+	dest = SITE_FILES / dest_name
+	im = Image.open(source).convert("RGB")
+	side = min(im.size)
+	left = (im.width - side) // 2
+	top = (im.height - side) // 2
+	im = im.crop((left, top, left + side, top + side)).resize((1200, 1200), Image.Resampling.LANCZOS)
+	im.save(dest, "JPEG", quality=90, optimize=True)
+	return f"/files/{dest_name}"
 
 
 def download_file(filename: str, url: str) -> str:
@@ -123,9 +145,12 @@ def get_or_create(slug: str, display_name: str, item: str | None):
 
 
 def shared_media():
-	hero = catalog_card("hitachi-ux2-028.webp", "hitachi-ux2-product.jpg")
+	copy_public_image("industry-food-beverage.jpg")
+	copy_public_image("industry-dairy.jpg")
+	copy_public_image("industry-pipe.jpg")
 	return {
-		"hero": hero,
+		"hero_d160": catalog_card("hitachi-ux2-028.webp", "hitachi-ux2-product.jpg"),
+		"hero_d150": cover_square(SITE_FILES / "industry-food-beverage.jpg", "hitachi-ux2-d150-hero.jpg"),
 		"cab": official_image("hitachi-ux2-cabinet.webp"),
 		"img048": official_image("hitachi-ux2-048.webp"),
 		"img068": official_image("hitachi-ux2-068.webp"),
@@ -133,10 +158,15 @@ def shared_media():
 		"img121": official_image("hitachi-ux2-121.webp"),
 		"print_tea": official_image("hitachi-ux2-print-tea.webp"),
 		"print_oil": official_image("hitachi-ux2-print-oil.webp"),
-		"dairy": copy_public_image("industry-dairy.jpg"),
-		"packaging": copy_public_image("industry-packaging.jpg"),
-		"pharma": copy_public_image("industry-pharmaceutical.jpg"),
-		"food": copy_public_image("industry-food-beverage.jpg"),
+		"print_margarine": official_image("hitachi-ux2-print-margarine.webp"),
+		"print_tictac": official_image("hitachi-ux2-print-tictac.webp"),
+		"dairy": official_image("hitachi-ux2-industry-dairy.webp"),
+		"packaging": official_image("hitachi-ux2-industry-packaging.webp"),
+		"pharma": official_image("hitachi-ux2-industry-cosmetics.webp"),
+		"food": official_image("hitachi-ux2-print-tea.webp"),
+		"food_line": copy_public_image("industry-food-beverage.jpg"),
+		"milk": copy_public_image("industry-dairy.jpg"),
+		"pipe": copy_public_image("industry-pipe.jpg"),
 	}
 
 
@@ -186,6 +216,7 @@ def fill_hitachi_ux2_d160():
 	slug = "hitachi-ux2-d160"
 	doc = get_or_create(slug, "Hitachi UX2-D160W", "IND.SYS.HIJ.3892")
 	media = shared_media()
+	media["hero"] = media["hero_d160"]
 	apply_common(doc, media)
 
 	doc.website_product_name = "Hitachi UX2-D160W"
@@ -226,7 +257,7 @@ def fill_hitachi_ux2_d160():
 		"OPC-UA · EtherNet/IP"
 	)
 	doc.story_heading = "Dynamic CIJ for dates, lots, barcodes and Data Matrix"
-	doc.visual_story_heading = "UX2-D160W on the line"
+	doc.visual_story_heading = "Official UX2 print samples and line shots"
 	doc.card_title = "UX2-D160W"
 	doc.card_summary = (
 		"UX2 Dynamic CIJ: 65 μm nozzle, up to 6 lines, Ink Guard and optional Safe-Clean-"
@@ -287,7 +318,7 @@ def fill_hitachi_ux2_d160():
 			},
 		],
 	)
-	_set_family_story_and_apps(doc, media, "D160W")
+	_set_d160_story_and_apps(doc, media)
 	doc.set(
 		"icon_specifications",
 		[
@@ -311,6 +342,7 @@ def fill_hitachi_ux2_d150():
 	slug = "hitachi-ux2-d150"
 	doc = get_or_create(slug, "Hitachi UX2-D150W", "IND.SYS.HIJ.4369")
 	media = shared_media()
+	media["hero"] = media["hero_d150"]
 	apply_common(doc, media)
 
 	doc.website_product_name = "Hitachi UX2-D150W"
@@ -339,7 +371,7 @@ def fill_hitachi_ux2_d150():
 		"and services in Riyadh, Jeddah and Dammam. ERP Item IND.SYS.HIJ.4369 can sit on "
 		"this page.</p>"
 	)
-	doc.hero_image_alt = "Hitachi UX2-D150W high-speed continuous inkjet printer"
+	doc.hero_image_alt = "High-speed food and beverage packs coded for date and lot — UX2-D150W applications"
 	doc.video_url = VIDEO_UX2
 	doc.hero_trust_chips = (
 		"55 μm · up to 4 lines\n"
@@ -348,7 +380,7 @@ def fill_hitachi_ux2_d150():
 		"OPC-UA · EtherNet/IP"
 	)
 	doc.story_heading = "High-speed CIJ for beverage, cans and fast food lines"
-	doc.visual_story_heading = "UX2-D150W on high-speed packs"
+	doc.visual_story_heading = "Food, milk and pipe coding at high speed"
 	doc.card_title = "UX2-D150W"
 	doc.card_summary = (
 		"UX2 high-speed CIJ: 55 μm nozzle, up to 4 lines and 3,173 cps, with optional "
@@ -409,7 +441,7 @@ def fill_hitachi_ux2_d150():
 			},
 		],
 	)
-	_set_family_story_and_apps(doc, media, "D150W")
+	_set_d150_story_and_apps(doc, media)
 	doc.set(
 		"icon_specifications",
 		[
@@ -429,37 +461,58 @@ def fill_hitachi_ux2_d150():
 	return doc.name
 
 
-def _set_family_story_and_apps(doc, media, model):
+def _set_d160_story_and_apps(doc, media):
 	doc.set(
 		"visual_story_items",
 		[
 			{
+				"label": "Tea pouch codes",
+				"image": media["print_tea"],
+				"image_alt": "Official Hitachi UX2 print sample markings on tea packaging",
+				"caption": "EU UX2 print sample: best-before, lot and extra lines on a tea pouch.",
+				"sort_order": 1,
+			},
+			{
+				"label": "Confectionery pack",
+				"image": media["print_tictac"],
+				"image_alt": "Official Hitachi UX2 print sample markings on TicTac packaging",
+				"caption": "EU UX2 print sample: lot and date codes on confectionery primary pack.",
+				"sort_order": 2,
+			},
+			{
+				"label": "Dairy tub codes",
+				"image": media["print_margarine"],
+				"image_alt": "Official Hitachi UX2 print sample markings on margarine packaging",
+				"caption": "EU UX2 print sample: codes on a dairy tub — cold, wet hall work.",
+				"sort_order": 3,
+			},
+			{
+				"label": "Cosmetics bottle",
+				"image": media["print_oil"],
+				"image_alt": "Official Hitachi UX2 print sample marking on body oil packaging",
+				"caption": "EU UX2 print sample: lot / date on a cosmetics bottle.",
+				"sort_order": 4,
+			},
+			{
 				"label": "UX2 cabinet and 10.1\" HMI",
 				"image": media["cab"],
-				"image_alt": f"Hitachi UX2-{model} stainless CIJ cabinet and touch panel",
+				"image_alt": "Hitachi UX2-D160W stainless CIJ cabinet and touch panel",
 				"caption": "Same UX2 console: 460 × 425 × 534 mm, about 27 kg.",
-				"sort_order": 1,
+				"sort_order": 5,
 			},
 			{
 				"label": "Printhead and Ink Guard",
 				"image": media["img068"],
 				"image_alt": "Hitachi UX2 printhead with Ink Guard mist control",
 				"caption": "Redesigned head traps splashback for longer clean runs.",
-				"sort_order": 2,
-			},
-			{
-				"label": "Codes on primary packs",
-				"image": media["print_tea"],
-				"image_alt": "Hitachi UX2 date and lot code print sample on a pouch",
-				"caption": "Best-before, lot, barcode and Data Matrix on film and packs.",
-				"sort_order": 3,
+				"sort_order": 6,
 			},
 			{
 				"label": "Safe-Clean-Station (optional)",
 				"image": media["img085"],
 				"image_alt": "Hitachi UX2 optional Safe-Clean-Station for the printhead",
 				"caption": "Sealed Eco / Standard / Deep clean — ordered separately.",
-				"sort_order": 4,
+				"sort_order": 7,
 			},
 		],
 	)
@@ -469,8 +522,8 @@ def _set_family_story_and_apps(doc, media, model):
 			{
 				"title": "Food and beverage primary packs",
 				"description": "Best-before, lot and barcode on pouches, bottles and cartons at line speed.",
-				"image": media["food"],
-				"image_alt": "Food and beverage packaging coded with continuous inkjet",
+				"image": media["print_tea"],
+				"image_alt": "Official Hitachi UX2 print sample on tea packaging",
 				"industry_link": "food-beverage",
 				"sort_order": 1,
 			},
@@ -478,7 +531,7 @@ def _set_family_story_and_apps(doc, media, model):
 				"title": "Dairy and cold, wet halls",
 				"description": "IP65 console for wash-down areas. Optional pressurised head kit for moisture.",
 				"image": media["dairy"],
-				"image_alt": "Dairy production hall suitable for Hitachi UX2 coding",
+				"image_alt": "Official Hitachi UX2 dairy industry coding scene",
 				"industry_link": "dairy",
 				"sort_order": 2,
 			},
@@ -486,7 +539,7 @@ def _set_family_story_and_apps(doc, media, model):
 				"title": "Packaging and secondary cases",
 				"description": "Lot and shipping IDs on film, foil, board and mixed substrates.",
 				"image": media["packaging"],
-				"image_alt": "Packaging line continuous inkjet coding",
+				"image_alt": "Official Hitachi UX2 packaging industry coding scene",
 				"industry_link": "packaging",
 				"sort_order": 3,
 			},
@@ -494,8 +547,102 @@ def _set_family_story_and_apps(doc, media, model):
 				"title": "Pharma and cosmetics packs",
 				"description": "Lot, expiry and 2D codes on cartons and bottles. Confirm ink and height per SKU.",
 				"image": media["pharma"],
-				"image_alt": "Pharmaceutical pack coding with a Hitachi CIJ",
+				"image_alt": "Official Hitachi UX2 cosmetics and pharmaceutical coding scene",
 				"industry_link": "pharmaceutical",
+				"sort_order": 4,
+			},
+		],
+	)
+
+
+def _set_d150_story_and_apps(doc, media):
+	doc.set(
+		"visual_story_items",
+		[
+			{
+				"label": "Food packs",
+				"image": media["food_line"],
+				"image_alt": "Ready-meal trays and juice bottles with date and lot codes on a food line",
+				"caption": "High-speed expiry and lot on food trays and beverage bottles — D150’s 55 μm job.",
+				"sort_order": 1,
+			},
+			{
+				"label": "Milk bottles",
+				"image": media["milk"],
+				"image_alt": "Milk bottles on a dairy filling line with manufacture, expiry and lot codes",
+				"caption": "Milk and dairy: manufacture, expiry and lot at filling-line speed.",
+				"sort_order": 2,
+			},
+			{
+				"label": "Pipe and extrusion",
+				"image": media["pipe"],
+				"image_alt": "HDPE pipe marked with batch number and size for extrusion coding",
+				"caption": "Batch and size on pipe, tube and extrusion — confirm pigment ink for dark PE.",
+				"sort_order": 3,
+			},
+			{
+				"label": "Dairy tub sample",
+				"image": media["print_margarine"],
+				"image_alt": "Official Hitachi UX2 print sample markings on margarine packaging",
+				"caption": "Official EU dairy-tub print sample — same UX2 family, high-speed D150 jet.",
+				"sort_order": 4,
+			},
+			{
+				"label": "UX2 cabinet (head down)",
+				"image": media["img048"],
+				"image_alt": "Hitachi UX2-D150W cabinet with printhead parked beside the stainless body",
+				"caption": "Different official angle from D160 — same UX2 cabinet, 55 μm high-speed head.",
+				"sort_order": 5,
+			},
+			{
+				"label": "Printhead and Ink Guard",
+				"image": media["img068"],
+				"image_alt": "Hitachi UX2 printhead with Ink Guard mist control",
+				"caption": "Ink Guard matters more at D150 line speeds.",
+				"sort_order": 6,
+			},
+			{
+				"label": "Safe-Clean-Station (optional)",
+				"image": media["img085"],
+				"image_alt": "Hitachi UX2 optional Safe-Clean-Station for the printhead",
+				"caption": "Sealed Eco / Standard / Deep clean — ordered separately.",
+				"sort_order": 7,
+			},
+		],
+	)
+	doc.set(
+		"applications",
+		[
+			{
+				"title": "Food and beverage lines",
+				"description": "Expiry, lot and barcode on trays, PET and cans at up to 3,173 characters/s.",
+				"image": media["food_line"],
+				"image_alt": "Food trays and juice bottles coded on a high-speed line",
+				"industry_link": "food-beverage",
+				"sort_order": 1,
+			},
+			{
+				"title": "Milk and dairy filling",
+				"description": "Manufacture, expiry and lot on milk bottles in cold, wet halls (IP65 console).",
+				"image": media["milk"],
+				"image_alt": "Milk bottles with inkjet date and lot codes",
+				"industry_link": "dairy",
+				"sort_order": 2,
+			},
+			{
+				"title": "Pipe, tube and extrusion",
+				"description": "Batch, size and shift marks on PE/PP pipe. Confirm pigment or dye ink on the substrate.",
+				"image": media["pipe"],
+				"image_alt": "Extruded pipe marked with batch and size",
+				"industry_link": "pipe",
+				"sort_order": 3,
+			},
+			{
+				"title": "Cans and primary packs",
+				"description": "1–4 line codes on fast can and film lines — D150’s 55 μm jet, not the six-line D160.",
+				"image": media["print_margarine"],
+				"image_alt": "Official Hitachi UX2 dairy tub print sample",
+				"industry_link": "packaging",
 				"sort_order": 4,
 			},
 		],
@@ -594,13 +741,26 @@ def _set_d160_sections(doc, media, slug):
 				"section_type": "Industry Solution",
 				"heading": "Meet Hitachi UX2",
 				"body": (
-					"Official UX2 film. UX2-D160W is the Dynamic 65 μm / 6-line cabinet in "
-					"that family — Ink Guard, 10.1\" HMI and industrial Ethernet."
+					"Official UX2 film from Hitachi. UX2-D160W is the Dynamic 65 μm / 6-line "
+					"cabinet in that family — Ink Guard, 10.1\" HMI and industrial Ethernet."
 				),
 				"video_url": VIDEO_UX2,
 				"image": media["hero"],
 				"image_alt": "Hitachi UX2-D160W Dynamic continuous inkjet printer",
 				"sort_order": 1,
+			},
+			{
+				"section_type": "Industry Solution",
+				"heading": "Introducing UX2 (animation)",
+				"body": (
+					"The US Dynamic product page animation: how UX2 codes dates, lots and "
+					"barcodes with Ink Guard, Smart Bottle and optional Safe-Clean-Station. "
+					"D160W is the 65 μm Dynamic model in that story."
+				),
+				"video_url": VIDEO_ANIM,
+				"image": media["img048"],
+				"image_alt": "Hitachi UX2 Dynamic continuous inkjet printer animation still",
+				"sort_order": 2,
 			},
 			{
 				"section_type": "Industry Solution",
@@ -614,7 +774,19 @@ def _set_d160_sections(doc, media, slug):
 				"video_url": VIDEO_HEAD,
 				"image": media["img068"],
 				"image_alt": "Hitachi UX2 Ink Guard printhead",
-				"sort_order": 2,
+				"sort_order": 3,
+			},
+			{
+				"section_type": "Industry Solution",
+				"heading": "Safer, cleaner, smarter printing",
+				"body": (
+					"Official Hitachi IESA UX2 film: sealed cleaning, less open solvent and "
+					"the same cabinet operators use for on-board maintenance videos."
+				),
+				"video_url": VIDEO_SAFER,
+				"image": media["img085"],
+				"image_alt": "Hitachi UX2 Safe-Clean and cabinet",
+				"sort_order": 4,
 			},
 			{
 				"section_type": "Industry Solution",
@@ -630,21 +802,85 @@ def _set_d160_sections(doc, media, slug):
 				"video_url": VIDEO_CLEAN,
 				"image": media["img085"],
 				"image_alt": "Hitachi UX2 Safe-Clean-Station",
-				"sort_order": 3,
+				"sort_order": 5,
+			},
+			{
+				"section_type": "Industry Solution",
+				"heading": "Ready after downtime",
+				"body": (
+					"Hitachi’s “Avoid long startup” UX2 film. Ink Guard plus optional "
+					"Safe-Clean is how the cabinet is meant to come back after a weekend "
+					"or changeover without a long purge."
+				),
+				"video_url": VIDEO_STARTUP,
+				"image": media["img121"],
+				"image_alt": "Hitachi UX2 printhead ready after a cleaning cycle",
+				"sort_order": 6,
+			},
+			{
+				"section_type": "Industry Solution",
+				"heading": "Official print samples",
+				"body": (
+					"The EU UX2 Series gallery shows logos, best-before dates, barcodes, "
+					"lot numbers and Data Matrix on real packs: tea pouch, confectionery, "
+					"dairy tub and cosmetics bottle. Those four official samples are in "
+					"the visual story above — this is the tea pouch close-up.\n\n"
+					"Printechs can mark your own substrate in Riyadh, Jeddah or Dammam "
+					"before you lock ink and head length."
+				),
+				"image": media["print_tea"],
+				"image_alt": "Official Hitachi UX2 print sample on tea packaging",
+				"sort_order": 7,
+			},
+			{
+				"section_type": "Industry Solution",
+				"heading": "Confectionery and dairy samples",
+				"body": (
+					"Same EU print-sample set: lot and date on confectionery primary pack, "
+					"and codes on a margarine tub for cold, wet dairy halls. D160’s 65 μm "
+					"jet and up to six lines cover logo + expiry + lot on these packs."
+				),
+				"image": media["print_tictac"],
+				"image_alt": "Official Hitachi UX2 print sample on confectionery packaging",
+				"sort_order": 8,
+			},
+			{
+				"section_type": "Industry Solution",
+				"heading": "Cosmetics bottle sample",
+				"body": (
+					"Official EU body-oil / cosmetics print sample. Confirm ink and "
+					"character height per SKU — D160 height is 2–10 mm (short head 2.0–6.5 mm)."
+				),
+				"image": media["print_oil"],
+				"image_alt": "Official Hitachi UX2 print sample on body oil packaging",
+				"sort_order": 9,
+			},
+			{
+				"section_type": "Industry Solution",
+				"heading": "Built for dairy halls",
+				"body": (
+					"Hitachi IESA dairy film: coding that holds up in cold, wet rooms. "
+					"UX2-D160W adds an IP65 console and an optional pressurised head kit."
+				),
+				"video_url": VIDEO_DAIRY,
+				"image": media["dairy"],
+				"image_alt": "Official Hitachi UX2 dairy industry coding scene",
+				"sort_order": 10,
 			},
 			{
 				"section_type": "Industry Solution",
 				"heading": "D160 vs D150 and Saudi Arabia support",
 				"body": (
 					"Choose D160 when you need up to six lines or a 65 μm Dynamic jet. "
-					"Choose <a href=\"/products/hitachi-ux2-d150\">UX2-D150W</a> for 55 μm "
-					"and 3,173 cps on 1–4 line high-speed packs.\n\n"
+					"Choose UX2-D150W for 55 μm and 3,173 cps on 1–4 line high-speed packs.\n\n"
 					"Printechs installs UX2 in Riyadh, Jeddah and Dammam with genuine ink, "
 					"encoders and training. Older UX-D161W remains a separate page."
 				),
-				"image": media["packaging"],
-				"image_alt": "Hitachi UX2 coding support on a Saudi packaging line",
-				"sort_order": 4,
+				"image": media["print_margarine"],
+				"image_alt": "Official Hitachi UX2 print sample on margarine packaging",
+				"link_label": "Open UX2-D150W",
+				"link_href": "/products/hitachi-ux2-d150",
+				"sort_order": 11,
 			},
 		],
 	)
@@ -662,9 +898,21 @@ def _set_d150_sections(doc, media, slug):
 					"member: up to 4 lines and 3,173 characters/s for beverage and can lines."
 				),
 				"video_url": VIDEO_UX2,
-				"image": media["hero"],
-				"image_alt": "Hitachi UX2-D150W high-speed CIJ",
+				"image": media["food_line"],
+				"image_alt": "Food and beverage packs coded at high speed with Hitachi UX2-D150W",
 				"sort_order": 1,
+			},
+			{
+				"section_type": "Industry Solution",
+				"heading": "Introducing UX2 (animation)",
+				"body": (
+					"The US Dynamic / UX2 family animation. D150W keeps that cabinet and "
+					"changes the jet: 55 μm, 4 lines, 3,173 characters/s."
+				),
+				"video_url": VIDEO_ANIM,
+				"image": media["img048"],
+				"image_alt": "Hitachi UX2 continuous inkjet printer animation still",
+				"sort_order": 2,
 			},
 			{
 				"section_type": "Industry Solution",
@@ -677,7 +925,20 @@ def _set_d150_sections(doc, media, slug):
 				"video_url": VIDEO_HEAD,
 				"image": media["img121"],
 				"image_alt": "Hitachi UX2 printhead coding at line speed",
-				"sort_order": 2,
+				"sort_order": 3,
+			},
+			{
+				"section_type": "Industry Solution",
+				"heading": "Precision coding on high-speed lines",
+				"body": (
+					"Official Hitachi Europe film for high-speed coding. D150 is the UX2 "
+					"model specified for fast PET, can and film — 3,173 cps, not the D160 "
+					"optional 3,076 cps on a 65 μm jet."
+				),
+				"video_url": VIDEO_HSPEED,
+				"image": media["food_line"],
+				"image_alt": "High-speed food and beverage coding with Hitachi UX2-D150W",
+				"sort_order": 4,
 			},
 			{
 				"section_type": "Industry Solution",
@@ -690,7 +951,56 @@ def _set_d150_sections(doc, media, slug):
 				"video_url": VIDEO_CLEAN,
 				"image": media["img085"],
 				"image_alt": "Hitachi UX2 Safe-Clean-Station",
-				"sort_order": 3,
+				"sort_order": 5,
+			},
+			{
+				"section_type": "Industry Solution",
+				"heading": "Clean nozzles, shorter restarts",
+				"body": (
+					"Hitachi Europe “clean nozzles” film plus the US “Avoid long startup” "
+					"clip. Optional Safe-Clean plus Ink Guard is how D150 is meant to "
+					"return after a stop without a long purge."
+				),
+				"video_url": VIDEO_NOZZLES,
+				"image": media["img085"],
+				"image_alt": "Hitachi UX2 printhead cleaning",
+				"sort_order": 6,
+			},
+			{
+				"section_type": "Industry Solution",
+				"heading": "Food packs at line speed",
+				"body": (
+					"D150 is specified for fast food and beverage: ready meals, juice, PET "
+					"and cans. Up to 4 lines and 3,173 characters/s — expiry + lot without "
+					"slowing the belt."
+				),
+				"image": media["food_line"],
+				"image_alt": "Ready-meal trays and juice bottles with inkjet date and lot codes",
+				"sort_order": 7,
+			},
+			{
+				"section_type": "Industry Solution",
+				"heading": "Milk and dairy filling",
+				"body": (
+					"Milk bottles and dairy tubs in cold, wet halls. Console is IP65 "
+					"(circulatory IP55). Optional pressurised head if the room is wet. "
+					"Character height 1.5–10 mm (short head 1–6.5 mm)."
+				),
+				"image": media["milk"],
+				"image_alt": "Milk bottles on a filling line with manufacture, expiry and lot codes",
+				"sort_order": 8,
+			},
+			{
+				"section_type": "Industry Solution",
+				"heading": "Pipe, tube and extrusion",
+				"body": (
+					"Batch, size and shift on PE/PP pipe and tube. Dark pipe usually needs "
+					"a pigment ink from the Hitachi list — confirm before you lock the SKU. "
+					"D150’s 55 μm jet is for 1–4 line marks, not a six-line Dynamic message."
+				),
+				"image": media["pipe"],
+				"image_alt": "HDPE pipe coded with batch number and size",
+				"sort_order": 9,
 			},
 			{
 				"section_type": "Industry Solution",
@@ -698,13 +1008,15 @@ def _set_d150_sections(doc, media, slug):
 				"body": (
 					"D150: 55 μm, 4 lines, 3,173 cps, 2,000 messages. D160: 65 μm, 6 lines, "
 					"1,538 cps (optional 3,076). Need more than four lines or a wider 65 μm "
-					"jet? Open <a href=\"/products/hitachi-ux2-d160\">UX2-D160W</a>.\n\n"
-					"Printechs sizes nozzle, head length and ink for KSA beverage, dairy and "
-					"food plants."
+					"jet? Open UX2-D160W.\n\n"
+					"Printechs sizes nozzle, head length and ink for KSA food, milk, pipe "
+					"and beverage plants."
 				),
-				"image": media["food"],
-				"image_alt": "High-speed beverage coding with Hitachi UX2-D150W",
-				"sort_order": 4,
+				"image": media["print_margarine"],
+				"image_alt": "Official Hitachi UX2 dairy tub print sample",
+				"link_label": "Open UX2-D160W",
+				"link_href": "/products/hitachi-ux2-d160",
+				"sort_order": 10,
 			},
 		],
 	)

@@ -27,6 +27,9 @@ def map_website_brand(doc) -> dict:
 		"name": name,
 		"summary": doc.summary or f"{name} technology supplied and supported by Printechs.",
 		"href": href,
+		"officialWebsite": doc.get("official_website") or None,
+		"showInFooter": bool(doc.get("show_in_footer")),
+		"sortOrder": doc.sort_order or 0,
 		"logo": logo
 		or {
 			"src": "/images/placeholders/brand.svg",

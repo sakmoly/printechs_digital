@@ -44,6 +44,7 @@ def fill_cas_cl5500h():
 		frappe.throw(f"Website Product {NAME} was not found")
 
 	doc = frappe.get_doc("Website Product", NAME)
+	doc.slug = "cas-cl-5500h"
 	hero = doc.hero_image or site_file("CL5500H-60.jpg")
 	secondary = site_file("CAS-5500H.png") if (SITE_FILES / "CAS-5500H.png").exists() else hero
 	brochure = doc.primary_download_file or site_file("brochure-cl-5500d.pdf")
@@ -448,6 +449,9 @@ def fill_cas_cl5500h():
 		],
 	)
 
+	from printechs_digital.setup.cas_library import apply_cas_page, install_cas_library
+
+	apply_cas_page(doc, install_cas_library())
 	doc.save(ignore_permissions=True)
 	frappe.db.commit()
 	print(f"Filled Website Product {doc.name} ({doc.slug})")

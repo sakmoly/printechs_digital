@@ -19,7 +19,8 @@ def fill_website_brand_erpnext():
 	doc.display_name = "ERPNext"
 	doc.slug = SLUG
 	doc.published = 1
-	doc.sort_order = 7
+	doc.sort_order = 12
+	doc.official_website = "https://frappe.io/erpnext"
 	doc.logo = doc.logo or "/files/ERPNext.png"
 	doc.summary = (
 		"Open-source ERP for finance, inventory, manufacturing, and service operations — "

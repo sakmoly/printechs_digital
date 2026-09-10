@@ -23,6 +23,9 @@ def map_quote_option(row) -> dict:
 
 
 def _product_configuration(slug: str, configure_field: str, options_field: str) -> dict:
+	from printechs_digital.api.website import _resolve_product_slug
+
+	slug = _resolve_product_slug(slug)
 	name = frappe.db.get_value("Website Product", {"slug": slug, "published": 1}, "name")
 	if not name:
 		frappe.throw("Product not found", frappe.DoesNotExistError)

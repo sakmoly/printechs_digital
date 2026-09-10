@@ -45,10 +45,11 @@ def fill_cas_cl5200b():
 		frappe.throw(f"Website Product {NAME} was not found")
 
 	doc = frappe.get_doc("Website Product", NAME)
-	hero = site_file("CAS-CL5200B.png") if (SITE_FILES / "CAS-CL5200B.png").exists() else (
+	doc.slug = "cas-cl-5200b"
+	hero = site_file("cas-cl-5200b.jpg") if (SITE_FILES / "cas-cl-5200b.jpg").exists() else (
 		doc.hero_image or site_file("CL5000B.jpg")
 	)
-	pole_image = site_file("CL5200.jpg")
+	pole_image = site_file("cas-cl-5200p.jpg") if (SITE_FILES / "cas-cl-5200p.jpg").exists() else site_file("CL5200.jpg")
 	brochure = doc.primary_download_file or site_file("CL5200-en.pdf")
 
 	doc.display_name = "CAS CL-5200B"
@@ -392,8 +393,8 @@ def fill_cas_cl5200b():
 					"wireless networks. CL-Works Pro makes it straightforward to manage "
 					"label formats across departments."
 				),
-				"image": copy_public_image("industry-retail.jpg"),
-				"image_alt": "Retail store operations",
+				"image": site_file("cas-cl-5200-cartridge.jpg") if (SITE_FILES / "cas-cl-5200-cartridge.jpg").exists() else copy_public_image("industry-retail.jpg"),
+				"image_alt": "CAS CL-5200 label cartridge and CL-Works workflow",
 				"link_label": "Talk to a specialist",
 				"link_href": "/contact",
 				"sort_order": 2,
@@ -440,6 +441,9 @@ def fill_cas_cl5200b():
 		],
 	)
 
+	from printechs_digital.setup.cas_library import apply_cas_page, install_cas_library
+
+	apply_cas_page(doc, install_cas_library())
 	doc.save(ignore_permissions=True)
 	frappe.db.commit()
 	print(f"Filled Website Product {doc.name} ({doc.slug})")

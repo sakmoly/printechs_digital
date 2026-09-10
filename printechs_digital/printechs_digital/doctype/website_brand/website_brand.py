@@ -64,3 +64,9 @@ class WebsiteBrand(Document):
 				)
 
 		validate_doc_fields(self, [("logo", "Website Logo")])
+
+		if self.official_website:
+			url = cstr(self.official_website).strip()
+			if not url.startswith(("http://", "https://")):
+				frappe.throw(_("Official Website must start with http:// or https://"))
+			self.official_website = url

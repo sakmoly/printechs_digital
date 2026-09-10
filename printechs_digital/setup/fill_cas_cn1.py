@@ -29,6 +29,7 @@ def fill_cas_cn1():
 		frappe.throw(f"Website Product {NAME} was not found")
 
 	doc = frappe.get_doc("Website Product", NAME)
+	doc.slug = "cas-cn1"
 	hero = doc.hero_image or site_file("CN.jpg")
 	secondary = site_file("CAS-CN.png") if (SITE_FILES / "CAS-CN.png").exists() else hero
 	brochure = doc.primary_download_file or site_file(
@@ -438,6 +439,9 @@ def fill_cas_cn1():
 		],
 	)
 
+	from printechs_digital.setup.cas_library import apply_cas_page, install_cas_library
+
+	apply_cas_page(doc, install_cas_library())
 	doc.save(ignore_permissions=True)
 	frappe.db.commit()
 	print(f"Filled Website Product {doc.name} ({doc.slug})")
