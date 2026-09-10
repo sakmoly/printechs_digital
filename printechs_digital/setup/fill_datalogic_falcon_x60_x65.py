@@ -81,8 +81,8 @@ def get_or_create():
 	doc.slug = SLUG
 	doc.website_product_name = "Datalogic Falcon X60/X65"
 	doc.display_name = "Datalogic Falcon X60/X65"
-	doc.product_type = "Industrial"
-	doc.division = "Industrial"
+	doc.product_type = "Retail Hardware"
+	doc.division = "Retail"
 	doc.category = "Barcode & Mobility"
 	doc.short_description = "Datalogic Falcon X60/X65 ultra-rugged warehouse mobile computer."
 	doc.long_description = "<p>Datalogic Falcon X60/X65 ultra-rugged warehouse mobile computer.</p>"
@@ -110,8 +110,8 @@ def fill_datalogic_falcon_x60_x65():
 	doc.website_product_name = "Datalogic Falcon X60/X65"
 	doc.display_name = "Datalogic Falcon X60/X65"
 	doc.slug = SLUG
-	doc.product_type = "Industrial"
-	doc.division = "Industrial"
+	doc.product_type = "Retail Hardware"
+	doc.division = "Retail"
 	doc.category = "Barcode & Mobility"
 	doc.subcategory = "Mobile Computers"
 	doc.category_label = "ULTRA-RUGGED MOBILE COMPUTER"

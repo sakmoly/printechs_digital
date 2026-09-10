@@ -167,10 +167,12 @@ def map_division(division: str | None) -> str:
 	return DIVISION_MAP.get(division or "", "industrial")
 
 
-def breadcrumb_root(product_type: str | None) -> dict:
+def breadcrumb_root(product_type: str | None, division: str | None = None) -> dict:
 	if product_type == "Software":
 		return {"label": "Software", "href": "/software"}
-	return {"label": "Products", "href": "/products"}
+	if map_division(division) == "retail":
+		return {"label": "Retail", "href": "/products/retail"}
+	return {"label": "Industrial", "href": "/products/industrial"}
 
 
 def parent_software_payload(parent_name: str | None) -> dict | None:
@@ -681,7 +683,7 @@ def map_website_product(doc) -> dict:
 			"indexPage": bool(doc.index_page),
 		},
 		"canonicalPath": canonical_path,
-		"breadcrumbRoot": breadcrumb_root(doc.product_type),
+		"breadcrumbRoot": breadcrumb_root(doc.product_type, getattr(doc, "division", None)),
 		"parentSoftware": parent_software_payload(getattr(doc, "parent_software", None)),
 	}
 

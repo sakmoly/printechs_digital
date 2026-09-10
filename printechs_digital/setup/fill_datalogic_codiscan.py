@@ -100,8 +100,8 @@ def get_or_create():
 	doc.slug = SLUG
 	doc.website_product_name = "Datalogic CODiScan"
 	doc.display_name = "Datalogic CODiScan"
-	doc.product_type = "Industrial"
-	doc.division = "Industrial"
+	doc.product_type = "Retail Hardware"
+	doc.division = "Retail"
 	doc.category = "Barcode & Mobility"
 	doc.short_description = "Datalogic CODiScan wearable Bluetooth scanner."
 	doc.long_description = "<p>Datalogic CODiScan wearable Bluetooth scanner.</p>"
@@ -127,8 +127,8 @@ def fill_datalogic_codiscan():
 	doc.website_product_name = "Datalogic CODiScan"
 	doc.display_name = "Datalogic CODiScan"
 	doc.slug = SLUG
-	doc.product_type = "Industrial"
-	doc.division = "Industrial"
+	doc.product_type = "Retail Hardware"
+	doc.division = "Retail"
 	doc.category = "Barcode & Mobility"
 	doc.subcategory = "Wearable Scanners"
 	doc.category_label = "WEARABLE SCANNER"

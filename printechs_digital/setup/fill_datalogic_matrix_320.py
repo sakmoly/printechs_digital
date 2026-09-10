@@ -101,8 +101,8 @@ def get_or_create():
 	doc.slug = SLUG
 	doc.website_product_name = "Datalogic Matrix 320 Series"
 	doc.display_name = "Datalogic Matrix 320 Series"
-	doc.product_type = "Industrial"
-	doc.division = "Industrial"
+	doc.product_type = "Retail Hardware"
+	doc.division = "Retail"
 	doc.category = "Barcode & Mobility"
 	doc.short_description = "Datalogic Matrix 320 stationary industrial 2D imager."
 	doc.long_description = "<p>Datalogic Matrix 320 stationary industrial 2D imager.</p>"
@@ -129,8 +129,8 @@ def fill_datalogic_matrix_320():
 	doc.website_product_name = "Datalogic Matrix 320 Series"
 	doc.display_name = "Datalogic Matrix 320 Series"
 	doc.slug = SLUG
-	doc.product_type = "Industrial"
-	doc.division = "Industrial"
+	doc.product_type = "Retail Hardware"
+	doc.division = "Retail"
 	doc.category = "Barcode & Mobility"
 	doc.subcategory = "Stationary Industrial Scanners"
 	doc.category_label = "STATIONARY 2D IMAGER"

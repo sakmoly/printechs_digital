@@ -79,8 +79,8 @@ def get_or_create():
 	doc.slug = SLUG
 	doc.website_product_name = "Datalogic PowerScan 9600 Series"
 	doc.display_name = "Datalogic PowerScan 9600 Series"
-	doc.product_type = "Industrial"
-	doc.division = "Industrial"
+	doc.product_type = "Retail Hardware"
+	doc.division = "Retail"
 	doc.category = "Barcode & Mobility"
 	doc.short_description = "Datalogic PowerScan 9600 industrial handheld scanner."
 	doc.long_description = "<p>Datalogic PowerScan 9600 industrial handheld scanner.</p>"
@@ -105,8 +105,8 @@ def fill_datalogic_powerscan_9600():
 	doc.website_product_name = "Datalogic PowerScan 9600 Series"
 	doc.display_name = "Datalogic PowerScan 9600 Series"
 	doc.slug = SLUG
-	doc.product_type = "Industrial"
-	doc.division = "Industrial"
+	doc.product_type = "Retail Hardware"
+	doc.division = "Retail"
 	doc.category = "Barcode & Mobility"
 	doc.subcategory = "Barcode Scanners"
 	doc.category_label = "INDUSTRIAL HANDHELD SCANNER"
