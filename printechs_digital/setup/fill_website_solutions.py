@@ -20,7 +20,7 @@ SOLUTIONS = [
 		"image": "solutions/featured-production-coding-marking.jpg",
 		"image_alt": "Industrial coding and marking system operating on a production line",
 		"summary": "Industrial coding systems that keep production lines compliant and readable.",
-		"related_product_slugs": "hitachi-ux-d161\nhitachi-ux-d160\nrea-jet-coding-systems",
+		"related_product_slugs": "hitachi-ux2-d160\nhitachi-ux2-d150\nhitachi-ux-d161\nrea-jet-coding-systems",
 		"meta_title": "Coding & Marking Solutions | Printechs",
 		"meta_description": "Industrial coding and marking solutions from Printechs.",
 	},
