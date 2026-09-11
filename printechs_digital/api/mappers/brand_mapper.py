@@ -3,10 +3,18 @@
 from printechs_digital.api.mappers.product_mapper import media_asset
 
 
+# Public brand names that replaced an older listing slug.
+BRAND_HREF_ALIASES = {
+	"kezojet": "/brands/ukcm",
+}
+
+
 def resolve_brand_href(slug: str) -> str:
 	"""Software platform brands link to /software/{slug}; hardware brands to /brands/{slug}."""
 	import frappe
 
+	if slug in BRAND_HREF_ALIASES:
+		return BRAND_HREF_ALIASES[slug]
 	if frappe.db.exists(
 		"Website Product",
 		{"slug": slug, "published": 1, "show_on_software_list": 1},
