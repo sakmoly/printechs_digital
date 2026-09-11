@@ -110,6 +110,16 @@ BRANDS = [
 		"official_website": "https://www.hiweigh.com/",
 		"show_in_footer": 1,
 	},
+	{
+		"erp_brand": "FEC",
+		"display_name": "FEC",
+		"slug": "fec",
+		"logo": "brand-fec.png",
+		"summary": "FEC POS Solutions from Printechs Saudi Arabia — terminals, panel PCs, kiosks, kitchen displays, box PCs, monitors and peripherals.",
+		"sort_order": 13,
+		"official_website": "https://www.fecpos.com/",
+		"show_in_footer": 0,
+	},
 ]
 
 # Extra published brands not managed in the list above (keep their other fields).
