@@ -43,7 +43,10 @@ app_license = "mit"
 # page_js = {"page" : "public/js/file.js"}
 
 # include js in doctype views
-doctype_js = {"Item": "public/js/item.js"}
+doctype_js = {
+	"Item": "public/js/item.js",
+	"Newsletter": "public/js/newsletter.js",
+}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
@@ -84,6 +87,7 @@ doctype_js = {"Item": "public/js/item.js"}
 
 # before_install = "printechs_digital.install.before_install"
 # after_install = "printechs_digital.install.after_install"
+after_migrate = ["printechs_digital.setup.newsletter_fields.install_newsletter_editor_fields"]
 
 # Uninstallation
 # ------------
@@ -153,6 +157,9 @@ doc_events = {
 		"Website About Settings",
 		"Website Contact Settings",
 	)
+}
+doc_events["Newsletter"] = {
+	"validate": "printechs_digital.api.product_newsletter.apply_campaign_message",
 }
 
 # Scheduled Tasks

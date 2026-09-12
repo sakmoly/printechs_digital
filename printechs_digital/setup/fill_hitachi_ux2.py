@@ -150,7 +150,7 @@ def shared_media():
 	copy_public_image("industry-pipe.jpg")
 	return {
 		"hero_d160": catalog_card("hitachi-ux2-028.webp", "hitachi-ux2-product.jpg"),
-		"hero_d150": cover_square(SITE_FILES / "industry-food-beverage.jpg", "hitachi-ux2-d150-hero.jpg"),
+		"hero_d150": catalog_card("hitachi-ux2-048.webp", "hitachi-ux2-d150-product.jpg"),
 		"cab": official_image("hitachi-ux2-cabinet.webp"),
 		"img048": official_image("hitachi-ux2-048.webp"),
 		"img068": official_image("hitachi-ux2-068.webp"),
@@ -371,8 +371,8 @@ def fill_hitachi_ux2_d150():
 		"and services in Riyadh, Jeddah and Dammam. ERP Item IND.SYS.HIJ.4369 can sit on "
 		"this page.</p>"
 	)
-	doc.hero_image_alt = "High-speed food and beverage packs coded for date and lot — UX2-D150W applications"
-	doc.video_url = VIDEO_UX2
+	doc.hero_image_alt = "Hitachi UX2-D150W high-speed continuous inkjet printer cabinet and printhead"
+	doc.video_url = ""
 	doc.hero_trust_chips = (
 		"55 μm · up to 4 lines\n"
 		"3,173 characters/s\n"

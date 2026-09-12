@@ -24,7 +24,7 @@ OFFICES = [
 	},
 	{
 		"city": "Dammam",
-		"phone": "055 073 3441",
+		"phone": "Tel: 013 835 5339 / Mob: 055 073 3441",
 		"email": "info@printechs.com",
 		"address": "7975 ابوعبد الله الهاشمي، Cordoba Commercial Center, Ground Floor Office# 101, behind Quick Pay, Dammam 34224, KSA",
 		"map_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3574.793931855255!2d50.20025851453615!3d26.365526289779297!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e49ef40eb1d9935%3A0xf4e5b957aeb45986!2sPrintechs%20-%20Dammam!5e0!3m2!1sen!2ssa!4v1668327336833!5m2!1sen!2ssa",

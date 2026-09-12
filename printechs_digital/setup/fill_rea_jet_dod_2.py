@@ -165,7 +165,7 @@ def fill_rea_jet_dod_2():
 	doc.hero_image = hero
 	doc.card_image = hero
 	doc.hero_image_alt = "REA JET DOD 2.0 print heads with 7, 16 and 32 nozzles"
-	doc.video_url = VIDEO_PRODUCT
+	doc.video_url = ""
 	doc.tagline = "Large-character drop-on-demand inkjet for dusty, wet and high-speed lines"
 	doc.short_description = (
 		"REA JET DOD 2.0 is a large-character drop-on-demand inkjet: 7, 16 or 32-nozzle "
@@ -429,15 +429,16 @@ def fill_rea_jet_dod_2():
 				"sort_order": 1,
 			},
 			{
-				"section_type": "Core Module",
+				"section_type": "Industry Solution",
 				"heading": "Official product-line video",
 				"body": (
-					"REA JET’s official DOD 2.0 film (Großschrift Tintenstrahldrucker) plays "
-					"in the hero. It shows the 7/16/32-nozzle heads, TITAN controller and "
-					"large-character marks — the clip is unique to this page."
+					"REA JET’s official DOD 2.0 film (Großschrift Tintenstrahldrucker) shows "
+					"the 7/16/32-nozzle heads, TITAN controller and large-character marks. "
+					"It plays here — not on the hero photo. Unique to this page."
 				),
 				"image": heads_alt,
 				"image_alt": "REA JET DOD 2.0 print heads from the official product film",
+				"video_url": VIDEO_PRODUCT,
 				"sort_order": 2,
 			},
 			{
