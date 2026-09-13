@@ -1051,17 +1051,9 @@ def _update_links():
 		set_related(doc, ["rea-jet-coding-systems", "rea-jet-hr-2", "rea-jet-gk-2", "rea-jet-spray-mark"])
 		doc.flags.ignore_permissions = True
 		doc.save()
-	name = frappe.db.get_value("Website Solution", {"slug": "coding-marking"}, "name")
-	if name:
-		sol = frappe.get_doc("Website Solution", name)
-		sol.related_product_slugs = (
-			"hitachi-ux2-d160\nhitachi-ux2-d150\nhitachi-ux-d161\n"
-			"rea-jet-coding-systems\nrea-jet-dod-2\nrea-jet-hr-2\n"
-			"rea-jet-gk-2\nrea-jet-up\nrea-jet-cl\nrea-jet-fl\n"
-			"rea-jet-spray-mark\nrea-jet-code-verification"
-		)
-		sol.flags.ignore_permissions = True
-		sol.save()
+	from printechs_digital.setup.fill_coding_marking_solution import fill_coding_marking_solution
+
+	fill_coding_marking_solution()
 	frappe.db.commit()
 
 

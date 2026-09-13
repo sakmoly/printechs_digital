@@ -1121,11 +1121,7 @@ def fill_hitachi_ux2():
 	# Refresh related now that both exist.
 	fill_hitachi_ux2_d160()
 	fill_hitachi_ux2_d150()
-	name = frappe.db.get_value("Website Solution", {"slug": "coding-marking"}, "name")
-	if name:
-		sol = frappe.get_doc("Website Solution", name)
-		sol.related_product_slugs = "hitachi-ux2-d160\nhitachi-ux2-d150\nhitachi-ux-d161\nrea-jet-coding-systems"
-		sol.flags.ignore_permissions = True
-		sol.save()
-		frappe.db.commit()
+	from printechs_digital.setup.fill_coding_marking_solution import fill_coding_marking_solution
+
+	fill_coding_marking_solution()
 	return {"d160": d160, "d150": d150}

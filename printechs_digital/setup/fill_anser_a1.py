@@ -744,12 +744,9 @@ def fill_anser_a1():
 				sph.flags.ignore_permissions = True
 				sph.save()
 
-	append_related_slugs(
-		"Website Solution",
-		"coding-marking",
-		["anser-a1", "anser-sph-smart-printhead", "kezojet-kt10"],
-		prepend=True,
-	)
+	from printechs_digital.setup.fill_coding_marking_solution import fill_coding_marking_solution
+
+	fill_coding_marking_solution()
 	for industry_slug in ("packaging", "food-beverage", "pharmaceutical"):
 		append_related_slugs("Website Industry", industry_slug, ["anser-a1"])
 

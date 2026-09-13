@@ -160,7 +160,6 @@ export type ProductContentSection = {
   sectionType?: ProductContentSectionType;
   image?: MediaAsset;
   imageSide?: "left" | "right";
-  sortOrder?: number;
   videoUrl?: string;
   link?: { label: string; href: string };
 };
@@ -326,8 +325,8 @@ export type Industry = {
   relatedProductSlugs?: string[];
   relatedSoftwareSlugs?: string[];
   relatedSolutionSlugs?: string[];
-  relatedCaseStudySlugs?: string[];
   relatedVideoIds?: string[];
+  relatedCaseStudySlugs?: string[];
   seo: SeoFields;
 };
 
@@ -379,6 +378,8 @@ export type SolutionPageContent = {
     description?: string;
   };
   productCategories: SolutionProductCategory[];
+  applicationsEyebrow?: string;
+  applicationsTitle?: string;
   applicationCards?: ApplicationCard[];
   industrySlugs?: string[];
   supportServiceItems?: SupportServiceItem[];
@@ -406,6 +407,9 @@ export type Brand = {
   summary: string;
   logo: MediaAsset;
   href: string;
+  officialWebsite?: string;
+  showInFooter?: boolean;
+  sortOrder?: number;
   seo: SeoFields;
 };
 

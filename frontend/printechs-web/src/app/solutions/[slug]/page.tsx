@@ -25,7 +25,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props) {
-  const resolved = resolveSolutionPage(params.slug);
+  const resolved = await resolveSolutionPage(params.slug);
   if (resolved) {
     return buildMetadata({
       ...resolved.page.seo,
@@ -50,7 +50,7 @@ function slugLabel(slug: string) {
 }
 
 export default async function SolutionDetailPage({ params }: Props) {
-  const resolved = resolveSolutionPage(params.slug);
+  const resolved = await resolveSolutionPage(params.slug);
   if (resolved) {
     return <SolutionPageView {...resolved} />;
   }

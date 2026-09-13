@@ -37,14 +37,21 @@ export function SolutionPageView({
     return tone;
   };
 
-  const applicationCards =
-    page.applicationCards ??
-    linkedIndustries.slice(0, 4).map((industry) => ({
-      title: industry.name,
-      description: industry.summary,
-      image: industry.image,
-      href: `/industries/${industry.slug}`,
-    }));
+  const industryCards = (page.industrySlugs ?? [])
+    .map((industrySlug) => {
+      const industry = linkedIndustries.find((item) => item.slug === industrySlug);
+      if (!industry) return undefined;
+      return {
+        title: industry.name,
+        description: industry.summary,
+        image: industry.image,
+        href: `/industries/${industry.slug}`,
+      };
+    })
+    .filter((card): card is NonNullable<typeof card> => card !== undefined);
+
+  const applicationCards = page.applicationCards ?? industryCards.slice(0, 4);
+  const showIndustryCards = Boolean(page.applicationCards?.length && industryCards.length);
 
   const benefitItems = page.keyValueCards ?? [];
 
@@ -98,11 +105,23 @@ export function SolutionPageView({
       {applicationCards.length > 0 ? (
         <Section tone={nextTone()}>
           <ProductSectionHeader
-            eyebrow="Industries"
-            title="Built for production environments"
+            eyebrow={page.applicationsEyebrow ?? "Industries"}
+            title={page.applicationsTitle ?? "Built for production environments"}
           />
           <div className="mt-8">
             <ProductApplicationCards cards={applicationCards} />
+          </div>
+        </Section>
+      ) : null}
+
+      {showIndustryCards ? (
+        <Section tone={nextTone()}>
+          <ProductSectionHeader
+            eyebrow="Industries"
+            title="Where these systems run"
+          />
+          <div className="mt-8">
+            <ProductApplicationCards cards={industryCards} />
           </div>
         </Section>
       ) : null}

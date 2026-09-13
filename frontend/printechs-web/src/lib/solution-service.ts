@@ -5,7 +5,8 @@ import { getProductBySlug } from "@/data/products";
 import { featuredSolutions as mockFeaturedSolutions } from "@/data/featured-solutions";
 import { industries } from "@/data/industries";
 import { solutions as mockSolutions } from "@/data/solutions";
-import { erpnextMethod, normalizeMediaAsset } from "@/lib/erpnext-client";
+import { fetchCatalogProducts } from "@/lib/catalog-service";
+import { erpnextMethod, normalizeCatalogProduct, normalizeMediaAsset } from "@/lib/erpnext-client";
 
 export type ResolvedSolutionCategory = {
   category: SolutionPageContent["productCategories"][number];
@@ -18,15 +19,46 @@ export type ResolvedSolutionPage = {
   linkedIndustries: Industry[];
 };
 
-export function resolveSolutionPage(slug: string): ResolvedSolutionPage | undefined {
-  const page = getSolutionPage(slug);
-  if (!page) return undefined;
+function normalizeSolutionPage(page: SolutionPageContent): SolutionPageContent {
+  return {
+    ...page,
+    heroImage: normalizeMediaAsset(page.heroImage),
+    visualStory: page.visualStory
+      ? {
+          ...page.visualStory,
+          items: page.visualStory.items.map((item) => ({
+            ...item,
+            image: normalizeMediaAsset(item.image),
+          })),
+        }
+      : undefined,
+    productCategories: page.productCategories.map((category) => ({
+      ...category,
+      image: normalizeMediaAsset(category.image),
+    })),
+    applicationCards: page.applicationCards?.map((card) => ({
+      ...card,
+      image: normalizeMediaAsset(card.image),
+    })),
+  };
+}
+
+export const resolveSolutionPage = cache(async (
+  slug: string,
+): Promise<ResolvedSolutionPage | undefined> => {
+  const raw = getSolutionPage(slug);
+  if (!raw) return undefined;
+
+  const page = normalizeSolutionPage(raw);
+  const catalog = await fetchCatalogProducts();
+  const bySlug = new Map(catalog.map((product) => [product.slug, product]));
 
   const categories = page.productCategories.map((category) => ({
     category,
     products: category.productSlugs
-      .map((productSlug) => getProductBySlug(productSlug))
-      .filter((item): item is Product => item !== undefined),
+      .map((productSlug) => bySlug.get(productSlug) ?? getProductBySlug(productSlug))
+      .filter((item): item is Product => item !== undefined)
+      .map(normalizeCatalogProduct),
   }));
 
   const linkedIndustries = (page.industrySlugs ?? [])
@@ -34,7 +66,7 @@ export function resolveSolutionPage(slug: string): ResolvedSolutionPage | undefi
     .filter((item): item is Industry => item !== undefined);
 
   return { page, categories, linkedIndustries };
-}
+});
 
 function normalizeSolution(solution: Solution): Solution {
   return {

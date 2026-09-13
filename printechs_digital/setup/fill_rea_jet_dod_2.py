@@ -644,16 +644,8 @@ def fill_rea_jet_dod_2():
 	else:
 		doc.save()
 
-	name = frappe.db.get_value("Website Solution", {"slug": "coding-marking"}, "name")
-	if name:
-		sol = frappe.get_doc("Website Solution", name)
-		slugs = [s.strip() for s in (sol.related_product_slugs or "").splitlines() if s.strip()]
-		if SLUG not in slugs:
-			slugs = [s for s in slugs if s != "rea-jet-coding-systems"]
-			slugs.append(SLUG)
-			sol.related_product_slugs = "\n".join(slugs)
-			sol.flags.ignore_permissions = True
-			sol.save()
+	from printechs_digital.setup.fill_coding_marking_solution import fill_coding_marking_solution
 
+	fill_coding_marking_solution()
 	frappe.db.commit()
 	return doc.name
