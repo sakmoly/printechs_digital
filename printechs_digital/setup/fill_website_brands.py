@@ -120,6 +120,16 @@ BRANDS = [
 		"official_website": "https://www.fecpos.com/",
 		"show_in_footer": 0,
 	},
+	{
+		"erp_brand": "Citizen",
+		"display_name": "Citizen",
+		"slug": "citizen",
+		"logo": "brand-citizen.png",
+		"summary": "Citizen Systems 80 mm thermal POS printers for retail and hospitality checkout.",
+		"sort_order": 14,
+		"official_website": "https://www.citizen-systems.com/en/products/printer/pos/overview",
+		"show_in_footer": 1,
+	},
 ]
 
 # Extra published brands not managed in the list above (keep their other fields).
