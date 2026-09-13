@@ -132,6 +132,31 @@ def sorted_rows(rows: list | None, field: str = "sort_order") -> list:
 	return sorted(rows, key=lambda row: _row_sort_tuple(row, field))
 
 
+def map_content_sections(rows: list | None) -> list:
+	content_sections = []
+	for idx, row in enumerate(sorted_content_sections(rows)):
+		heading = cstr(row.heading).strip()
+		body = html_to_paragraphs(row.body)
+		if not heading or not body:
+			continue
+		section_type = cstr(getattr(row, "section_type", None)).strip() or "Industry Solution"
+		section = {
+			"heading": heading,
+			"body": body,
+			"sectionType": "core_module" if section_type == "Core Module" else "industry_solution",
+			"image": media_asset(row.image, row.image_alt or heading, 1600, 1000),
+			"imageSide": map_image_side(getattr(row, "image_side", None), idx),
+			"sortOrder": cint(row.idx) or cint(row.sort_order) or idx + 1,
+			"videoUrl": cstr(row.video_url).strip() or None,
+		}
+		link_href = cstr(row.link_href).strip()
+		link_label = cstr(row.link_label).strip()
+		if link_href:
+			section["link"] = {"label": link_label, "href": link_href}
+		content_sections.append(section)
+	return content_sections
+
+
 def sorted_content_sections(rows: list | None) -> list:
 	"""Keep Industry and Core lists in Desk table order (No. / idx)."""
 	if not rows:
@@ -477,27 +502,7 @@ def map_website_product(doc) -> dict:
 
 	package_contents = [row.item_description for row in sorted_rows(doc.package_contents)]
 
-	content_sections = []
-	for idx, row in enumerate(sorted_content_sections(doc.get("content_sections"))):
-		heading = cstr(row.heading).strip()
-		body = html_to_paragraphs(row.body)
-		if not heading or not body:
-			continue
-		section_type = cstr(getattr(row, "section_type", None)).strip() or "Industry Solution"
-		section = {
-			"heading": heading,
-			"body": body,
-			"sectionType": "core_module" if section_type == "Core Module" else "industry_solution",
-			"image": media_asset(row.image, row.image_alt or heading, 1600, 1000),
-			"imageSide": map_image_side(getattr(row, "image_side", None), idx),
-			"sortOrder": cint(row.idx) or cint(row.sort_order) or idx + 1,
-			"videoUrl": cstr(row.video_url).strip() or None,
-		}
-		link_href = cstr(row.link_href).strip()
-		link_label = cstr(row.link_label).strip()
-		if link_href:
-			section["link"] = {"label": link_label, "href": link_href}
-		content_sections.append(section)
+	content_sections = map_content_sections(doc.get("content_sections"))
 
 	product_tour = None
 	if getattr(doc, "enable_product_tour", 0):

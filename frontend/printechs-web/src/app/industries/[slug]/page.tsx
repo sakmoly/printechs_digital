@@ -3,10 +3,15 @@ import Link from "next/link";
 import { PageIntro } from "@/components/ui/PageIntro";
 import { Section } from "@/components/ui/Section";
 import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
+import { FeatureGrid } from "@/components/ui/FeatureGrid";
 import { ImageFrame } from "@/components/media/ImageFrame";
+import { ProductContentSections } from "@/components/products/ProductContentSections";
 import { IMAGE_SPECS } from "@/lib/image-specs";
 import { buildMetadata } from "@/lib/seo";
 import { fetchIndustry, fetchIndustrySlugs } from "@/lib/industry-service";
+import { fetchCatalogProducts, fetchSoftwareCatalog } from "@/lib/catalog-service";
+import { fetchSolution } from "@/lib/solution-service";
 import { fetchSuccessStories } from "@/lib/success-story-service";
 
 import { REVALIDATE_SECONDS } from "@/lib/revalidate";
@@ -31,18 +36,30 @@ export async function generateMetadata({ params }: Props) {
   return buildMetadata(industry.seo);
 }
 
-function slugLabel(slug: string) {
-  return slug.replace(/-/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
-}
-
 export default async function IndustryDetailPage({ params }: Props) {
   const industry = await fetchIndustry(params.slug);
   if (!industry) notFound();
 
   const stories = await fetchSuccessStories({ industry: industry.slug });
-  const relatedSolutions = industry.relatedSolutionSlugs ?? [];
-  const relatedProducts = industry.relatedProductSlugs ?? [];
-  const relatedSoftware = industry.relatedSoftwareSlugs ?? [];
+  const relatedSolutionSlugs = industry.relatedSolutionSlugs ?? [];
+  const relatedProductSlugs = industry.relatedProductSlugs ?? [];
+  const relatedSoftwareSlugs = industry.relatedSoftwareSlugs ?? [];
+  const overview = industry.overview || industry.summary;
+  const contentSections = industry.contentSections ?? [];
+
+  const [catalog, software, relatedSolutions] = await Promise.all([
+    relatedProductSlugs.length ? fetchCatalogProducts() : Promise.resolve([]),
+    relatedSoftwareSlugs.length ? fetchSoftwareCatalog() : Promise.resolve([]),
+    Promise.all(relatedSolutionSlugs.map((slug) => fetchSolution(slug))),
+  ]);
+
+  const relatedProducts = relatedProductSlugs
+    .map((slug) => catalog.find((product) => product.slug === slug))
+    .filter((product): product is NonNullable<typeof product> => Boolean(product));
+  const relatedSoftware = relatedSoftwareSlugs
+    .map((slug) => software.find((item) => item.slug === slug))
+    .filter((item): item is NonNullable<typeof item> => Boolean(item));
+  const solutions = relatedSolutions.filter((item): item is NonNullable<typeof item> => Boolean(item));
 
   return (
     <>
@@ -67,7 +84,11 @@ export default async function IndustryDetailPage({ params }: Props) {
             sizes="(max-width: 1024px) 100vw, 50vw"
           />
           <div>
-            <p className="text-base leading-relaxed text-slate">{industry.summary}</p>
+            <div className="space-y-4 text-base leading-relaxed text-slate">
+              {overview.split("\n\n").map((paragraph) => (
+                <p key={paragraph.slice(0, 48)}>{paragraph}</p>
+              ))}
+            </div>
             <div className="mt-8 flex flex-wrap gap-3">
               {stories.stories.length ? (
                 <Button href={`/success-stories?industry=${industry.slug}`} variant="ghost">
@@ -77,40 +98,71 @@ export default async function IndustryDetailPage({ params }: Props) {
               <Button href="/contact" variant="primary">
                 Talk to a Specialist
               </Button>
+              <Button href="/request-quote" variant="ghost">
+                Request a Quote
+              </Button>
             </div>
           </div>
         </div>
       </Section>
-      {relatedSolutions.length || relatedProducts.length || relatedSoftware.length ? (
+      {contentSections.length ? (
         <Section tone="muted">
+          <ProductContentSections sections={contentSections} eyebrow="Industry solutions" />
+        </Section>
+      ) : null}
+      {relatedProducts.length ? (
+        <Section tone="white">
+          <h2 className="font-display text-2xl font-semibold tracking-tight text-ink">
+            Products for this industry
+          </h2>
+          <div className="mt-8">
+            <FeatureGrid columns={3}>
+              {relatedProducts.map((product) => (
+                <Card
+                  key={product.id}
+                  href={`/products/${product.slug}`}
+                  title={product.name}
+                  description={product.summary}
+                  meta={product.brand}
+                  cta="View product"
+                  media={
+                    <ImageFrame
+                      src={product.image.src}
+                      alt={product.image.alt}
+                      spec={IMAGE_SPECS.product}
+                      fill
+                      className="aspect-square bg-mist"
+                      imageClassName="object-contain p-6"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                    />
+                  }
+                />
+              ))}
+            </FeatureGrid>
+          </div>
+        </Section>
+      ) : null}
+      {solutions.length || relatedSoftware.length ? (
+        <Section tone={relatedProducts.length ? "muted" : "white"}>
           <h2 className="font-display text-2xl font-semibold tracking-tight text-ink">
             Related capabilities
           </h2>
-          <div className="mt-6 grid gap-6 sm:grid-cols-3">
-            {relatedSolutions.length ? (
+          <div className="mt-6 grid gap-6 sm:grid-cols-2">
+            {solutions.length ? (
               <RelatedList
                 title="Solutions"
-                items={relatedSolutions.map((slug) => ({
-                  href: `/solutions/${slug}`,
-                  label: slugLabel(slug),
-                }))}
-              />
-            ) : null}
-            {relatedProducts.length ? (
-              <RelatedList
-                title="Products"
-                items={relatedProducts.map((slug) => ({
-                  href: `/products/${slug}`,
-                  label: slugLabel(slug),
+                items={solutions.map((item) => ({
+                  href: item.href || `/solutions/${item.slug}`,
+                  label: item.name,
                 }))}
               />
             ) : null}
             {relatedSoftware.length ? (
               <RelatedList
                 title="Software"
-                items={relatedSoftware.map((slug) => ({
-                  href: `/software/${slug}`,
-                  label: slugLabel(slug),
+                items={relatedSoftware.map((item) => ({
+                  href: `/software/${item.slug}`,
+                  label: item.name,
                 }))}
               />
             ) : null}

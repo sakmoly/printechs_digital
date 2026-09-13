@@ -1,15 +1,24 @@
 # Copyright (c) 2026, Printechs and contributors
 
-from printechs_digital.api.mappers.product_mapper import media_asset, split_lines
+from frappe.utils import cstr
+
+from printechs_digital.api.mappers.product_mapper import (
+	html_to_paragraphs,
+	map_content_sections,
+	media_asset,
+	split_lines,
+)
 
 
 def map_industry(doc) -> dict:
 	image = media_asset(doc.image, doc.image_alt or doc.industry_name, 1200, 800)
+	overview = html_to_paragraphs(getattr(doc, "overview", None)) or cstr(doc.summary or "")
 	return {
 		"id": f"erp-{doc.slug}",
 		"slug": doc.slug,
 		"name": doc.industry_name,
 		"summary": doc.summary or "",
+		"overview": overview,
 		"image": image
 		or {
 			"src": "/images/placeholders/industry.svg",
@@ -17,6 +26,7 @@ def map_industry(doc) -> dict:
 			"width": 1200,
 			"height": 800,
 		},
+		"contentSections": map_content_sections(doc.get("content_sections")) or None,
 		"relatedProductSlugs": split_lines(doc.related_product_slugs),
 		"relatedSoftwareSlugs": split_lines(doc.related_software_slugs),
 		"relatedSolutionSlugs": split_lines(doc.related_solution_slugs),

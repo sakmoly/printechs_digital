@@ -320,12 +320,14 @@ export type Industry = {
   slug: string;
   name: string;
   summary: string;
+  overview?: string;
   image: MediaAsset;
+  contentSections?: ProductContentSection[];
   relatedProductSlugs?: string[];
   relatedSoftwareSlugs?: string[];
   relatedSolutionSlugs?: string[];
-  relatedVideoIds?: string[];
   relatedCaseStudySlugs?: string[];
+  relatedVideoIds?: string[];
   seo: SeoFields;
 };
 

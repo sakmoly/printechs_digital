@@ -5,7 +5,12 @@ import frappe
 from frappe import _
 from frappe.model.document import Document
 
-from printechs_digital.utils.website_assets import localize_doc_fields, validate_doc_fields
+from printechs_digital.utils.website_assets import (
+	localize_child_table,
+	localize_doc_fields,
+	validate_child_table,
+	validate_doc_fields,
+)
 
 
 class WebsiteIndustry(Document):
@@ -18,6 +23,12 @@ class WebsiteIndustry(Document):
 		if not self.image_alt:
 			self.image_alt = self.industry_name
 		localize_doc_fields(self, [("image", f"industry-{self.slug or 'image'}")])
+		localize_child_table(
+			self,
+			"content_sections",
+			"image",
+			lambda row, idx: f"industry-{self.slug or 'image'}-section-{idx}",
+		)
 
 	def validate(self):
 		if not self.slug:
@@ -30,3 +41,4 @@ class WebsiteIndustry(Document):
 			frappe.throw(_("Website Industry with slug {0} already exists").format(self.slug))
 
 		validate_doc_fields(self, [("image", "Image")])
+		validate_child_table(self, "content_sections", "image", "Content Section Image")

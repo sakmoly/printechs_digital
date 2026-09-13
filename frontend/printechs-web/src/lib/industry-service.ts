@@ -7,6 +7,10 @@ function normalizeIndustry(industry: Industry): Industry {
   return {
     ...industry,
     image: normalizeMediaAsset(industry.image),
+    contentSections: industry.contentSections?.map((section) => ({
+      ...section,
+      image: section.image ? normalizeMediaAsset(section.image) : undefined,
+    })),
   };
 }
 
