@@ -20,6 +20,10 @@ from PIL import Image
 
 import frappe
 
+CASE_QR = "anser-a1-case-qr.jpg"
+CASE_MOUNT = "anser-a1-case-mount.jpg"
+CASE_SHIPPER = "anser-a1-case-shipper.jpg"
+
 ITEM = "IND.SYS.ANS.4211"
 ITEM_HALF = "IND.SYS.ANS.4214"
 SLUG = "anser-a1"
@@ -117,6 +121,39 @@ def download_file(filename: str, urls: list[str]) -> str:
 	if last_error:
 		raise last_error
 	frappe.throw(f"Could not download {filename}")
+
+
+def save_wide_crop(
+	filename: str,
+	source: Path,
+	box: tuple[float, float, float, float] | None = None,
+) -> str:
+	"""Center-fit a 16:10 JPEG. `box` is (left, top, right, bottom) as fractions."""
+	im = Image.open(source).convert("RGB")
+	width, height = im.size
+	if box:
+		im = im.crop(
+			(
+				int(box[0] * width),
+				int(box[1] * height),
+				int(box[2] * width),
+				int(box[3] * height),
+			)
+		)
+	target_ratio = 16 / 10
+	width, height = im.size
+	if width / height > target_ratio:
+		new_w = int(height * target_ratio)
+		left = (width - new_w) // 2
+		im = im.crop((left, 0, left + new_w, height))
+	else:
+		new_h = int(width / target_ratio)
+		top = (height - new_h) // 2
+		im = im.crop((0, top, width, top + new_h))
+	im = im.resize((1600, 1000), Image.Resampling.LANCZOS)
+	dest = SITE_FILES / filename
+	im.save(dest, "JPEG", quality=92, optimize=True)
+	return f"/files/{filename}"
 
 
 def catalog_card(source_name: str, dest_name: str) -> str:
@@ -217,10 +254,14 @@ def fill_anser_a1():
 	hmi = f"/files/anser-a1-hmi.jpg"
 	setup = f"/files/anser-a1-setup.png"
 	stand = f"/files/anser-a1-stand.png"
-	food = copy_public_image("industry-food-beverage.jpg")
-	pharma = copy_public_image("industry-pharmaceutical.jpg")
-	packaging = copy_public_image("industry-packaging.jpg")
-	warehouse = copy_public_image("industry-warehouse-logistics.jpg")
+	mount_src = SITE_FILES / "ANSER A1 Application6.jpg"
+	if not mount_src.exists():
+		mount_src = SITE_FILES / "anser-a1-carton.png"
+	case_qr = save_wide_crop(CASE_QR, SITE_FILES / "anser-a1-carton.png", (0.0, 0.10, 0.56, 0.90))
+	case_mount = save_wide_crop(CASE_MOUNT, mount_src, (0.0, 0.10, 1.0, 0.90))
+	case_shipper = save_wide_crop(
+		CASE_SHIPPER, SITE_FILES / "anser-a1-carton-close.jpg", (0.0, 0.0, 0.62, 0.78)
+	)
 
 	doc = get_or_create(card)
 	if frappe.db.exists("Item", ITEM) and not doc.item:
@@ -277,6 +318,7 @@ def fill_anser_a1():
 	)
 	doc.story_heading = "Print the case. Skip the label."
 	doc.visual_story_heading = "A1 carton coding"
+	doc.audience_heading = "Carton and case coding jobs"
 	doc.collapsible_full_specs = 1
 	doc.show_demo_cta = 0
 	doc.show_quote_in_hero = 1
@@ -377,32 +419,53 @@ def fill_anser_a1():
 				"sort_order": 3,
 			},
 			{
+				"label": "QR, lot and date",
+				"image": case_qr,
+				"image_alt": "QR code, lot, manufacture date and handling text printed on a brown carton",
+				"caption": "The case message customers scan: QR plus product, MFD, lot and handle-with-care.",
+				"sort_order": 4,
+			},
+			{
+				"label": "Line-mounted print",
+				"image": case_mount,
+				"image_alt": "ANSER A1 on a line bracket printing QR and variable text on a shipping carton",
+				"caption": "A1 on the bracket — the printhead sits on the case, not a remote cabinet.",
+				"sort_order": 5,
+			},
+			{
+				"label": "Shipper panel",
+				"image": case_shipper,
+				"image_alt": "Readable QR and lot code on a corrugated shipper panel",
+				"caption": "Outbound shipper panel: a scannable 2D mark and lot on brown board.",
+				"sort_order": 6,
+			},
+			{
 				"label": "A1 all-in-one",
 				"image": cutout,
 				"image_alt": "ANSER A1 all-in-one TIJ printer cutout with dual cartridge ports and 5-inch screen",
 				"caption": "Controller, 5-inch HMI and two cartridge ports in one 2 kg unit.",
-				"sort_order": 4,
+				"sort_order": 7,
 			},
 			{
 				"label": "5-inch HMI",
 				"image": hmi,
 				"image_alt": "Front of ANSER A1 showing 5-inch touchscreen, Ethernet, encoder and USB ports",
 				"caption": "Portrait 480×800 capacitive screen with Ethernet, encoder, sensor and USB.",
-				"sort_order": 5,
+				"sort_order": 8,
 			},
 			{
 				"label": "3-step setup",
 				"image": setup,
 				"image_alt": "ANSER A1 Smart Setup Assistant: line, station and print message in three steps",
 				"caption": "Official assistant: production line, print station, assign message — about 3 minutes.",
-				"sort_order": 6,
+				"sort_order": 9,
 			},
 			{
 				"label": "Line mount",
 				"image": stand,
 				"image_alt": "ANSER A1 mounted on a production-line stand above the conveyor path",
 				"caption": "Compact all-in-one on a line stand — no remote ink cabinet.",
-				"sort_order": 7,
+				"sort_order": 10,
 			},
 		],
 	)
@@ -483,28 +546,44 @@ def fill_anser_a1():
 				"sort_order": 1,
 			},
 			{
-				"title": "Food and beverage cases",
-				"description": "Direct codes on outer cases instead of labels or pre-printed carton panels.",
-				"image": food,
-				"image_alt": "Food and beverage packaging ready for case coding",
-				"industry_link": "food-beverage",
+				"title": "QR, lot and date",
+				"description": "A scannable 2D mark next to product, MFD, lot and handle-with-care on the case.",
+				"image": case_qr,
+				"image_alt": "QR code, lot, manufacture date and handling text on a brown carton",
+				"industry_link": "packaging",
 				"sort_order": 2,
 			},
 			{
-				"title": "Pharmaceutical cartons",
-				"description": "Batch, expiry and 2D codes on healthcare packs at up to 600 DPI.",
-				"image": pharma,
-				"image_alt": "Pharmaceutical carton coding on a packaging line",
-				"industry_link": "pharmaceutical",
+				"title": "Food and beverage cases",
+				"description": "Direct codes on outer cases instead of labels or pre-printed carton panels.",
+				"image": case_mount,
+				"image_alt": "ANSER A1 on a line bracket coding a food or beverage shipping carton",
+				"industry_link": "food-beverage",
 				"sort_order": 3,
 			},
 			{
-				"title": "Warehouse shippers",
-				"description": "Readable case marks for outbound boxes — SSCC / NVE-18 and QR on brown board.",
-				"image": warehouse,
-				"image_alt": "Warehouse cartons ready for outbound case coding",
-				"industry_link": "warehouse-logistics",
+				"title": "2D codes on healthcare cartons",
+				"description": "Batch, expiry and QR / Data Matrix at up to 600 DPI — Multi-DPI keeps text fast.",
+				"image": carton_dpi,
+				"image_alt": "ANSER A1 Multi-DPI carton print with 300 DPI QR and 150 DPI text",
+				"industry_link": "pharmaceutical",
 				"sort_order": 4,
+			},
+			{
+				"title": "Warehouse shippers",
+				"description": "Readable outbound marks — QR, SSCC / NVE-18 and lot on corrugated board.",
+				"image": case_shipper,
+				"image_alt": "QR and lot printed on a corrugated warehouse shipper panel",
+				"industry_link": "warehouse-logistics",
+				"sort_order": 5,
+			},
+			{
+				"title": "Label-free corrugated coding",
+				"description": "Skip the case label: print the GS1 / handling message straight onto the box.",
+				"image": carton_close,
+				"image_alt": "Close-up of an ANSER A1 case code on brown corrugated board",
+				"industry_link": "packaging",
+				"sort_order": 6,
 			},
 		],
 	)
@@ -589,8 +668,8 @@ def fill_anser_a1():
 					"sealer in Riyadh, Jeddah or Dammam."
 				),
 				"video_url": VIDEO_IJ,
-				"image": packaging,
-				"image_alt": "Packaging line cartons for thermal inkjet case coding",
+				"image": case_mount,
+				"image_alt": "ANSER A1 line-mounted on a carton for thermal inkjet case coding",
 				"sort_order": 6,
 			},
 			{
@@ -603,8 +682,8 @@ def fill_anser_a1():
 					"Need a 10.1-inch twin-head station? See Kezojet KT10."
 				),
 				"video_url": VIDEO_BATCH,
-				"image": food,
-				"image_alt": "Food-line cases ready for batch and date coding",
+				"image": case_qr,
+				"image_alt": "QR, lot and date printed on a carton for batch case coding",
 				"link_label": "Talk to a specialist",
 				"link_href": "/contact",
 				"sort_order": 7,
