@@ -120,9 +120,12 @@ export const softwareSolutions: SoftwareSolution[] = [
     id: "sw-ecommerce",
     slug: "e-commerce-solutions",
     name: "E-Commerce Solutions",
-    summary: "Digital commerce experiences connected to inventory and fulfilment.",
-    highlights: ["Catalogue sync", "Order workflows", "Retail integration"],
-    image: softwareImage("E-Commerce"),
+    summary: "ERPNext-connected web store and mobile apps with Aramex delivery and live tracking.",
+    highlights: ["ERPNext catalogue & stock", "Aramex live tracking", "Android and iOS apps"],
+    image: softwareImageFile(
+      "software-e-commerce-solutions.jpg",
+      "ShoeArena ERPNext e-commerce storefront built by Printechs",
+    ),
     relatedIndustrySlugs: ["retail", "fashion"],
     seo: {
       title: "E-Commerce Solutions | Printechs Software",
