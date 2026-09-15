@@ -1,12 +1,5 @@
 import type { SoftwareSolution } from "@/types/content";
 
-const softwareImage = (name: string) => ({
-  src: "/images/placeholders/software.svg",
-  alt: `${name} software interface`,
-  width: 1600,
-  height: 1000,
-});
-
 const softwareImageFile = (filename: string, alt: string) => ({
   src: `/images/software/${filename}`,
   alt,
@@ -117,6 +110,25 @@ export const softwareSolutions: SoftwareSolution[] = [
     },
   },
   {
+    id: "sw-van-sales",
+    slug: "van-sales",
+    name: "VAN Sales",
+    summary:
+      "Mobile field sales, van inventory, delivery, invoices, collections and printing — on ERPNext.",
+    highlights: ["ERPNext van warehouse", "Offline ready", "ZATCA integrated"],
+    image: softwareImageFile(
+      "software-van-sales.jpg",
+      "Sales van at a customer location while the representative delivers cartons",
+    ),
+    relatedIndustrySlugs: ["retail", "food-beverage", "warehouse-logistics"],
+    seo: {
+      title: "Van Sales Software Saudi Arabia | ERPNext & ZATCA | Printechs",
+      description:
+        "Van Sales software for Saudi Arabia integrated with ERPNext and ZATCA. Manage van stock, orders, delivery, invoices, payments, offline sales, barcode scanning and mobile printing.",
+      canonicalPath: "/software/van-sales",
+    },
+  },
+  {
     id: "sw-ecommerce",
     slug: "e-commerce-solutions",
     name: "E-Commerce Solutions",
@@ -137,12 +149,17 @@ export const softwareSolutions: SoftwareSolution[] = [
     id: "sw-api",
     slug: "api-integration",
     name: "API Integration",
-    summary: "Secure system integration between ERP, POS, WMS and partner platforms.",
-    highlights: ["API design", "Data sync", "Middleware"],
-    image: softwareImage("API Integration"),
+    summary: "APIs, middleware and device interfaces that connect ERP, machines and the shop floor.",
+    highlights: ["Software ↔ Machine", "Middleware", "Saudi platforms"],
+    image: softwareImageFile(
+      "software-api-integration.jpg",
+      "Printechs integration layer connecting ERP, machines and devices",
+    ),
+    relatedIndustrySlugs: ["retail", "warehouse-logistics", "packaging"],
     seo: {
-      title: "API Integration | Printechs Software",
-      description: "API and systems integration services from Printechs.",
+      title: "API & System Integration Saudi Arabia | ERP, Machines & IoT | Printechs",
+      description:
+        "Connect ERP, POS, e-commerce, warehouse systems, RFID, barcode devices, weighing scales and industrial machines.",
       canonicalPath: "/software/api-integration",
     },
   },
@@ -150,12 +167,17 @@ export const softwareSolutions: SoftwareSolution[] = [
     id: "sw-custom",
     slug: "custom-software-development",
     name: "Custom Software Development",
-    summary: "Purpose-built applications for specialised operational requirements.",
-    highlights: ["Discovery", "Delivery", "Long-term support"],
-    image: softwareImage("Custom Software"),
+    summary: "Van sales, shelf labels, scales, mobile inventory and price checkers — built around your workflow.",
+    highlights: ["Van sales", "Device integration", "ERP / POS connected"],
+    image: softwareImageFile(
+      "software-custom-software-development.jpg",
+      "Field team using a custom handheld application at a delivery van",
+    ),
+    relatedIndustrySlugs: ["retail", "fashion", "warehouse-logistics", "food-beverage"],
     seo: {
-      title: "Custom Software Development | Printechs",
-      description: "Custom software development with Printechs.",
+      title: "Custom Software Development Saudi Arabia | Mobile, ERP & Device Integration | Printechs",
+      description:
+        "Custom software for van sales, mobile inventory, shelf-label printing, platform scales and price checkers.",
       canonicalPath: "/software/custom-software-development",
     },
   },
