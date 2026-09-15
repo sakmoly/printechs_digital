@@ -156,6 +156,7 @@ doc_events = {
 		"Website Homepage Settings",
 		"Website About Settings",
 		"Website Contact Settings",
+		"Company",
 	)
 }
 doc_events["Newsletter"] = {

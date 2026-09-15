@@ -1,6 +1,6 @@
 export const siteConfig = {
   name: "Printechs",
-  legalName: "Printechs",
+  legalName: "Printechs Advanced Printing Trading Co.",
   tagline: "Technology That Moves Business Forward",
   description:
     "Industrial coding, retail technology and enterprise software solutions for businesses across Saudi Arabia.",

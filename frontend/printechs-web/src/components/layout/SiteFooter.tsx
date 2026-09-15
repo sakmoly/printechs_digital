@@ -4,6 +4,7 @@ import { Container } from "@/components/ui/Container";
 import { BrandLogo } from "@/components/ui/BrandLogo";
 import { SocialLinks } from "@/components/ui/SocialLinks";
 import { fetchBrands, brandHref } from "@/lib/brand-service";
+import { fetchLegalName } from "@/lib/site-identity";
 
 function brandColumnCount(linkCount: number) {
   if (linkCount > 12) {
@@ -26,7 +27,7 @@ function splitIntoColumns<T>(items: T[], columnCount: number): T[][] {
 }
 
 export async function SiteFooter() {
-  const brands = await fetchBrands();
+  const [brands, legalName] = await Promise.all([fetchBrands(), fetchLegalName()]);
   const brandLinks = [
     { label: "All Brands", href: "/brands" },
     ...brands.map((brand) => ({
@@ -52,6 +53,9 @@ export async function SiteFooter() {
       <Container className={footerGridClass}>
         <div className="sm:col-span-2 lg:col-span-1">
           <BrandLogo size="footer" />
+          <p className="mt-3 max-w-xs text-xs font-medium leading-snug text-paper/55">
+            {legalName}
+          </p>
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-paper/68">
             {siteConfig.description}
           </p>
@@ -113,8 +117,7 @@ export async function SiteFooter() {
 
       <Container className="border-t border-paper/10 py-6 text-xs text-paper/45">
         <p>
-          © {new Date().getFullYear()} {siteConfig.legalName}. All rights
-          reserved.
+          © {new Date().getFullYear()} {legalName}. All rights reserved.
         </p>
       </Container>
     </footer>

@@ -12,6 +12,7 @@ WEBSITE_CONTENT_DOCTYPES = (
 	"Website Homepage Settings",
 	"Website About Settings",
 	"Website Contact Settings",
+	"Company",
 )
 
 

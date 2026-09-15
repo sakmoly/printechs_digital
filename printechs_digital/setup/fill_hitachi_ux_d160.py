@@ -136,7 +136,6 @@ def fill_hitachi_ux_d160():
 	cabinet = official_image("hitachi-ux-d160-cabinet.webp")
 	beer = official_image("hitachi-ux-d160-beer.webp")
 	carton = official_image("hitachi-ux-d160-carton.webp")
-	tealight = official_image("hitachi-ux-d160-tealight.webp")
 	beverage = official_image("hitachi-ux-d160-beverage.webp")
 	auto = official_image("hitachi-ux-d160-auto.webp")
 	keep1 = official_image("hitachi-ux-d160-keep-1.webp")
@@ -453,8 +452,8 @@ def fill_hitachi_ux_d160():
 					"4×5 to 36×48. Barcodes include EAN, UPC, Code 128 and GS1 DataBar; "
 					"2D includes Data Matrix, QR and Micro QR."
 				),
-				"image": tealight,
-				"image_alt": "Official Hitachi UX Series small-character print sample",
+				"image": carton,
+				"image_alt": "Official Hitachi UX Series carton print sample",
 				"sort_order": 3,
 			},
 			{

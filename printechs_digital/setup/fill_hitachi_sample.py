@@ -3,11 +3,26 @@
 
 from pathlib import Path
 from shutil import copy2
+from urllib.request import Request, urlopen
 
 import frappe
 
 INDUSTRY_DIR = Path("/home/erpnext/frappe-bench/frontend/printechs-web/public/images/industries")
 SITE_FILES = Path("/home/erpnext/frappe-bench/sites/site1.local/public/files")
+H = "https://hitachi-industrial.eu/wp-content/uploads"
+
+D161_IMAGES = {
+	"hitachi-ux-d161-swabs.webp": f"{H}/2025/05/Cosmetics_Print-Sample-5-.webp",
+	"hitachi-ux-d161-pads.webp": f"{H}/2025/05/Cosmetics_Print-Sample-4.webp",
+	"hitachi-ux-d161-seatbelt.webp": f"{H}/2025/05/Automotive_Print-Sample-1.webp",
+	"hitachi-ux-d161-matrix.webp": f"{H}/2025/05/UXP-5x7line.webp",
+}
+
+D151_IMAGES = {
+	"hitachi-ux-d151-can.webp": f"{H}/2025/05/Packaging_Print-Sample-5.webp",
+	"hitachi-ux-d151-wiper.webp": f"{H}/2025/05/Automotive_Print-Sample-6.webp",
+	"hitachi-ux-d151-tealight.webp": f"{H}/2025/05/Teelichter-1.webp",
+}
 
 
 def copy_public_image(filename: str) -> str:
@@ -16,6 +31,22 @@ def copy_public_image(filename: str) -> str:
 	if source.exists() and not target.exists():
 		copy2(source, target)
 	return f"/files/{filename}"
+
+
+def download_file(filename: str, url: str) -> str:
+	target = SITE_FILES / filename
+	if not target.exists():
+		request = Request(url, headers={"User-Agent": "Mozilla/5.0 (compatible; Printechs/1.0)"})
+		with urlopen(request, timeout=30) as response, target.open("wb") as handle:
+			handle.write(response.read())
+	return f"/files/{filename}"
+
+
+def official_image(filename: str, catalog: dict[str, str]) -> str:
+	target = SITE_FILES / filename
+	if target.exists():
+		return f"/files/{filename}"
+	return download_file(filename, catalog[filename])
 
 
 def fill_hitachi_sample(slug: str = "hitachi-ux-d161"):
@@ -49,6 +80,7 @@ def fill_hitachi_sample(slug: str = "hitachi-ux-d161"):
 	doc.visual_story_heading = "See the print quality"
 	doc.collapsible_full_specs = 1
 	doc.show_demo_cta = 0
+	doc.show_quote_in_hero = 1
 	doc.featured = 1
 	doc.featured_sort_order = 1
 	doc.card_title = "UX-Series"
@@ -96,35 +128,40 @@ def fill_hitachi_sample(slug: str = "hitachi-ux-d161"):
 		],
 	)
 
+	swabs = official_image("hitachi-ux-d161-swabs.webp", D161_IMAGES)
+	pads = official_image("hitachi-ux-d161-pads.webp", D161_IMAGES)
+	seatbelt = official_image("hitachi-ux-d161-seatbelt.webp", D161_IMAGES)
+	matrix = official_image("hitachi-ux-d161-matrix.webp", D161_IMAGES)
+
 	doc.set(
 		"visual_story_items",
 		[
 			{
-				"label": "Production dates",
-				"image": copy_public_image("industry-dairy.jpg"),
-				"image_alt": "Production date codes on dairy bottles",
-				"caption": "Clear, high-contrast date codes on fast-moving dairy lines.",
+				"label": "Lot and date on packs",
+				"image": swabs,
+				"image_alt": "Official Hitachi CIJ lot and date on a cosmetics pack",
+				"caption": "Official EU cosmetics sample: dotted lot, time and date on a primary pack.",
 				"sort_order": 1,
 			},
 			{
-				"label": "Expiry dates",
-				"image": copy_public_image("industry-food-beverage.jpg"),
-				"image_alt": "Expiry date marking on beverage packaging",
-				"caption": "Legible expiry and best-before marking on bottles and packs.",
+				"label": "Expiry on film packs",
+				"image": pads,
+				"image_alt": "Official Hitachi CIJ lot and expiry on cotton-pad packaging",
+				"caption": "Official EU sample: lot and expiry in the CIJ dot matrix on film.",
 				"sort_order": 2,
 			},
 			{
-				"label": "Batch codes",
-				"image": copy_public_image("industry-packaging.jpg"),
-				"image_alt": "Batch codes on secondary packaging",
-				"caption": "Batch and lot traceability on cartons and flexible film.",
+				"label": "Codes on plastic parts",
+				"image": seatbelt,
+				"image_alt": "Official Hitachi print sample on a plastic automotive part",
+				"caption": "Official automotive sample: small lot and 2D on a moulded plastic part.",
 				"sort_order": 3,
 			},
 			{
-				"label": "Barcodes",
-				"image": copy_public_image("industry-plastic.jpg"),
-				"image_alt": "Barcode printing on plastic containers",
-				"caption": "1D and 2D codes for supply chain traceability.",
+				"label": "5×7 CIJ matrix",
+				"image": matrix,
+				"image_alt": "Official Hitachi UX 5 by 7 continuous inkjet character matrix",
+				"caption": "Official UX 5×7 line sample — the inkjet dots, not a high-resolution overlay.",
 				"sort_order": 4,
 			},
 		],
@@ -233,34 +270,34 @@ def fill_hitachi_sample(slug: str = "hitachi-ux-d161"):
 		"applications",
 		[
 			{
-				"title": "Dairy",
-				"description": "Date and batch coding on bottles and pouches at high line speeds.",
-				"image": copy_public_image("industry-dairy.jpg"),
-				"image_alt": "Dairy production line coding",
-				"industry_link": "dairy",
+				"title": "Primary pack dates",
+				"description": "Lot, time and date on cosmetics and food primary packs at line speed.",
+				"image": swabs,
+				"image_alt": "Official Hitachi CIJ lot and date on a primary pack",
+				"industry_link": "food-beverage",
 				"sort_order": 1,
 			},
 			{
-				"title": "Food & Beverage",
-				"description": "Expiry and production marking on bottles, cans, and flexible packaging.",
-				"image": copy_public_image("industry-food-beverage.jpg"),
-				"image_alt": "Food and beverage packaging line",
-				"industry_link": "food-beverage",
+				"title": "Film and pouch codes",
+				"description": "Expiry and lot on film wraps and flexible packs.",
+				"image": pads,
+				"image_alt": "Official Hitachi CIJ codes on film packaging",
+				"industry_link": "packaging",
 				"sort_order": 2,
 			},
 			{
-				"title": "Pharmaceutical",
+				"title": "Pharmaceutical packs",
 				"description": "Traceability codes for regulated packaging and secondary cartons.",
-				"image": copy_public_image("industry-pharmaceutical.jpg"),
-				"image_alt": "Pharmaceutical packaging line",
+				"image": swabs,
+				"image_alt": "Official Hitachi CIJ lot and date for regulated packs",
 				"industry_link": "pharmaceutical",
 				"sort_order": 3,
 			},
 			{
-				"title": "Pipe & Plastic",
-				"description": "Durable marking on extruded products, pipes, and plastic containers.",
-				"image": copy_public_image("industry-plastic.jpg"),
-				"image_alt": "Plastic manufacturing line",
+				"title": "Plastic components",
+				"description": "Small lot and 2D marks on moulded plastic parts.",
+				"image": seatbelt,
+				"image_alt": "Official Hitachi print sample on a plastic part",
 				"industry_link": "plastic",
 				"sort_order": 4,
 			},
@@ -368,6 +405,7 @@ def fill_ux_d151():
 	doc.visual_story_heading = "See UX2 print quality"
 	doc.collapsible_full_specs = 1
 	doc.show_demo_cta = 0
+	doc.show_quote_in_hero = 1
 	doc.featured = 0
 	doc.card_title = "UX-D151W"
 	doc.card_brand_label = "Hitachi"
@@ -416,35 +454,39 @@ def fill_ux_d151():
 		],
 	)
 
+	can = official_image("hitachi-ux-d151-can.webp", D151_IMAGES)
+	wiper = official_image("hitachi-ux-d151-wiper.webp", D151_IMAGES)
+	tealight = official_image("hitachi-ux-d151-tealight.webp", D151_IMAGES)
+
 	doc.set(
 		"visual_story_items",
 		[
 			{
-				"label": "Metal marking",
-				"image": copy_public_image("industry-steel.jpg"),
-				"image_alt": "Coding on metal production line",
-				"caption": "Durable codes on metal components and formed products.",
+				"label": "Industrial can codes",
+				"image": can,
+				"image_alt": "Official Hitachi CIJ codes on a paint-can lid",
+				"caption": "Official EU packaging sample: dotted CIJ lot and date on a metal lid.",
 				"sort_order": 1,
 			},
 			{
-				"label": "Plastic & film",
-				"image": copy_public_image("industry-plastic.jpg"),
-				"image_alt": "Plastic container coding",
-				"caption": "Clear marking on extruded plastics, bottles, and flexible film.",
+				"label": "Data Matrix on metal",
+				"image": wiper,
+				"image_alt": "Official Hitachi CIJ Data Matrix on a metal wiper arm",
+				"caption": "Official automotive sample: inkjet Data Matrix on a dark metal part.",
 				"sort_order": 2,
 			},
 			{
-				"label": "Pharmaceutical",
-				"image": copy_public_image("industry-pharmaceutical.jpg"),
-				"image_alt": "Pharmaceutical packaging coding",
-				"caption": "Batch and expiry codes for regulated packaging lines.",
+				"label": "Small-character packs",
+				"image": tealight,
+				"image_alt": "Official Hitachi UX Series small-character print sample",
+				"caption": "Official EU tealight-pack sample — small CIJ characters on a consumer pack.",
 				"sort_order": 3,
 			},
 			{
-				"label": "Packaging",
-				"image": copy_public_image("industry-packaging.jpg"),
-				"image_alt": "Secondary packaging coding",
-				"caption": "Carton and secondary packaging codes for logistics.",
+				"label": "UX-D151W",
+				"image": hero,
+				"image_alt": "Hitachi UX-D151W UX2 continuous inkjet printer",
+				"caption": "UX2-series cabinet for everyday production coding.",
 				"sort_order": 4,
 			},
 		],
@@ -540,35 +582,35 @@ def fill_ux_d151():
 		"applications",
 		[
 			{
-				"title": "Pharmaceutical",
-				"description": "Traceability codes for regulated packaging and secondary cartons.",
-				"image": copy_public_image("industry-pharmaceutical.jpg"),
-				"image_alt": "Pharmaceutical packaging line",
-				"industry_link": "pharmaceutical",
+				"title": "Packaging",
+				"description": "Lot and date on industrial cans, lids and secondary packs.",
+				"image": can,
+				"image_alt": "Official Hitachi CIJ codes on a metal can lid",
+				"industry_link": "packaging",
 				"sort_order": 1,
 			},
 			{
-				"title": "Pipe & Plastic",
-				"description": "Durable marking on extruded products, pipes, and plastic containers.",
-				"image": copy_public_image("industry-plastic.jpg"),
-				"image_alt": "Plastic manufacturing line",
-				"industry_link": "plastic",
+				"title": "Steel",
+				"description": "Production marks and 2D codes on metal components.",
+				"image": wiper,
+				"image_alt": "Official Hitachi CIJ Data Matrix on metal",
+				"industry_link": "steel",
 				"sort_order": 2,
 			},
 			{
-				"title": "Steel",
-				"description": "Production marking on metal products and industrial components.",
-				"image": copy_public_image("industry-steel.jpg"),
-				"image_alt": "Steel production line",
-				"industry_link": "steel",
+				"title": "Consumer packs",
+				"description": "Small-character lot and date on primary consumer packaging.",
+				"image": tealight,
+				"image_alt": "Official Hitachi small-character CIJ on a consumer pack",
+				"industry_link": "packaging",
 				"sort_order": 3,
 			},
 			{
-				"title": "Packaging",
-				"description": "Carton and secondary packaging coding for warehouse and retail.",
-				"image": copy_public_image("industry-packaging.jpg"),
-				"image_alt": "Packaging production",
-				"industry_link": "packaging",
+				"title": "Pharmaceutical",
+				"description": "Traceability codes for regulated packaging and secondary cartons.",
+				"image": tealight,
+				"image_alt": "Official Hitachi small-character CIJ for pack codes",
+				"industry_link": "pharmaceutical",
 				"sort_order": 4,
 			},
 		],

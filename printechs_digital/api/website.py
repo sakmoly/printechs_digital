@@ -20,6 +20,7 @@ from printechs_digital.api.website_cache import (
 	_cached_homepage,
 	_cached_homepage_bundle,
 	_cached_list_brands,
+	_cached_site_identity,
 	_cached_list_event_albums,
 )
 
@@ -157,6 +158,12 @@ def get_brand(slug: str):
 		frappe.throw("Brand not found", frappe.DoesNotExistError)
 
 	return map_website_brand(frappe.get_doc("Website Brand", name))
+
+
+@frappe.whitelist(allow_guest=True)
+def get_site_identity():
+	"""Brand vs registered company name for the marketing footer."""
+	return _cached_site_identity()
 
 
 @frappe.whitelist(allow_guest=True)

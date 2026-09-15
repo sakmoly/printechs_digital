@@ -25,6 +25,7 @@ def clear_website_api_cache():
 		_cached_featured_success_stories,
 		_cached_homepage,
 		_cached_homepage_bundle,
+		_cached_site_identity,
 	):
 		func.clear_cache()
 
@@ -103,6 +104,24 @@ def _cached_featured_success_stories(limit: int = 2):
 		limit_page_length=limit,
 	)
 	return [map_success_story_card(frappe.get_doc("Website Success Story", row.name)) for row in rows]
+
+
+def _company_legal_name() -> str:
+	company = frappe.db.get_single_value("Global Defaults", "default_company")
+	if not company:
+		company = frappe.db.get_value("Company", {}, "name", order_by="creation asc")
+	if company:
+		return frappe.db.get_value("Company", company, "company_name") or company
+	return "Advanced Printing Trading Company"
+
+
+@redis_cache(ttl=WEBSITE_CACHE_TTL)
+def _cached_site_identity():
+	legal_name = _company_legal_name()
+	return {
+		"brandName": "Printechs",
+		"legalName": legal_name,
+	}
 
 
 @redis_cache(ttl=WEBSITE_CACHE_TTL)
